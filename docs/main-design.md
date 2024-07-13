@@ -38,7 +38,7 @@
 
 ### Flow设计
 - Raw Flow：基于python的流程组装，通过`wikidata_*`提供了一套wikidata处理流程
-- YAML Flow：基于YAML文件定义处理流程 参考[可配置流程设计](docs/yaml-flow-design.md)
+- YAML Flow：基于YAML文件定义处理流程 参考[可配置流程设计](yaml-flow-design.md)
 
 ### Engine设计
 
@@ -48,4 +48,4 @@
 ## 下一步计划
 1. YAML Flow完善 比如支持变量定义
 2. 引擎支持并行化处理，提高处理性能
-3. 与`python-streaming`项目进行整合
+3. 与`python-streaming`项目进行整合（多种文件解析、知识图谱的构建生成）

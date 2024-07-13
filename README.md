@@ -66,7 +66,7 @@ processor: Group(chain1, chain2)
 
 ## 参考文档
 
-文档待完善……
+文档持续完善中……
 
 YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 

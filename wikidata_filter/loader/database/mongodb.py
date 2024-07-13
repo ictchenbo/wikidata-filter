@@ -8,13 +8,13 @@ except:
 
 
 class MongoLoader(DataProvider):
-    def __init__(self, host='localhost', port=27017, user=None, password=None, auth_db='admin', database='default', collection=None, query_obj: dict = None, limit=None, **kwargs):
+    def __init__(self, host='localhost', port=27017, user=None, password=None, auth_db='admin', database='default', collection=None, query: dict = None, limit=None, **kwargs):
         self.client = pymongo.MongoClient(host=host, port=port)
         if user:
             self.client[auth_db].authenticate(user, password)
         self.db = self.client[database]
         self.coll = self.db[collection]
-        self.query = query_obj
+        self.query = query
         self.limit = limit
 
     def iter(self):
