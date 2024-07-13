@@ -1,0 +1,10 @@
+lxml
+requests
+xmltodict==0.13.0
+zhconv
+
+wikitextparser==0.55.13
+py-wikimarkup==2.3.0
+
+clickhouse-driver==0.2.8
+pymongo==3.11.1

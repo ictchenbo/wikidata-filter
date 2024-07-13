@@ -1,0 +1,20 @@
+Q1190554,occurrence
+Q12890393,incident
+Q100235738,event(philosophy)
+Q10290214,event(statistics/probability theory)
+Q18669875,incident(Q12890393)
+Q2618029,spacetime event(physics)
+Q3291944,event(computer)
+Q68482296,military activity
+Q2223653,恐怖活动
+Q15631336,遊行示威
+Q273120,抗议
+Q847301,政治运动
+Q175331,示威
+Q40231,选举
+Q45382,政变
+Q114380,金融危机
+Q1020018,股災
+Q2223653,恐怖活动
+Q2001676,军事攻势
+Q645883,military operation

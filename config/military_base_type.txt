@@ -1,0 +1,4 @@
+Q18691599,military facility
+Q695850,air base
+Q1324633,naval base
+Q245016,military base

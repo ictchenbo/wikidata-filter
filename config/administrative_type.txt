@@ -1,0 +1,40 @@
+Q56061,administrative territorial entity
+Q1048835,political territorial entity
+Q24953176,special administrative region
+Q788176,autonomous administrative territorial entity
+Q50231,administrative territorial entity of the People's Republic of China
+Q1799794,administrative territorial entity of a specific level
+Q10864048,first-level administrative division
+Q34876,province
+Q119608727,province-level division
+Q779415,special administrative region
+Q1615742,province of China
+Q1208802,direct-administered municipality
+Q57362,autonomous region
+Q13220204,second-level administrative division
+Q9316670,prefecture-level division
+Q515,city
+Q15284,municipality
+Q788104,autonomous prefecture(自治州)
+Q288653,league(盟)
+Q13221722,third-level administrative division
+Q1070990,county-level city(县级市)
+Q4286337,city district(市辖区)
+Q2198484,municipal district
+Q149621,district
+Q28575,county(also geographic region)
+Q806869,banner(旗)
+Q4259749,forestry district(林区)
+Q14757767,fourth-level administrative division
+Q735428,town of China
+Q16725943,township-level division of China
+Q1500350,township of China(乡)
+Q582525,ethnic township(民族乡)
+Q986065,subdistrict(街道)
+Q2365159,sumu(苏木)
+Q17361311,ethnic sumu(民族苏木)
+Q1045593,county-controlled district(县辖区)
+Q15640612,fifth-level administrative division
+Q10930275,grassroots mass autonomous organization
+Q13100073,village
+Q985488,residential community (社区)

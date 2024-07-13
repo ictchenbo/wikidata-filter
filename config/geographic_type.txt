@@ -1,0 +1,2 @@
+Q2221906,geographic location
+Q82794,geographic region
