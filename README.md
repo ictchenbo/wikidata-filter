@@ -1,10 +1,11 @@
 # wikidata-filter
 Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解析、转换处理、文件加载、数据库加载、文件输出、数据库输出等。
 
-## 项目需求
-1. 对wikidata、wikipedia等数据进行预处理，方便业务系统使用
-2. 不同业务系统处理需求各异，处理流程（pipeline/flow）需要灵活可配
-3. 支持从文件、常用数据库进行读取和写入
+## 项目特色
+1. 通过`yaml`格式定义流程，上手容易
+2. 内置数十种ETL算子，配置简单
+3. 支持常见数据库的读取和写入
+4. 内置wikidata和wikipedia处理流程，直接可用
 
 ## 核心概念
 - Flow: 处理流程，实现数据载入（或生成）、处理、输出的过程
@@ -13,40 +14,68 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 - Matcher：数据匹配节点，是一类特殊的`Iterator`，可作为函数调用
 - Engine：按照Flow的定义进行执行。简单Engine只支持单线程执行。高级Engine支持并发执行，并发机制通用有多线程、多进程等
 
+## 快速使用
+1. 安装依赖
+```shell
+ pip install -r requirements.txt
+```
 
-## 总体设计
-### Loader设计
-【输入】从各类数据源加载数据，以单条或多条在流程节点中进行流转。适配常见的文件、数据库等。
-1. 基类`DataLoader`，定义基础Loader接口，可作为函数调用
-2. 文件加载器`FileLoader`，支持多种可产生列表数据的文件，包括JSON、CSV等
-3. 数据生成器，`RandomGenerator`生成指定数量的伪随机数（0~1）
-4. wikidata：支持全量Dump文件（JSON/JSON-gz/JSON-bz2）、支持增量文件（XML/XML-bz2）
-5. 数据库：支持ElasticSearch、ClickHouse、MongoDB
+2. 流程定义
+简单示例：生成100个随机数并重复5遍 `flows/test_multiple.yaml`
+```yaml
+name: test multiple
+nodes:
+  n1: Repeat(5)
+  n2: Count(ticks=5, label='Repeat')
+  n3: Print
 
-### Iterator设计
-【计算+输出】将常见数据处理过程抽象、拆分为多个处理算子，通过处理算子的组合形成处理流程。结果输出也是一种数据处理算子，包括输出到文件、输出到数据库等。
-1. 基类`JsonIterator`，定义基础Iterator接口
-2. 基础操作：`Filter`、`Print`、`Count`、`Repeat`、`Buffer`
-3. 修改操作：`Select`、`Map`、`RemoveFields` `RenameFields` `FillField` `CopyFields` `UpdateFields`
-4. wikidata处理：`IDNameMap` `Simplify` `SimplifyProps` `PropsFilter` `ValuesFilter` `ObjectNameInject` `ObjectAbstractInject` `ChineseSimple` `AsRelation`
-5. wikipedia处理：`ToHTML` `PageAbstract`
-6. 输出文件：`WriteJson` `WriteCSV`
-7. 输出到数据库：支持ElasticSearch、ClickHouse
-8. 匹配节点：`SimpleJsonMatcher` `JsonPathMatcher` `WikidataMatcher`
-9. 组合节点：并行`Group`、串行`Chain`
+loader: RandomGenerator(100)
+processor: Group(n1, n2, n3)
 
-未来可以支持更加复杂的算子，比如汇合（Join）
+```
 
-### Flow设计
-- Raw Flow：基于python的流程组装，通过`wikidata_*`提供了一套wikidata处理流程
-- YAML Flow：基于YAML文件定义处理流程 参考[可配置流程设计](docs/yaml-flow-design.md)
+wikidata数据处理示例：对wikidata Dump文件生成id-name映射文件并简化数据结构 `flows/p1_idname_simple.yaml`
+```yaml
+name: p1_idname_simple
+description:
+arguments: 2
+nodes:
+  n1: wikidata.IDNameMap
+  n2: WriteJson('data/id-name.json')
+  n3: wikidata.Simplify
+  n4: wikidata.SimplifyProps
+  n5: WriteJson(arg2)
+  chain1: Chain(n1, n2)
+  chain2: Chain(n3, n4, n5)
 
-### Engine设计
+loader: wikidata.WikidataJsonDump(arg1)
+processor: Group(chain1, chain2)
 
-**TODO**
+```
 
+3. 启动流程
+**示例一**
+```shell
+ python main_flow.py flows/test_multiple.yaml
+```
 
-## 下一步计划
-1. YAML Flow完善 比如支持变量定义
-2. 引擎支持并行化处理，提高处理性能
-3. 与`python-streaming`项目进行整合
+**示例二**
+```shell
+ python main_flow.py flows/p1_idname_simple.yaml dump.json simple.json
+```
+
+## 参考文档
+
+文档待完善……
+
+YAML Flow [Flow 格式说明](docs/yaml-flow.md)
+
+数据加载器 [Loader 说明文档](docs/loader.md)
+
+处理节点（过滤、转换、输出等） [Iterator 说明文档](docs/iterator.md)
+
+## 更多信息
+
+详细设计说明[设计文档](docs/main-design.md)
+
+Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
