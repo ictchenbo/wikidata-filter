@@ -1,6 +1,8 @@
 # wikidata-filter
 Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解析、转换处理、文件加载、数据库加载、文件输出、数据库输出等。
 
+关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
+
 ## 项目特色
 1. 通过`yaml`格式定义流程，上手容易
 2. 内置数十种ETL算子，配置简单
