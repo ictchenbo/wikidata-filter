@@ -27,10 +27,10 @@
 1. 基类`JsonIterator`，定义基础Iterator接口
 2. 基础操作：`Filter`、`Print`、`Count`、`Repeat`、`Buffer`
 3. 修改操作：`Select`、`Map`、`RemoveFields` `RenameFields` `FillField` `CopyFields` `UpdateFields`
-4. wikidata处理：`IDNameMap` `Simplify` `SimplifyProps` `PropsFilter` `ValuesFilter` `ObjectNameInject` `ObjectAbstractInject` `ChineseSimple` `AsRelation`
+4. wikidata处理：`IDNameMap` `Simplify` `SimplifyProps` `PropsFilter` `ValuesFilter` `ObjectNameInject` `ItemAbstractInject` `ChineseSimple` `AsRelation`
 5. wikipedia处理：`ToHTML` `PageAbstract`
 6. 输出文件：`WriteJson` `WriteCSV`
-7. 输出到数据库：支持ElasticSearch、ClickHouse
+7. 输出到数据库：支持ElasticSearch `ESWriter`、ClickHouse `CKWriter`
 8. 匹配节点：`SimpleJsonMatcher` `JsonPathMatcher` `WikidataMatcher`
 9. 组合节点：并行`Group`、串行`Chain`
 

@@ -25,7 +25,7 @@ nodes:
   n1: Filter(matcher)
   n2: PropsFilter(props_set=props)
   n3: ObjectNameInject(id_name)
-  n4: ObjectAbstractInject(kv)
+  n4: ItemAbstractInject(kv)
   n5: ChineseSimple()
   writer: WriteJson(arg2)
 

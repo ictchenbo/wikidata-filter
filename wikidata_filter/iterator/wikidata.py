@@ -229,7 +229,7 @@ class ObjectNameInject(JsonIterator):
         return item
 
 
-class ObjectAbstractInject(JsonIterator):
+class ItemAbstractInject(JsonIterator):
     """
     基于给定的KV缓存 对当前实体获取其对应摘要信息填充
     kv: {'enwiki': {'Alfred Hitchcoc': 'Master of Suspense (album)' }, 'zhwiki': {} }

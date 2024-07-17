@@ -12,7 +12,7 @@ nodes:
   enwiki_abstract: util.KVFromJSON((wiki_base + 'enwiki-page.json', key_key='title', val_key='abstract')
   kv: =dict(zhwiki=zhwiki_abstract, enwiki=enwiki_abstract)
   n3: ObjectNameInject(id_name)
-  n4: ObjectAbstractInject(kv)
+  n4: ItemAbstractInject(kv)
   n5: ChineseSimple()
   writer: WriteJson(arg2)
 

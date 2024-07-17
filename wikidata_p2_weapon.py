@@ -31,7 +31,7 @@ if __name__ == '__main__':
         Filter(WikidataMatcherV2({"P31": ["Q18643213", "Q728", "Q7978115", "Q2031121", "Q17205", "Q1186981", "Q216916"]})),
         PropsFilter(props_set=SetFromCSV('config/props_weapon.txt')),
         ObjectNameInject(id_name_cache),
-        ObjectAbstractInject(kv),
+        ItemAbstractInject(kv),
         ChineseSimple(),
         WriteJson(output_file),
         Count()

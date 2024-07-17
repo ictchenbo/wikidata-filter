@@ -53,7 +53,7 @@ components = {
     f"{base1}.PropsFilter": PropsFilter,
     f"{base1}.ValuesFilter": ValuesFilter,
     f"{base1}.ObjectNameInject": ObjectNameInject,
-    f"{base1}.ObjectAbstractInject": ObjectAbstractInject,
+    f"{base1}.ObjectAbstractInject": ItemAbstractInject,
     f"{base1}.AsRelation": AsRelation,
     f"{base1}.ChineseSimple": ChineseSimple,
     f"{base1}.database.CKWriter": CKWriter,

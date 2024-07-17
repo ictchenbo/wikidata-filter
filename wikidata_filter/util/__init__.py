@@ -2,11 +2,11 @@ import json
 from .file_loader import get_lines
 
 
-def SetFromCSV(file, index=0):
+def SetFromCSV(file, key_col=0):
     s = set()
     for line in get_lines(file):
         if "," in line:
-            s.add(line.split(",")[index])
+            s.add(line.split(",")[key_col])
     return s
 
 

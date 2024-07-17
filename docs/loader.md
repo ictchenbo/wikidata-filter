@@ -2,6 +2,8 @@
 
 模块：`wikidata_filter.loader`
 
+构造器：`<Comp>(*args, **kwargs)` 或 `<module>.<Comp>(*args, **kwargs)`
+
 ### 基类设计
 1. 抽象基类 `DataLoader` 定义了数据加载器的接口
 2. 抽象基类 `FileLoader` 文件数据加载器

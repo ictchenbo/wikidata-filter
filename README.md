@@ -42,7 +42,7 @@ name: p1_idname_simple
 description:
 arguments: 2
 
-loader: wikidata.WikidataJsonDump(arg1)
+loader: WikidataJsonDump(arg1)
 
 nodes:
   n1: IDNameMap
@@ -70,13 +70,14 @@ processor: Group(chain1, chain2)
 
 ## 参考文档
 
-文档持续完善中……
-
 YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 
 数据加载器 [Loader 说明文档](docs/loader.md)
 
 处理节点（过滤、转换、输出等） [Iterator 说明文档](docs/iterator.md)
+
+辅助函数 [util 说明文档](docs/util.md)
+
 
 ## 更多信息
 

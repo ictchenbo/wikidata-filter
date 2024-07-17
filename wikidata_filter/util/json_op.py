@@ -1,5 +1,5 @@
-def extract_val(val: dict, keys: list):
-    for key in keys:
+def extract_val(val: dict, path: list):
+    for key in path:
         if key not in val:
             return None
         val = val[key]
