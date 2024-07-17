@@ -1,0 +1,22 @@
+name: p1 human
+description: filter human items from wikidata dump
+arguments: 3
+
+consts:
+  types:
+    P31:
+      - Q5
+
+loader: WikidataJsonDump(arg1)
+
+nodes:
+  n1: IDNameMap
+  n2: WriteJson(arg2)
+  matcher: matcher.WikidataMatcherV1(types)
+  filter: Filter(matcher)
+  writer: WriteJson(arg3)
+
+  chain1: Chain(n1, n2)
+  chain2: Chain(filter, writer)
+
+processor: Group(chain1, chain2)

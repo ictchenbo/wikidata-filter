@@ -16,6 +16,7 @@
 """
 
 from wikidata_filter.matcher.base import JsonMatcher
+from wikidata_filter.util.json_op import extract_val
 
 
 class WikidataMatcher(JsonMatcher):
@@ -70,7 +71,9 @@ class WikidataMatcherV1(WikidataMatcher):
         for claim in claims:
             mainsnak = claim.get('mainsnak')
             if mainsnak and mainsnak.get('datatype') == "wikibase-item":
-                object_set.add(mainsnak['datavalue']['value']['id'])
+                object_id = extract_val(mainsnak, ['datavalue', 'value', 'id'])
+                if object_id is not None:
+                    object_set.add(object_id)
         return object_set
 
 
