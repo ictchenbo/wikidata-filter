@@ -1,0 +1,13 @@
+name: p3_human_country
+description: filter human(p2-human) from specified countries
+arguments: 3
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  country_list: =arg3.split(',')
+  matcher: "matcher.WikidataMatcher({'P27': country_list})"
+  filter: Filter(matcher)
+  writer: WriteJson(arg2)
+
+processor: Chain(filter, writer)

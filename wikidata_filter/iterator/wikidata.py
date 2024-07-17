@@ -167,8 +167,8 @@ class PropsFilter(JsonIterator):
     def __init__(self, props_set: set = None, props_list_file: str = None):
         props_set = props_set or set()
         if props_list_file:
-            from wikidata_filter.util.file_loader import get_lines_part
-            props_set.update(get_lines_part(props_list_file))
+            from wikidata_filter.util.file_loader import SetFromCSV
+            props_set.update(SetFromCSV(props_list_file))
         self.props_set = props_set
 
     def on_data(self, item: dict or None, *args):

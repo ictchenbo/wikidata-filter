@@ -1,0 +1,15 @@
+name: p2_event
+description:
+arguments: 1
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  types: util.SetFromCSV('config/event_type.txt')
+  matcher: "matcher.WikidataMatcher({'P31': types})"
+  filter: Filter(matcher)
+#  count: Count(ticks=5)
+  writer: Print
+#  writer: WriteJson(arg2)
+
+processor: Chain(filter, writer)

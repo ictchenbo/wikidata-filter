@@ -1,0 +1,26 @@
+name: read from ES and write to ClickHouse
+arguments: 2
+consts:
+  es_config:
+    host: '10.208.61.113'
+    port: 9200
+    username: elastic
+    password: golaxyintelligence
+#    index: entity_share_data_30
+  ck_config:
+    host: '10.208.57.5'
+    port: 59000
+    database: goin_kjqb_230202_v_3_0
+#    table: entity_share_data_shard
+    buffer_size: 1000
+
+loader: database.ESLoader(**es_config, index=arg1)
+
+nodes:
+  id_set: util.SetFromCSV('data/entity_id.csv')
+  matcher: "=lambda item: item.get('mongo_id') not in id_set"
+  filter: Filter(matcher=matcher)
+  counter: Count(ticks=1000, label='Row-Filter')
+  writer: database.CKWriter(**ck_config, table=entity_share_data_shard)
+
+processor: Chain(filter, counter, writer)

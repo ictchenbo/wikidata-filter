@@ -1,8 +1,10 @@
 name: test multiple
+
+loader: RandomGenerator(100)
+
 nodes:
   n1: Repeat(5)
   n2: Count(ticks=5, label='Repeat')
   n3: Print
 
-loader: RandomGenerator(100)
 processor: Group(n1, n2, n3)

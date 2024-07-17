@@ -1,7 +1,7 @@
 from wikidata_filter.loader import DataProvider, FileLoader
 from wikidata_filter.loader.wikidata import WikidataJsonDump
 from wikidata_filter.iterator.base import JsonIterator
-from wikidata_filter.flow_engine import load_flow
+from wikidata_filter.flow_engine import ProcessFlow
 
 
 def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False):
@@ -17,8 +17,8 @@ def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False
 
 def run_flow(flow_file: str, *args, finish_signal: bool = False):
     # print(flow_file, *args)
-    loader, processor = load_flow(flow_file, *args)
-    run(loader, processor, finish_signal=finish_signal)
+    flow = ProcessFlow(flow_file, *args)
+    run(flow.loader, flow.processor, finish_signal=finish_signal)
 
 
 def process_wikidata(infile: str, iterator: JsonIterator, parallels: int = 1, parallel_runner: str = "multi_thread"):

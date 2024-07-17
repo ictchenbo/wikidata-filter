@@ -1,0 +1,28 @@
+name: write wikipedia to ES
+arguments: 2
+consts:
+  es_config:
+    host: '10.208.61.113'
+    port: 9200
+    username: elastic
+    password: golaxyintelligence
+  remove_fields:
+    - site
+    - categories
+    - sections
+    - pageID
+    - isDisambiguation
+    - isRedirect
+    - isStub
+    - redirectTo
+  rename_fields:
+    plaintext: text
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  n1: RemoveFields(*remove_fields)
+  n2: RenameFields(rename_fields)
+  n3: iterator.database.ESWriter(index=arg2, **es_config)
+
+processor: Chain(n2, n2, n3)

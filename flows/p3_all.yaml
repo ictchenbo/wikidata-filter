@@ -1,0 +1,19 @@
+name: p3_all
+description: from p2_xxx.json, fill name + fill abstract + chinese simple
+arguments: 2
+consts:
+  wiki_base: "data/"
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  id_name: util.KVFromJSON('data/id-name.json', key_key='id', val_key='name')
+  zhwiki_abstract: util.KVFromJSON(wiki_base + 'zhwiki-page.json', key_key='title', val_key='abstract')
+  enwiki_abstract: util.KVFromJSON((wiki_base + 'enwiki-page.json', key_key='title', val_key='abstract')
+  kv: =dict(zhwiki=zhwiki_abstract, enwiki=enwiki_abstract)
+  n3: ObjectNameInject(id_name)
+  n4: ObjectAbstractInject(kv)
+  n5: ChineseSimple()
+  writer: WriteJson(arg2)
+
+processor: Chain(loader, n3, n4, n5, writer)

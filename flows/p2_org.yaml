@@ -1,0 +1,17 @@
+name: p2_org
+description:
+arguments: 1
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  types: util.SetFromCSV('config/org_type.txt')
+  props: util.SetFromCSV('config/props_org.txt')
+  matcher: "matcher.WikidataMatcher({'P31': types})"
+  filter: Filter(matcher)
+  prop_filter: PropsFilter(props_set=props)
+#  count: Count(ticks=5)
+  writer: Print
+#  writer: WriteJson(arg2)
+
+processor: Chain(filter, prop_filter, writer)

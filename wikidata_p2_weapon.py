@@ -6,7 +6,7 @@ if __name__ == '__main__':
     from wikidata_filter.iterator import *
     from wikidata_filter.iterator.wikidata import *
     from wikidata_filter.matcher.wikidata import WikidataMatcherV2
-    from wikidata_filter.util.file_loader import kv_from_json, get_lines_part
+    from wikidata_filter.util import KVFromJSON, SetFromCSV
 
     input_file = sys.argv[1]
     output_file = sys.argv[2]
@@ -14,9 +14,9 @@ if __name__ == '__main__':
     wd_base = '/data/users/chenbo/data/wikidata/20240626'
     wiki_base = '/data/users/chenbo/data/wikipedia/20240620'
 
-    id_name_cache = kv_from_json(f"{wd_base}/id-name.json", key_key='id', val_key='name')
-    zhwiki_abstract = kv_from_json(f'{wiki_base}/zhwiki-page.json', key_key='title', val_key='abstract')
-    enwiki_abstract = kv_from_json(f'{wiki_base}/enwiki-page.json', key_key='title', val_key='abstract')
+    id_name_cache = KVFromJSON(f"{wd_base}/id-name.json", key_key='id', val_key='name')
+    zhwiki_abstract = KVFromJSON(f'{wiki_base}/zhwiki-page.json', key_key='title', val_key='abstract')
+    enwiki_abstract = KVFromJSON(f'{wiki_base}/enwiki-page.json', key_key='title', val_key='abstract')
 
     kv = {
         'zhwiki': zhwiki_abstract,
@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     chains = Chain(
         Filter(WikidataMatcherV2({"P31": ["Q18643213", "Q728", "Q7978115", "Q2031121", "Q17205", "Q1186981", "Q216916"]})),
-        PropsFilter(props_set=get_lines_part('config/props_weapon.txt')),
+        PropsFilter(props_set=SetFromCSV('config/props_weapon.txt')),
         ObjectNameInject(id_name_cache),
         ObjectAbstractInject(kv),
         ChineseSimple(),

@@ -1,0 +1,11 @@
+name: p2_idname
+description:
+arguments: 1
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  filter: IDNameMap
+  writer: Print
+
+processor: Chain(filter, writer)

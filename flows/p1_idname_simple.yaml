@@ -1,14 +1,16 @@
 name: p1_idname_simple
 description:
 arguments: 2
+
+loader: WikidataJsonDump(arg1)
+
 nodes:
-  n1: wikidata.IDNameMap
+  n1: IDNameMap
   n2: WriteJson('data/id-name.json')
-  n3: wikidata.Simplify
-  n4: wikidata.SimplifyProps
+  n3: Simplify
+  n4: SimplifyProps
   n5: WriteJson(arg2)
   chain1: Chain(n1, n2)
   chain2: Chain(n3, n4, n5)
 
-loader: wikidata.WikidataJsonDump(arg1)
 processor: Group(chain1, chain2)
