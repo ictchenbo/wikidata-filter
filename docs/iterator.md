@@ -29,6 +29,10 @@ class JsonIterator:
 3. 过滤 `Filter(matcher)` 参数：过滤函数/Matcher对象 可参考[Matcher](#matcher)
 4. 缓冲 `Buffer(batch_size=100)` 参数：缓冲一定数量数据后再一起推送
 
+### Matcher
+1. 简单JSON匹配 `matcher.SimpleJsonMatcher(match_rules)`
+2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
+
 
 ### 修改类
 1. 投影操作 `Select(*keys)`
@@ -50,7 +54,15 @@ class JsonIterator:
 2. ClickHouse `iterator.database.CKWriter(host='localhost',port=9000,user="default",password="",database='default',table=None, buffer_size=1000)`
 
 
+### 组合节点
+1. 并行处理 `Group(*nodes)`
+2. 串行处理 `Chain(*nodes)`
+3. 重复数据 `Repeat(num_of_repeats)`
+
+
 ### Wikidata处理
+模块：`wikidata_filter.iterator.wikidata`
+
 1. 生成ID-名称映射结构 `IDNameMap`
 2. item字段简化，对labels/description/alias仅保留中文或英文 `Simplify`
 3. 对item的属性进行简化  `SimplifyProps`
@@ -67,14 +79,14 @@ class JsonIterator:
 7. item条目对应wikipedia页面摘要注入，根据KV查询维基页面摘要进行注入 `ObjectAbstractInject(kv)`
 8. 对item的labels/descriptions/abstract字段转化为中文简体 `ChineseSimple`
 9. 生成关系数据结构（**multiple**） `AsRelation`
+10. Wikidata基本匹配 `matcher.WikidataMatcherV1(match_relations)`
+11. 针对简化wikidata匹配 `matcher.WikidataMatcher(match_relations)`
 
-### 组合节点
-1. 并行处理 `Group(*nodes)`
-2. 串行处理 `Chain(*nodes)`
-3. 重复数据 `Repeat(num_of_repeats)`
 
-### Matcher
-1. 简单JSON匹配 `matcher.SimpleJsonMatcher(match_rules)`
-2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
-3. Wikidata基本匹配 `matcher.WikidataMatcherV1(match_relations)`
-4. 针对简化wikidata匹配 `matcher.WikidataMatcher(match_relations)`
+### Wikidata知识图谱处理
+模块：`wikidata_filter.iterator.wikidata_graph`
+
+1. 生成Item和Property摘要 `iterator.wikidata_graph.Entity`
+2. 生成实体Item：`iterator.wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='item')`
+3. 生成属性Property：`iterator.wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='property')`
+4. 提取实体属性：`iterator.wikidata_graph.ItemProperty` （结果根据`_type`区分为：item_property property_property）

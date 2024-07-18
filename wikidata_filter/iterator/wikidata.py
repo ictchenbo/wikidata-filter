@@ -80,20 +80,19 @@ def get_snak(snak):
 
     if _type == "value" and "datavalue" in snak:
         datavalue = snak["datavalue"]
-        vt = datavalue["type"]
-        _value = datavalue["value"]
+        vt, _value = datavalue["type"], datavalue["value"]
         if vt == "wikibase-entityid":
             _value = _value["id"]
-        elif vt == "globecoordinate":
-            _value = [_value["latitude"], _value["longitude"]]
-        elif vt == "quantity":
-            _value = _value["amount"]
-        elif vt == "time":
-            _value = _value["time"]
-        elif vt == "monolingualtext":
-            _value = f'{_value["language"]}:{_value["text"]}'
+        # elif vt == "globecoordinate":
+        #     _value = [_value["latitude"], _value["longitude"]]
+        # elif vt == "quantity":
+        #     _value = _value["amount"]
+        # elif vt == "time":
+        #     _value = _value["time"]
+        # elif vt == "monolingualtext":
+        #     _value = f'{_value["language"]}:{_value["text"]}'
 
-        return vt, str(_value)
+        return vt, _value
 
     return _type, None
 
@@ -273,6 +272,10 @@ class AsRelation(JsonIterator):
     """
     转换为关系结构
     """
+    def __init__(self):
+        super().__init__()
+        self.return_multiple = True
+
     def on_data(self, item: dict or None, *args):
         subject_id = item["id"]
         subject_name = item.get("labels")
@@ -287,6 +290,3 @@ class AsRelation(JsonIterator):
                     "object_id": obj["datavalue"],
                     "object_name": obj.get("labels")
                 }
-
-    def return_multiple(self):
-        return True

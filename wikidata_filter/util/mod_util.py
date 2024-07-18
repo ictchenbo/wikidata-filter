@@ -11,7 +11,8 @@ def load_cls(full_name):
         raise Exception(f"module [{pkg}] not found!")
 
     try:
-        cls = mod.__getattr__(class_name_only)
+        cls = mod.__dict__[class_name_only]
+        # cls = eval(class_name_only, globals(), mod.__dict__)
     except AttributeError:
         raise Exception(f"class [{class_name_only}] not found in module [{pkg}]!")
 

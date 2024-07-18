@@ -1,0 +1,35 @@
+name: p1_org_country_weapon
+description: filter org/country/weapon items from wikidata dump
+arguments: 2
+consts:
+  country_types:
+    P31:
+      - Q6256
+      - Q7275
+  weapon_types:
+    P31:
+      - Q18643213
+      - Q728
+      - Q7978115
+      - Q2031121
+      - Q17205
+      - Q1186981
+      - Q216916
+loader: WikidataJsonDump(arg1)
+
+nodes:
+  types: util.SetFromCSV('config/org_type.txt')
+  matcher: "matcher.WikidataMatcher({'P31': types})"
+  country_matcher: matcher.WikidataMatcher(country_types)
+  weapon_matcher: matcher.WikidataMatcher(weapon_types)
+  filter1: Filter(matcher)
+  filter2: Filter(country_matcher)
+  filter3: Filter(weapon_matcher)
+  writer1: WriteJson(arg2)
+  writer2: WriteJson(arg3)
+  writer3: WriteJson(arg4)
+  chain1: Chain(filter1, writer1)
+  chain2: Chain(filter2, writer2)
+  chain3: Chain(filter3, writer3)
+
+processor: Group(chain1, chain2, chain3)

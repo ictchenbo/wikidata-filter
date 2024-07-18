@@ -1,4 +1,6 @@
 class JsonIterator:
+    return_multiple: bool = False
+
     def on_start(self):
         pass
 
@@ -7,9 +9,6 @@ class JsonIterator:
 
     def on_complete(self):
         pass
-
-    def return_multiple(self):
-        return False
 
 
 class Group(JsonIterator):
@@ -52,7 +51,7 @@ class Chain(Group):
             # iterate over the current cache
             for current in queue:
                 # if the processor produces multiple items
-                if it.return_multiple():
+                if it.return_multiple:
                     for one in it.on_data(current):
                         if one is not None:
                             new_queue.append(one)
@@ -83,10 +82,9 @@ class Chain(Group):
 
 class Repeat(JsonIterator):
     def __init__(self, num_of_repeats: int):
+        super().__init__()
         self.num_of_repeats = num_of_repeats
-
-    def return_multiple(self):
-        return True
+        self.return_multiple = True
 
     def on_data(self, data, *args):
         for i in range(self.num_of_repeats):

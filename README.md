@@ -23,7 +23,9 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 ```
 
 2. 流程定义
-简单示例：生成100个随机数并重复5遍 `flows/test_multiple.yaml`
+
+- 示例1：生成100个随机数并重复5遍 `flows/test_multiple.yaml`
+
 ```yaml
 name: test multiple
 nodes:
@@ -36,7 +38,7 @@ processor: Group(n1, n2, n3)
 
 ```
 
-wikidata数据处理示例：对wikidata Dump文件生成id-name映射文件并简化数据结构 `flows/p1_idname_simple.yaml`
+- 示例2：对wikidata Dump文件生成id-name映射文件并简化数据结构 `flows/p1_idname_simple.yaml`
 ```yaml
 name: p1_idname_simple
 description:
@@ -54,7 +56,41 @@ nodes:
   chain2: Chain(n3, n4, n5)
 
 processor: Group(chain1, chain2)
+```
+- 示例3：基于wikidata生成简单图谱结构，包含Item/Property/Item_Property/Property_Property 四张表
+```yaml
+name: p1_wikidata_graph
+description: transform wikidata dump to graph, including item/property/item_property/property_property
+arguments: 5
 
+loader: WikidataJsonDump(arg1)
+
+nodes:
+  writer1: WriteJson(arg2)
+  writer2: WriteJson(arg3)
+  writer3: WriteJson(arg4)
+  writer4: WriteJson(arg5)
+
+  rm_type: RemoveFields('_type')
+
+  entity: iterator.wikidata_graph.Entity
+  filter_item: "Filter(lambda p: p['_type']=='item')"
+  filter_property: "Filter(lambda p: p['_type']=='property')"
+  chain1: Chain(filter_item, rm_type, writer1)
+  chain2: Chain(filter_property, rm_type, writer2)
+  group1: Group(chain1, chain2)
+
+  property: iterator.wikidata_graph.ItemProperty
+  filter_item_property: "Filter(lambda p: p['_type']=='item_property')"
+  filter_property_property: "Filter(lambda p: p['_type']=='property_property')"
+  chain3: Chain(filter_item_property, rm_type, writer3)
+  chain4: Chain(filter_property_property, rm_type, writer4)
+  group2: Group(chain3, chain4)
+
+  chain_entity: Chain(entity, group1)
+  chain_property: Chain(property, group2)
+
+processor: Group(chain_entity, chain_property)
 ```
 
 3. 启动流程
