@@ -20,12 +20,18 @@
 1. 全量dump文件：`wikidata.WikidataJsonDump` 本质上是一个每行一项的JSON数组文件 
 2. 增量文件：`wikidata.WikidataXmlIncr` 本质上是wiki修订记录的XML文件的合并（即一个文件中包含了多个完整XML结构）
 
-
 **说明**：
-上述文件都支持以gz或bz2进行压缩，根据文件后缀名进行判断（分别为`.gz`和`.bz2`）
+- 上述文件都支持以gz或bz2进行压缩，根据文件后缀名进行判断（分别为`.gz`和`.bz2`）
+- wikidata Dump文件下载地址：https://dumps.wikimedia.org/wikidatawiki/entities/
 
 **实例化参数**：文件路径；编码（默认为utf8）
 
+### GDELT数据
+提供GDELT数据加载（通过网络下载） 每行提供url、file_size信息 配合对应iterator
+1. 最近15分钟更新记录 `web.gdelt.GdeltLatest` 下载地址：http://data.gdeltproject.org/gdeltv2/lastupdate.txt
+2. 全部文件，自2015年2月19日以来的全部更新记录 `web.gdelt.GdeltAll` 下载地址：http://data.gdeltproject.org/gdeltv2/masterfilelist.txt
+
+**实例化参数**：无
 
 ### 数据库加载器
 提供常用数据库的数据查询式读取：

@@ -1,6 +1,6 @@
 import json
 import requests
-from wikidata_filter.iterator.database.base import BufferedWriter
+from wikidata_filter.iterator.common import BufferedWriter
 
 
 class ESWriter(BufferedWriter):

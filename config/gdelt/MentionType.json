@@ -1,0 +1,13 @@
+{
+  "name": "MentionType",
+  "desc": "a numeric identifier that refers to the source collection the document came from and is used to interpret the MentionIdentifier in the next column. In essence, it specifies how to interpret the MentionIdentifier to locate the actual document.",
+  "type": "dict",
+  "values": [
+    {"id": 1, "name": "WEB", "desc": "The document originates from the open web and the MentionIdentifier is a fully-qualified URL that can be used to access the document on the web"},
+    {"id": 2, "name": "CITATIONONLY", "desc": "The document originates from a broadcast, print, or other offline source in which only a textual citation is available for the document."},
+    {"id": 3, "name": "CORE", "desc": "The document originates from the CORE archive and the MentionIdentifier contains its DOI, suitable for accessing the original document through the CORE website"},
+    {"id": 4, "name": "DTIC", "desc": "The document originates from the DTIC archive and the MentionIdentifier contains its DOI, suitable for accessing the original document through the DTIC website"},
+    {"id": 5, "name": "JSTOR", "desc": "The document originates from the JSTOR archive and the MentionIdentifier contains its DOI, suitable for accessing the original document through your JSTOR subscription if your institution subscribes to it"},
+    {"id": 6, "name": "NONTEXTUALSOURCE", "desc": "The document originates from a textual proxy (such as closed captioning) of a non-textual information source (such as a video) available via a URL and the MentionIdentifier provides the URL of the non-textual original source."}
+  ]
+}

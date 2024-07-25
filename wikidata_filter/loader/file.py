@@ -74,4 +74,22 @@ class JsonArrayLoader(FileLoader):
 
 
 class CSVLoader(LineBasedFileLoader):
-    pass
+    def __init__(self, sep: str = ',', with_header=None, encoding='utf8'):
+        super().__init__(encoding=encoding)
+        self.header = with_header
+        self.sep = sep
+
+    def iter(self):
+        # import csv
+        # csv.reader()
+        if self.header:
+            header = None
+            for line in super().iter():
+                row = line.split(self.sep)
+                if header is None:
+                    header = row
+                else:
+                    yield {header[i]: row[i] for i in range(min(len(header), len(row)))}
+        else:
+            for line in super().iter():
+                yield line.split(self.sep)

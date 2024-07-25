@@ -36,6 +36,7 @@ components = {
     f"{base1}.Chain": Chain,
     f"{base1}.Repeat": Repeat,
     f"{base1}.Filter": Filter,
+    f"{base1}.Prompt": Prompt,
     f"{base1}.Print": Print,
     f"{base1}.Count": Count,
     f"{base1}.Buffer": Buffer,

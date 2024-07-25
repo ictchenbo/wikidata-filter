@@ -1,15 +1,14 @@
-
 from wikidata_filter.loader.base import DataProvider
-
-try:
-    from clickhouse_driver import Client
-except:
-    print('install clickhouse_driver first!')
-    raise "clickhouse_driver not installed"
 
 
 class CKLoader(DataProvider):
     def __init__(self, host='localhost', port=9000, user="default", password="", database='default', table=None, select="*", where=None, limit=None, **kwargs):
+        try:
+            from clickhouse_driver import Client
+        except:
+            print('install clickhouse_driver first!')
+            raise "clickhouse_driver not installed"
+
         self.select = select
         self.table = table
         self.where = where

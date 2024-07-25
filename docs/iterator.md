@@ -90,3 +90,14 @@ class JsonIterator:
 2. 生成实体Item：`iterator.wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='item')`
 3. 生成属性Property：`iterator.wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='property')`
 4. 提取实体属性：`iterator.wikidata_graph.ItemProperty` （结果根据`_type`区分为：item_property property_property）
+
+
+### GDELT数据处理
+模块：`wikidata_filter.iterator.web.gdelt`
+1. 基于gdelt的更新文件（CSV.zip）及对应的schema文件生成json记录 `iterator.web.gdelt.Export`
+
+**说明** GDELT文件包括：
+- 事件表 `event-table`（schema见`config/gdelt/export.schema`）
+- 事件提到表 `mention-table` （schema见`config/gdelt/mention.schema`）
+- 事件图谱 **TODO**
+

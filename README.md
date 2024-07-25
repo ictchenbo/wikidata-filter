@@ -7,7 +7,11 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 1. 通过`yaml`格式定义流程，上手容易
 2. 内置数十种ETL算子，配置简单
 3. 支持常见数据库的读取和写入
-4. 内置wikidata和wikipedia处理流程，直接可用
+4. 内置特色数据资源处理流程：
+   - wikidata
+   - wikipedia
+   - GDELT（流式，直接下载）
+
 
 ## 核心概念
 - Flow: 处理流程，实现数据载入（或生成）、处理、输出的过程

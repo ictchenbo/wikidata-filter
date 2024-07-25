@@ -1,0 +1,14 @@
+GlobalEventID:int
+EventTimeDate:int_ymdHMS
+MentionTimeDate:int_ymdHMS
+MentionType:int_MentionType
+MentionSourceName
+MentionIdentifier
+SentenceID:int
+Actor1CharOffset:int
+Actor2CharOffset:int
+ActionCharOffset:int
+InRawText:int_bool
+Confidence:int
+MentionDocLen:int
+MentionDocTone:float

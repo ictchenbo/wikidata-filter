@@ -1,6 +1,24 @@
 from wikidata_filter.iterator.base import JsonIterator
 
 
+class Prompt(JsonIterator):
+    def __init__(self, msg: str):
+        self.msg = msg
+
+    def on_data(self, data: dict or None, *args):
+        print(self.msg)
+        return data
+
+
+class Print(JsonIterator):
+    """
+    打印节点
+    """
+    def on_data(self, data: dict or None, *args):
+        print(data)
+        return data
+
+
 class Filter(JsonIterator):
     """
     匹配筛选
@@ -12,15 +30,6 @@ class Filter(JsonIterator):
     def on_data(self, data: dict or None, *args):
         if self.matcher(data):
             return data
-
-
-class Print(JsonIterator):
-    """
-    打印节点
-    """
-    def on_data(self, data: dict or None, *args):
-        print(data)
-        return data
 
 
 class Count(JsonIterator):
@@ -66,3 +75,28 @@ class Buffer(JsonIterator):
         if len(self.buffer) == self.batch_size:
             return self.buffer
         return None
+
+
+class BufferedWriter(JsonIterator):
+    def __init__(self, buffer_size=1000):
+        self.buffer = []
+        self.buffer_size = buffer_size
+
+    def on_data(self, data: dict or None, *args):
+        if not isinstance(data, list):
+            self.buffer.append(data)
+        else:
+            self.buffer.extend(data)
+        if len(self.buffer) >= self.buffer_size:
+            self.write_batch(self.buffer)
+            self.buffer.clear()
+
+        return data
+
+    def write_batch(self, data: list):
+        pass
+
+    def on_complete(self):
+        if self.buffer:
+            self.write_batch(self.buffer)
+            self.buffer.clear()

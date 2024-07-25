@@ -1,3 +1,6 @@
+import json
+
+
 def get_lines(file):
     with open(file, "r") as fin:
         for line in fin:
@@ -23,3 +26,11 @@ def display_file_content(filename: str, encoding="utf8", limit=1000):
             limit -= 1
             if limit <= 0:
                 break
+
+
+def load_data_dict(dict_json_path: str):
+    with open(dict_json_path, encoding='utf8') as fin:
+        root = json.load(fin)
+        return {
+            val["id"]: val for val in root["values"]
+        }

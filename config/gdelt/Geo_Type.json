@@ -1,0 +1,12 @@
+{
+  "name": "Geo_Type",
+  "desc": "This field specifies the geographic resolution of the match type and holds one of the following values",
+  "type": "dict",
+  "values": [
+    {"id": 1, "name": "COUNTRY", "desc": "match was at the country level"},
+    {"id": 2, "name": "USSTATE", "desc": "match was to a US state"},
+    {"id": 3, "name": "USCITY", "desc": "match was to a US city or landmark"},
+    {"id": 4, "name": "WORLDCITY", "desc": "match was to a city or landmark outside the US"},
+    {"id": 5, "name": "WORLDSTATE", "desc": "match was to an Administrative Division 1 outside the US – roughly equivalent to a US state"}
+  ]
+}

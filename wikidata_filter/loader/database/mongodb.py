@@ -1,14 +1,14 @@
 from wikidata_filter.loader.base import DataProvider
 
-try:
-    import pymongo
-except:
-    print('install pymongo first!')
-    raise "pymongo not installed"
-
 
 class MongoLoader(DataProvider):
     def __init__(self, host='localhost', port=27017, user=None, password=None, auth_db='admin', database='default', collection=None, query: dict = None, limit=None, **kwargs):
+        try:
+            import pymongo
+        except:
+            print('install pymongo first!')
+            raise "pymongo not installed"
+
         self.client = pymongo.MongoClient(host=host, port=port)
         if user:
             self.client[auth_db].authenticate(user, password)

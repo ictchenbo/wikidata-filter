@@ -1,6 +1,5 @@
 import json
-from wikidata_filter.iterator.database.base import BufferedWriter
-from clickhouse_driver import Client
+from wikidata_filter.iterator.common import BufferedWriter
 
 
 class CKWriter(BufferedWriter):
@@ -9,6 +8,12 @@ class CKWriter(BufferedWriter):
     """
     def __init__(self, host='localhost', port=9000, user="default", password="", database='default', table=None, buffer_size=1000, **kwargs):
         super().__init__(buffer_size=buffer_size)
+        try:
+            from clickhouse_driver import Client
+        except:
+            print('install clickhouse_driver first!')
+            raise "clickhouse_driver not installed"
+
         self.table = table
         self.client = Client(host=host,
                              port=port,
