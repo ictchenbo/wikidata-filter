@@ -1,18 +1,15 @@
-from wikidata_filter.loader.base import DataProvider
+from wikidata_filter.loader.database.rdb_base import RDBBase
 
 
-class CKLoader(DataProvider):
+class CKLoader(RDBBase):
     def __init__(self, host='localhost', port=9000, user="default", password="", database='default', table=None, select="*", where=None, limit=None, **kwargs):
+        super().__init__(database=database, table=table, select=select, where=where, limit=limit)
         try:
             from clickhouse_driver import Client
         except:
             print('install clickhouse_driver first!')
             raise "clickhouse_driver not installed"
 
-        self.select = select
-        self.table = table
-        self.where = where
-        self.limit = limit
         self.client = Client(host=host,
                              port=port,
                              database=database,
@@ -20,19 +17,8 @@ class CKLoader(DataProvider):
                              password=password,
                              send_receive_timeout=20)
 
-    def iter(self):
-        for row in self.fetch_all(format="json"):
-            yield row
-
-    def fetch_all(self, format="tuple"):
-        query = f'select {self.select} from {self.table}'
-        if self.where:
-            query = query + " where " + self.where
-        if self.limit:
-            query = query + f" limit {self.limit}"
-        print("Query:", query)
-
-        if format.lower() == "json":
+    def fetch_all(self, query: str, fmt="tuple"):
+        if fmt.lower() == "json":
             cols = None
             for row in self.client.execute_iter(query, with_column_types=True):
                 if cols is None:

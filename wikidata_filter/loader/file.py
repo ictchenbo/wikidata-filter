@@ -74,22 +74,31 @@ class JsonArrayLoader(FileLoader):
 
 
 class CSVLoader(LineBasedFileLoader):
-    def __init__(self, sep: str = ',', with_header=None, encoding='utf8'):
+    def __init__(self, input_file: str, sep: str = ',', with_header: bool = False, encoding='utf8'):
         super().__init__(encoding=encoding)
+        try:
+            import csv
+        except ImportError:
+            raise Exception("failed to import csv")
         self.header = with_header
         self.sep = sep
+        self.instream = csv.reader(input_file)
+        self.hold = True
 
     def iter(self):
-        # import csv
-        # csv.reader()
-        if self.header:
-            header = None
-            for line in super().iter():
-                row = line.split(self.sep)
-                if header is None:
+        header = None
+        for index, row in enumerate(self.instream):
+            if self.header:
+                if index == 0:
                     header = row
                 else:
-                    yield {header[i]: row[i] for i in range(min(len(header), len(row)))}
-        else:
-            for line in super().iter():
-                yield line.split(self.sep)
+                    yield dict(zip(header, row))
+            else:
+                yield row
+
+
+class DirectoryLoader(DataProvider):
+    def __init__(self, directory_path: str, suffix: str = None):
+        self.path = directory_path
+        self.suffix = suffix
+
