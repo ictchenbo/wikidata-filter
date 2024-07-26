@@ -50,6 +50,8 @@ components = {
     f"{base1}.FillField": FillField,
     f"{base1}.UpdateFields": UpdateFields,
     f"{base1}.CopyFields": CopyFields,
+    f"{base1}.ReverseKV": ReverseKV,
+    f"{base1}.RuleBasedTransform": RuleBasedTransform,
     f"{base1}.WriteJson": WriteJson,
     f"{base1}.WriteCSV": WriteCSV,
     f"{base1}.IDNameMap": IDNameMap,

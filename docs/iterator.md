@@ -42,6 +42,8 @@ class JsonIterator:
 5. 字段拷贝 `CopyFields(copy_template)`
 6. 字段更新 `UpdateFields(update_template)`
 7. 字段填充 `FillFields(kv,inject_path, reference_path)`
+8. 对调KV `ReverseKV()`
+9. 基于规则的转换 `RuleBasedTransform(rules)`
 
 
 ### 输出文件
