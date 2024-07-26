@@ -13,6 +13,7 @@
 2. JSON行文件 `JsonLineFileLoader` 每行按照JSON进行解析，以字典`dict`结构进行传递。
 3. JSON数组文件 `JsonArrayLoader` 整个文件为一个JSON数组，依次传递数组中的每个元素。
 4. CSV文件 `CSVLoader` 按照CSV文件进行解析，如果带有表头，则以字典结构进行传递，否则以单元格列表进行传递。
+5. Excel文件 `ExcelLoaderStream(input_file, sheets, with_header)` `ExcelLoader(input_file, sheets, with_header)`
 
 
 ### wikidata文件
@@ -32,6 +33,10 @@
 2. 全部文件，自2015年2月19日以来的全部更新记录 `web.gdelt.GdeltAll` 下载地址：http://data.gdeltproject.org/gdeltv2/masterfilelist.txt
 
 **实例化参数**：无
+
+### GTD（全球恐怖主义事件库）
+GTD文件为Excel，通过`ExcelLoaderStream` 进行加载，可参考`flows/gtd_test.yaml`
+
 
 ### 数据库加载器
 提供常用数据库的数据查询式读取：
@@ -85,6 +90,8 @@ database.ESLoader(host='10.208.57.13', table='docs')
 database.MongoLoader(host='10.208.57.13', table='nodes')
 ```
 
+4. MySQL `MySQLLoader` 参数同ClickHouse
+5. PostgresSQL `PostgresSQLLoader` 参数同ClickHouse
 
 ### 其他加载器
 

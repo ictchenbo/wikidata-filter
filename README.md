@@ -8,9 +8,10 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 2. 内置数十种ETL算子，配置简单
 3. 支持常见数据库的读取和写入
 4. 内置特色数据资源处理流程：
-   - wikidata
-   - wikipedia
-   - GDELT（流式，直接下载）
+   - wikidata 维基百科
+   - wikipedia 维基数据
+   - GDELT 谷歌全球社会事件数据库 （流式，直接下载）
+   - GTD 全球恐怖主义事件库 
 
 
 ## 核心概念

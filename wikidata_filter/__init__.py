@@ -16,7 +16,6 @@ def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False
 
 
 def run_flow(flow_file: str, *args, finish_signal: bool = False):
-    # print(flow_file, *args)
     flow = ProcessFlow(flow_file, *args)
     run(flow.loader, flow.processor, finish_signal=finish_signal)
 

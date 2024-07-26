@@ -1,11 +1,11 @@
 name: GTD get data test
 description: parse GTD Excel
 
-loader: ExcelLoader('data/gtd/globalterrorismdb_0522dist.xlsx')
+loader: ExcelLoaderStream('data/gtd/globalterrorismdb_0522dist.xlsx')
 #loader: ExcelLoader('data/gtd/globalterrorismdb_2021Jan-June_1222dist.xlsx')
 
 nodes:
   print: Print
   counter: Count(ticks=1000, label='GTD')
 
-processor: counter
+processor: Print()
