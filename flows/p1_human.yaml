@@ -1,5 +1,5 @@
 name: p1 human
-description: filter human items from wikidata dump
+description: 输入wikidata dump文件（gz/json）过滤出人物（Q5）条目，同时生成wikidata数据的id-name映射文件
 arguments: 3
 
 consts:

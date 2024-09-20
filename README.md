@@ -43,10 +43,9 @@ processor: Group(n1, n2, n3)
 
 ```
 
-- 示例2：对wikidata Dump文件生成id-name映射文件并简化数据结构 `flows/p1_idname_simple.yaml`
+- 示例2：输入wikidata dump文件（gz/json）生成id-name映射文件（方便根据ID查询名称），同时对数据结构进行简化 `flows/p1_idname_simple.yaml`
 ```yaml
 name: p1_idname_simple
-description:
 arguments: 2
 
 loader: WikidataJsonDump(arg1)
@@ -62,7 +61,8 @@ nodes:
 
 processor: Group(chain1, chain2)
 ```
-- 示例3：基于wikidata生成简单图谱结构，包含Item/Property/Item_Property/Property_Property 四张表
+
+- 示例3：基于wikidata生成简单图谱结构，包含Item/Property/Item_Property/Property_Property 四张表 `flows/p1_wikidata_graph.yaml`
 ```yaml
 name: p1_wikidata_graph
 description: transform wikidata dump to graph, including item/property/item_property/property_property
@@ -107,6 +107,11 @@ processor: Group(chain_entity, chain_property)
 **示例二**
 ```shell
  python main_flow.py flows/p1_idname_simple.yaml dump.json simple.json
+```
+
+**示例三**
+```shell
+ python main_flow.py flows/flows/p1_wikidata_graph.yaml dump.json item.json property.json item_property.json property_property.json
 ```
 
 ## 参考文档

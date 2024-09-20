@@ -42,3 +42,14 @@ class GdeltLatest(DataProvider):
                 yield row
             run_times += 1
             print(f"request for {run_times} times")
+
+
+class GdeltLocal(DataProvider):
+    def __init__(self, file_path: str):
+        self.file_path = file_path
+
+    def iter(self):
+        yield {
+            "url": self.file_path,
+            "file_size": -1
+        }

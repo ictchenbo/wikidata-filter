@@ -1,6 +1,6 @@
 name: p1_org_country_weapon
-description: filter org/country/weapon items from wikidata dump
-arguments: 2
+description: 输入wikidata dump文件（gz/json）过滤出 组织机构、国家、武器装备三类条目
+arguments: 4
 consts:
   country_types:
     P31:

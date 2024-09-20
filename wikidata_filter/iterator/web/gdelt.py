@@ -10,17 +10,22 @@ config_base = "config/gdelt"
 
 
 def parse_csv(url: str):
-    content = get_file(url)
-    if len(content) < 100:
-        return
-    bytes_io = io.BytesIO(content)
-    with ZipFile(bytes_io) as zipObj:
-        filename = zipObj.filelist[0].filename
-        with zipObj.open(filename) as f:
-            for line in f:
-                line_s = line.decode("utf8").strip()
-                if line_s:
-                    yield line_s.split('\t')
+    if url.startswith("http://") or url.startswith("https://"):
+        content = get_file(url)
+        if len(content) < 100:
+            return
+        bytes_io = io.BytesIO(content)
+        with ZipFile(bytes_io) as zipObj:
+            filename = zipObj.filelist[0].filename
+            with zipObj.open(filename) as f:
+                for line in f:
+                    line_s = line.decode("utf8").strip()
+                    if line_s:
+                        yield line_s.split('\t')
+    else:
+        with open(url, encoding="utf8") as fin:
+            for line in fin:
+                yield line.split('\t')
 
 
 class SchemaBuilder:
