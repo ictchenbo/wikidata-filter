@@ -7,7 +7,7 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 - 2024.09.30
 1. 集成Reader API（`wikidata_filter.iterator.web.readerapi` 详见 https://jina.ai/reader/)
 2. 增减文本文件加载器 TxtLoader（详见 `wikidata_filter.loader.file.TxtLoader`）
-3. 新增Reader API的流程 [查看](docs/crawl_webpage_readerapi.yaml) 加载url列表文件 实现网页内容获取
+3. 新增Reader API的流程 [查看](flows/crawl_webpage_readerapi.yaml) 加载url列表文件 实现网页内容获取
 
 
 ## 项目特色
