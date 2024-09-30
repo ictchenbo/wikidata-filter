@@ -19,6 +19,7 @@ base4 = "wikidata_filter.util"
 
 components = {
     f"{base2}.RandomGenerator": RandomGenerator,
+    f"{base2}.TxtLoader": TxtLoader,
     f"{base2}.JsonLineFileLoader": JsonLineFileLoader,
     f"{base2}.JsonArrayLoader": JsonArrayLoader,
     f"{base2}.CSVLoader": CSVLoader,

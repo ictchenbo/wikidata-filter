@@ -76,18 +76,19 @@ class JsonArrayLoader(FileLoader):
 class CSVLoader(LineBasedFileLoader):
     def __init__(self, input_file: str, sep: str = ',', with_header: bool = False, encoding='utf8'):
         super().__init__(encoding=encoding)
+        self.header = with_header
+        self.sep = sep
+        self.instream = open_file(input_file, "rb")
+        self.hold = True
+
+    def iter(self):
         try:
             import csv
         except ImportError:
             raise Exception("failed to import csv")
-        self.header = with_header
-        self.sep = sep
-        self.instream = csv.reader(input_file)
-        self.hold = True
-
-    def iter(self):
+        reader = csv.reader(super().iter())
         header = None
-        for index, row in enumerate(self.instream):
+        for index, row in enumerate(reader):
             if self.header:
                 if index == 0:
                     header = row
@@ -95,6 +96,12 @@ class CSVLoader(LineBasedFileLoader):
                     yield dict(zip(header, row))
             else:
                 yield row
+
+
+class TxtLoader(LineBasedFileLoader):
+    def __init__(self, input_file: str, encoding='utf8'):
+        super().__init__(encoding=encoding)
+        self.instream = open_file(input_file, "rb")
 
 
 class DirectoryLoader(DataProvider):

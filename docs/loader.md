@@ -9,11 +9,12 @@
 2. 抽象基类 `FileLoader` 文件数据加载器
 
 ### 文件加载器
-1. 按行读取文件 `LineBasedFileLoader` 每行为原始字符串。不建议使用
-2. JSON行文件 `JsonLineFileLoader` 每行按照JSON进行解析，以字典`dict`结构进行传递。
-3. JSON数组文件 `JsonArrayLoader` 整个文件为一个JSON数组，依次传递数组中的每个元素。
-4. CSV文件 `CSVLoader` 按照CSV文件进行解析，如果带有表头，则以字典结构进行传递，否则以单元格列表进行传递。
-5. Excel文件 `ExcelLoaderStream(input_file, sheets, with_header)` `ExcelLoader(input_file, sheets, with_header)`
+1. 按行读取文本文件 `TxtLoader(input_file, encoding="utf8")` 每行为字符串
+2. JSON行文件 `JsonLineFileLoader(input_file, encoding="utf8")` 每行按照JSON进行解析，以字典`dict`结构进行传递。
+3. JSON数组文件 `JsonArrayLoader(input_file, encoding="utf8")` 整个文件为一个JSON数组，依次传递数组中的每个元素。
+4. CSV文件 `CSVLoader(input_file, sep: str = ',', with_header: bool = False, encoding='utf8')` 按照CSV文件进行解析，如果带有表头，则以字典结构进行传递，否则以单元格列表进行传递。
+5. Excel文件流式 `ExcelLoaderStream(input_file, sheets, with_header)`
+6. Excel文件全量 `ExcelLoader(input_file, sheets, with_header)`
 
 
 ### wikidata文件

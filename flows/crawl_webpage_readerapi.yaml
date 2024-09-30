@@ -1,0 +1,12 @@
+name: craw web page by Reader API
+description: 使用Reader API对指定URL的网页获取其内容
+arguments: 1
+
+loader: TxtLoader(arg1)
+
+nodes:
+  msg: Prompt('-----------------')
+  row: iterator.web.readerapi.ReaderAPI
+  print: Print
+
+processor: Chain(msg, row, print)
