@@ -6,9 +6,9 @@ class WriteFile(JsonIterator):
     """
         输出数据到文件
     """
-    def __init__(self, output_file: str, append: bool = False):
+    def __init__(self, output_file: str, append: bool = False, encoding: str = None):
         super().__init__()
-        self.writer = open(output_file, 'a' if append else 'w')
+        self.writer = open(output_file, 'a' if append else 'w', encoding=encoding)
 
     def on_complete(self):
         self.writer.close()
@@ -18,6 +18,9 @@ class WriteJson(WriteFile):
     """
     写JSON文件
     """
+    def __init__(self, output_file: str, append: bool = False, encoding: str = None):
+        super().__init__(output_file, append=append, encoding=encoding)
+
     def on_data(self, item: dict or None, *args):
         self.writer.write(json.dumps(item, ensure_ascii=False))
         self.writer.write('\n')
@@ -28,8 +31,8 @@ class WriteCSV(WriteFile):
     """
     写CSV文件
     """
-    def __init__(self, output_file: str, keys: list = None, seperator=',', append: bool = False):
-        super().__init__(output_file, append=append)
+    def __init__(self, output_file: str, keys: list = None, seperator=',', append: bool = False, encoding: str = None):
+        super().__init__(output_file, append=append, encoding=encoding)
         self.keys = keys
         self.seperator = seperator
 

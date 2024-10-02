@@ -80,7 +80,11 @@ class Export(JsonIterator):
         self.return_multiple = True
 
     def on_data(self, row: dict or None, *args):
-        url = row.get("url")
+        url = row
+        if isinstance(row, list):
+            url = url[0]
+        if isinstance(url, dict):
+            url = row.get("url")
         if 'export.CSV' in url:
             for row in join_schema(url, self.event_builder):
                 yield row

@@ -1,0 +1,11 @@
+name: gdelt process using local data
+description: 使用本地数据测试gdelt数据处理
+arguments: 2
+
+loader: TxtLoader(arg1)
+
+nodes:
+  row: iterator.web.gdelt.Export
+  writer: WriteJson(arg2, encoding='utf8')
+
+processor: Chain(row, writer)

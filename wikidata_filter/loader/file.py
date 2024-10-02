@@ -48,7 +48,6 @@ class JsonLineFileLoader(LineBasedFileLoader):
             self.instream = input_file
 
     def iter(self):
-        import json
         for line in super().iter():
             yield json.loads(line)
 
