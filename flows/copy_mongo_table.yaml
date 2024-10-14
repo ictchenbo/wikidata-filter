@@ -8,7 +8,7 @@ consts:
     host: 10.208.61.117
     port: 20000
     username: root
-    password: golaxyintelligence
+    password: *********
     auth_db: admin
     database: goinv3_2409
 
