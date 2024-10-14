@@ -1,0 +1,22 @@
+name: copy mongo table from one server to another
+arguments: 1
+consts:
+  mongo1:
+    host: 'localhost'
+    database: 'goinv3_2410'
+  mongo2:
+    host: 10.208.61.117
+    port: 20000
+    username: root
+    password: golaxyintelligence
+    auth_db: admin
+    database: goinv3_2409
+
+loader: database.MongoLoader(**mongo1, collection=arg1)
+
+nodes:
+  print: Print
+  counter: Count
+  writer: iterator.database.MongoWriter(**mongo2, collection=arg1)
+
+processor: Chain(print, counter, writer)

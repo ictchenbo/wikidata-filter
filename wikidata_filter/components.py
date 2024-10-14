@@ -66,6 +66,7 @@ components = {
     f"{base1}.ChineseSimple": ChineseSimple,
     f"{base1}.database.CKWriter": CKWriter,
     f"{base1}.database.ESWriter": ESWriter,
+    f"{base1}.database.MongoWriter": MongoWriter,
 
     f"{base4}.SetFromCSV": SetFromCSV,
     f"{base4}.SetFromJSON": SetFromJSON,
