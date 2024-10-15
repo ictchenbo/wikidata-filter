@@ -1,0 +1,15 @@
+name: load json to clickhouse
+arguments: 2
+consts:
+  click1:
+    host: localhost
+    tcp_port: 9000
+
+loader: JsonArrayLoader(arg1)
+
+nodes:
+  print: Print
+  counter: Count
+  writer: iterator.database.CKWriter(**click1, table=arg2)
+
+processor: Chain(counter, writer)

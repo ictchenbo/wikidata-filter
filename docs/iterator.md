@@ -53,7 +53,7 @@ class JsonIterator:
 
 ### 输出到数据库
 1. ElasticSearch `iterator.database.ESWriter(host="localhost",port=9200,user=None,password=None,index=None,buffer_size=1000)`
-2. ClickHouse `iterator.database.CKWriter(host='localhost',port=9000,user="default",password="",database='default',table=None, buffer_size=1000)`
+2. ClickHouse `iterator.database.CKWriter(host='localhost',tcp_port=9000,username="default",password="",database='default',table=None, buffer_size=1000)`
 3. MongoDB `iterator.database.MongoWriter(host='localhost',port=27017,username=None,password=None,database='default',auth_db='admin',collection=None,buffer_size=1000)`
 
 ### 组合节点

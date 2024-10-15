@@ -163,4 +163,5 @@ cython_debug/
 
 data/
 tests/
+local/
 

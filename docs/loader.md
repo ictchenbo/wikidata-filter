@@ -43,8 +43,8 @@ GTD文件为Excel，通过`ExcelLoaderStream` 进行加载，可参考`flows/gtd
 提供常用数据库的数据查询式读取：
 1. ClickHouse `database.CKLoader` 实例化参数：
 - host 服务器主机名 默认`"localhost"`
-- port 服务器端口号 默认 `9000`
-- user 用户名 默认`"default"`
+- tcp_port 服务器端口号 默认 `9000`
+- username 用户名 默认`"default"`
 - password 密码 默认`""`
 - database 数据库 默认`"default"`
 - table 表名 无默认值必须指定

@@ -1,0 +1,10 @@
+name: load json file
+arguments: 1
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  print: Print
+  counter: Count
+
+processor: Chain(print, counter)

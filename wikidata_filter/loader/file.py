@@ -73,9 +73,9 @@ class JsonArrayLoader(FileLoader):
 
 
 class CSVLoader(LineBasedFileLoader):
-    def __init__(self, input_file: str, sep: str = ',', with_header: bool = False, encoding='utf8'):
+    def __init__(self, input_file: str, sep: str = ',', header: bool = True, encoding='utf8'):
         super().__init__(encoding=encoding)
-        self.header = with_header
+        self.header = header
         self.sep = sep
         self.instream = open_file(input_file, "rb")
         self.hold = True

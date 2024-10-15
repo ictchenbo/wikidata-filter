@@ -1,0 +1,20 @@
+name: load json to mongodb
+arguments: 1
+consts:
+  mongo1:
+    host: localhost
+    port: 27017
+    username: root
+    password: *********
+    auth_db: admin
+    database: <dbname>
+    collection: table
+
+loader: JsonLineFileLoader(arg1)
+
+nodes:
+  print: Print
+  counter: Count
+  writer: iterator.database.MongoWriter(**mongo1)
+
+processor: Chain(print, counter, writer)

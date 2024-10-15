@@ -1,3 +1,5 @@
+import json
+
 from wikidata_filter.iterator.base import JsonIterator
 from wikidata_filter.util.json_op import extract_val, fill_val
 
@@ -28,6 +30,20 @@ class Map(JsonIterator):
 
     def on_data(self, data: dict or None, *args):
         return self.mapper(data)
+
+
+class FieldJson(JsonIterator):
+    def __init__(self, key: str):
+        self.key = key
+
+    def on_data(self, data: dict or None, *args):
+        if data and data.get(self.key):
+            val = data[self.key]
+            if isinstance(val, str):
+                val = val.replace("'", '"')
+                print(val)
+                data[self.key] = json.loads(val)
+        return data
 
 
 class RemoveFields(JsonIterator):

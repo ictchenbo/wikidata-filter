@@ -2,15 +2,14 @@ name: copy mongo table from one server to another
 arguments: 1
 consts:
   mongo1:
-    host: 'localhost'
-    database: 'goinv3_2410'
+    host: <host1>
+    database: <db1>
   mongo2:
-    host: 10.208.61.117
+    host: <host2>
     port: 20000
     username: root
     password: *********
-    auth_db: admin
-    database: goinv3_2409
+    database: <db2>
 
 loader: database.MongoLoader(**mongo1, collection=arg1)
 

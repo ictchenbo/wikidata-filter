@@ -49,6 +49,7 @@ components = {
     f"{base1}.Map": Map,
     f"{base1}.RemoveFields": RemoveFields,
     f"{base1}.FillField": FillField,
+    f"{base1}.FieldJson": FieldJson,
     f"{base1}.UpdateFields": UpdateFields,
     f"{base1}.CopyFields": CopyFields,
     f"{base1}.ReverseKV": ReverseKV,

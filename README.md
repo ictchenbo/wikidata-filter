@@ -4,9 +4,15 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New!
+- 2024.10.15
+1. 修改CkWriter参数为 username tcp_port 明确使用TCP端口（默认9000，而不是HTTP端口8123）
+2. 新增字段值 String -> Json 算子 `FieldJson(key)`
+3. 新增加载json文件到ClickHouse流程[查看](flows/db_load_data_mongo_table.yaml)
+4. 新增ClickHouse表复制的流程[查看](flows/db_copy_clickhouse.yaml)
+
 - 2024.10.14
 1. 新增 MongoWriter
-2. 新增 MongoDB表复制流程[查看](flows/copy_mongo_table.yaml)
+2. 新增 MongoDB表复制流程[查看](flows/db_copy_mongo.yaml)
 
 - 2024.10.02
 1. WriteJson WriterCSV增加编码参数设置

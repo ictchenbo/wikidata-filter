@@ -1,0 +1,10 @@
+name: load csv file
+arguments: 1
+
+loader: CSVLoader(arg1)
+
+nodes:
+  print: Print
+  counter: Count
+
+processor: Chain(print, counter)

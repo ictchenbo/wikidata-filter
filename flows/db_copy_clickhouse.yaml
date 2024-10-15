@@ -1,0 +1,19 @@
+name: copy clickhouse table data from one server to another
+arguments: 2
+consts:
+  click1:
+    host: <host1>
+    tcp_port: 9000
+    database: default
+  click2:
+    host: <host2>
+    tcp_port: 9000
+
+loader: database.CKLoader(**click1, table=arg1)
+
+nodes:
+  print: Print
+  counter: Count
+  writer: iterator.database.CKWriter(**click2, table=arg2)
+
+processor: Chain(print, counter, writer)
