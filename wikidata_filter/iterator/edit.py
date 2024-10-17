@@ -2,6 +2,7 @@ import json
 
 from wikidata_filter.iterator.base import JsonIterator
 from wikidata_filter.util.json_op import extract_val, fill_val
+from wikidata_filter.iterator.common import Reduce
 
 
 class Select(JsonIterator):
@@ -20,6 +21,18 @@ class Select(JsonIterator):
         return {key: data.get(key) for key in self.keys}
 
 
+class SelectVal(JsonIterator):
+    """
+    Select操作
+    """
+    def __init__(self, key):
+        super().__init__()
+        self.key = key
+
+    def on_data(self, data: dict or None, *args):
+        return data.get(self.key)
+
+
 class Map(JsonIterator):
     """
     Map操作
@@ -30,6 +43,32 @@ class Map(JsonIterator):
 
     def on_data(self, data: dict or None, *args):
         return self.mapper(data)
+
+
+class Flat(JsonIterator):
+    def __init__(self):
+        self.return_multiple = True
+
+    def on_data(self, data, *args):
+        if isinstance(data, list) or isinstance(data, tuple):
+            # print('Flat', data)
+            for item in data:
+                yield item
+        else:
+            yield data
+
+
+class FlatMap(Flat):
+    """
+    Map操作
+    """
+    def __init__(self, mapper):
+        super().__init__()
+        self.mapper = mapper
+
+    def on_data(self, data: dict or None, *args):
+        val = self.mapper(data)
+        return super().on_data(val)
 
 
 class FieldJson(JsonIterator):
@@ -62,7 +101,18 @@ class RemoveFields(JsonIterator):
         return {k: v for k, v in data.items() if k not in self.keys}
 
 
-class FillField(JsonIterator):
+class AddFields(JsonIterator):
+    def __init__(self, **kwargs):
+        self.adds = kwargs or {}
+
+    def on_data(self, data, *args):
+        for k, v in self.adds.items():
+            if k not in data:
+                data[k] = v
+        return data
+
+
+class InjectField(JsonIterator):
     """
     基于给定的KV缓存 对当前数据进行填充
     """
@@ -88,9 +138,9 @@ class RenameFields(JsonIterator):
     """
     复制字段
     """
-    def __init__(self, rename_template: dict[str, str]):
+    def __init__(self, **kwargs):
         super().__init__()
-        self.rename_template = rename_template
+        self.rename_template = kwargs
 
     def on_data(self, data: dict or None, *args):
         for s, t in self.rename_template.items():
@@ -99,30 +149,17 @@ class RenameFields(JsonIterator):
         return data
 
 
-class CopyFields(JsonIterator):
+class UpdateFields(JsonIterator):
     """
     复制字段
     """
-    def __init__(self, copy_template: dict[str, str]):
+    def __init__(self, other: dict):
         super().__init__()
-        self.copy_map = copy_template
+        self.that = other
 
     def on_data(self, data: dict or None, *args):
-        for s, t in self.copy_map.items():
+        for s, t in self.that.items():
             data[t] = data[s]
-        return data
-
-
-class UpdateFields(JsonIterator):
-    """
-    更新字段
-    """
-    def __init__(self, update_template: dict):
-        super().__init__()
-        self.copy_map = update_template
-
-    def on_data(self, data: dict or None, *args):
-        data.update(self.copy_map)
         return data
 
 
@@ -187,3 +224,42 @@ class RuleBasedTransform(JsonIterator):
             if res is not None:
                 ret[t] = res
         return ret
+
+
+class GroupBy(Reduce):
+    """分组规约"""
+    last_key = None
+    groups: dict = {}
+
+    def __init__(self, by: str, emit_fast: bool = True):
+        super().__init__()
+        self.by = by
+        self.fast = emit_fast
+        self.return_multiple = True
+
+    def on_data(self, data: dict or None, *args):
+        if data is None:
+            for item, values in self.groups:
+                yield dict(key=item, values=values)
+            self.groups.clear()
+            self.last_key = None
+        else:
+            group_key = data.get(self.by)
+            if group_key is None:
+                yield None
+            group_key = str(group_key)
+            if group_key in self.groups:
+                self.groups[group_key].append(data)
+            else:
+                last_v = None
+                last_k = self.last_key
+                if self.fast and self.groups:
+                    last_v = self.groups.pop(self.last_key)
+                self.last_key = group_key
+                self.groups[group_key] = [data]
+                yield dict(key=last_k, values=last_v)
+
+            yield None
+
+    def on_complete(self):
+        pass

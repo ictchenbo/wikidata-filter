@@ -38,13 +38,16 @@ class JsonIterator:
 1. 投影操作 `Select(*keys)`
 2. 数据映射转换 `Map(mapper)`
 3. 移除字段 `RemoveFields(*keys)`
-4. 重命名字段 `RenameFields(rename_template)`
-5. 字段拷贝 `CopyFields(copy_template)`
-6. 字段更新 `UpdateFields(update_template)`
-7. 字段填充 `FillFields(kv,inject_path, reference_path)`
+4. 重命名字段 `RenameFields(**kwargs)`
+5. 字段添加 `AddFields(**kwargs)`
+6. 字段更新 `UpdateFields(**kwargs)`
+7. 字段填充 `InjectField(kv,inject_path, reference_path)`
 8. 对调KV `ReverseKV()`
 9. 基于规则的转换 `RuleBasedTransform(rules)`
-
+10. 字段扁平化 `Flat(key)`
+11. 扁平化转换 `FlatMap(mapper)`
+12. 字段作为JSON加载 `FieldJson(key)`
+13. 按照某个字段对数据进行分组 `GroupBy(key)`
 
 ### 输出文件
 1. JSON文件 `WriteJSON(output_file,append=False)`

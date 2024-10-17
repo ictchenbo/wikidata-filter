@@ -52,6 +52,22 @@ class JsonLineFileLoader(LineBasedFileLoader):
             yield json.loads(line)
 
 
+class JsonLoader(FileLoader):
+    def __init__(self, input_file, encoding="utf8"):
+        super().__init__()
+        if isinstance(input_file, str):
+            self.instream = open_file(input_file, mode='rb')
+            self.hold = True
+        else:
+            self.instream = input_file
+        self.encoding = encoding
+
+    def iter(self):
+        content = self.instream.read().decode(self.encoding)
+        row = json.loads(content)
+        yield row
+
+
 class JsonArrayLoader(FileLoader):
     """
     整个文件作为JsonArray

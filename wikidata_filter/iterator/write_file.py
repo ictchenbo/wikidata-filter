@@ -18,7 +18,7 @@ class WriteJson(WriteFile):
     """
     写JSON文件
     """
-    def __init__(self, output_file: str, append: bool = False, encoding: str = None):
+    def __init__(self, output_file: str, append: bool = False, encoding: str = "utf8"):
         super().__init__(output_file, append=append, encoding=encoding)
 
     def on_data(self, item: dict or None, *args):

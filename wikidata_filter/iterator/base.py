@@ -43,6 +43,7 @@ class Chain(Group):
     def __init__(self, *args, ignore_errors=True):
         super().__init__(*args)
         self.ignore_errors = ignore_errors
+        self.return_multiple = True
 
     def on_data(self, data: dict or None, *args):
         queue = [data]
@@ -59,6 +60,7 @@ class Chain(Group):
                     one = it.on_data(current)
                     if one is not None:
                         new_queue.append(one)
+            # chain break
             if not new_queue:
                 break
             queue = new_queue
@@ -74,10 +76,11 @@ class Chain(Group):
         if not queue:
             return None
 
-        if len(queue) == 1:
-            return queue[0]
-
-        return data
+        return queue
+        # if len(queue) == 1:
+        #     return queue[0]
+        #
+        # return data
 
 
 class Repeat(JsonIterator):

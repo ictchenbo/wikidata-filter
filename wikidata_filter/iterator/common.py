@@ -52,7 +52,14 @@ class Count(JsonIterator):
         print(f'Counter[{self.label}] total', self.counter)
 
 
-class Buffer(JsonIterator):
+class BufferBase(JsonIterator):
+    """
+    缓冲基类 到达的数据先根据一定规则进行缓存，等待后续达到限额或数据整体处理结果再向后传递。
+    数据结束时需要发送一个None作为结束信号
+    """
+
+
+class Buffer(BufferBase):
     """
     缓冲节点 当到达的数据填满缓冲池后再一起向后传递。主要用于批处理场景.
     注意：当数据结束时，需要发送一个None作为结束信号
@@ -100,3 +107,8 @@ class BufferedWriter(JsonIterator):
         if self.buffer:
             self.write_batch(self.buffer)
             self.buffer.clear()
+
+
+class Reduce(BufferBase):
+    """对数据进行规约 向后传递规约结果"""
+    pass
