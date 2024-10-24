@@ -32,8 +32,8 @@
 提供GDELT数据加载（通过网络下载） 每行提供url、file_size信息 配合对应iterator
 1. 最近15分钟更新记录 `web.gdelt.GdeltLatest` 下载地址：http://data.gdeltproject.org/gdeltv2/lastupdate.txt
 2. 全部文件，自2015年2月19日以来的全部更新记录 `web.gdelt.GdeltAll` 下载地址：http://data.gdeltproject.org/gdeltv2/masterfilelist.txt
+3. 从指定某个时间开始历史记录 `web.gdelt.GdeltTaskEmit(2024, 9, 1)` 自动保存最新时间戳 程序重启后可以从之前的点恢复
 
-**实例化参数**：无
 
 ### GTD（全球恐怖主义事件库）
 GTD文件为Excel，通过`ExcelLoaderStream` 进行加载，可参考`flows/gtd_test.yaml`

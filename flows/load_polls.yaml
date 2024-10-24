@@ -1,6 +1,7 @@
 name: 加载经济学人的民调趋势数据（CSV）文件进行处理 生成JSON格式
 arguments: 1
 
+#loader: CSVLoader('data/economist_' + arg1 + '_polltracker-polls.csv')
 loader: CSVLoader(arg1)
 
 nodes:
@@ -9,7 +10,7 @@ nodes:
   select: Select('poll_id', 'start_date', 'end_date', 'pollster', 'sample_size', 'sponsors', 'candidate_name', 'pct', 'date')
   group: GroupBy('poll_id', True)
   polls: iterator.web.polls.PollData('economist')
-  json: WriteJson('poll.jsonl')
+  json: WriteJson('data/polls.jsonl')
 
 
 processor: Chain(group, polls, json, counter)

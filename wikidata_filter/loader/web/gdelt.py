@@ -1,9 +1,15 @@
+import datetime
+import time
+import os
+import json
+
 from wikidata_filter.loader.base import DataProvider
 from wikidata_filter.util.web_util import get_text
 
 
-url_all_file = "http://data.gdeltproject.org/gdeltv2/masterfilelist.txt"
-url_latest_file = "http://data.gdeltproject.org/gdeltv2/lastupdate.txt"
+base_url = 'http://data.gdeltproject.org/gdeltv2'
+url_all_file = f"{base_url}/masterfilelist.txt"
+url_latest_file = f"{base_url}/lastupdate.txt"
 
 
 def get_page_parse(url):
@@ -42,6 +48,45 @@ class GdeltLatest(DataProvider):
                 yield row
             run_times += 1
             print(f"request for {run_times} times")
+
+
+class GdeltTaskEmit(DataProvider):
+    ts_file = ".ts"
+
+    def __init__(self, *dates):
+        use_dates = dates
+        if os.path.exists(self.ts_file):
+            with open(self.ts_file, encoding="utf8") as fin:
+                use_dates = json.load(fin)
+            print("timestamp file exists, using:", use_dates)
+        else:
+            print("starting from ", use_dates)
+        self.ts = datetime.datetime(*use_dates)
+
+    def write_ts(self):
+        t = self.ts
+        row = [t.year, t.month, t.day, t.hour, t.minute, t.second]
+        with open(self.ts_file, "w", encoding="utf8") as out:
+            json.dump(row, out)
+
+    def update_ts(self):
+        self.ts += datetime.timedelta(minutes=15)
+
+    def iter(self):
+        while True:
+            print("Running:", self.ts.strftime('%m-%d %H:%M'))
+            timestamp_str = self.ts.strftime('%Y%m%d%H%M%S')
+            csv_zip_url = f'{base_url}/{timestamp_str}.export.CSV.zip'
+            yield {
+                "_id": timestamp_str,
+                "url": csv_zip_url
+            }
+            self.write_ts()
+            self.update_ts()
+            diff = datetime.datetime.now() - self.ts
+            total_seconds = diff.days * 86400 + diff.seconds
+            if total_seconds < 900:
+                time.sleep(900 - total_seconds)
 
 
 class GdeltLocal(DataProvider):

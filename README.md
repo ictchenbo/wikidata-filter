@@ -4,6 +4,12 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New!
+- 2024.10.24
+1. 新增GDELT处理流程，持续下载[查看](flows/gdelt.yaml) 滚动下载export.CSV.zip文件
+2. 增加新的Loader `GdeltTaskEmit` 从指定时间开始下载数据并持续跟踪
+3. 新增经济学人民调数据处理算子 `iterator.web.polls.PollData` （需要手工下载CSV）、处理流程[查看](flows/load_polls.yaml)
+4. 修改`Flat`算子逻辑，如果输入为`dict`，则提取k-v，如果v也是`dict，则作为
+
 - 2024.10.17
 1. 添加多个处理算子：FieldJson、Flat、FlatMap、AddFields [查看](docs/iterator.md)
 2. 初步添加规约类算子：BufferBase Reduce GroupBy

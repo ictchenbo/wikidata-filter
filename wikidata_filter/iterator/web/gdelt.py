@@ -9,11 +9,20 @@ from wikidata_filter.util.file_loader import get_lines
 config_base = "config/gdelt"
 
 
+def write_file(url: str, content):
+    file_name = url.split('/')[-1]
+    file_name = f"data/gdelt/{file_name}"
+    with open(file_name, 'wb') as fout:
+        fout.write(content)
+    print("Gdelt zip saved to", file_name)
+
+
 def parse_csv(url: str):
     if url.startswith("http://") or url.startswith("https://"):
         content = get_file(url)
         if len(content) < 100:
             return
+        write_file(url, content)
         bytes_io = io.BytesIO(content)
         with ZipFile(bytes_io) as zipObj:
             filename = zipObj.filelist[0].filename

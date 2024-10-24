@@ -32,6 +32,7 @@ class PollData(JsonIterator):
 
         return {
             "_id": f"{self.label}_{key}",
+            "event_id": "us_president_2024",
             "name": "",
             "poll_time_start": info["start_date"],
             "poll_time_end": info["end_date"],

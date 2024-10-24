@@ -54,6 +54,11 @@ class Flat(JsonIterator):
             # print('Flat', data)
             for item in data:
                 yield item
+        elif isinstance(data, dict):
+            for key, val in data.items():
+                if isinstance(val, dict):
+                    val["_key"] = key
+                yield val
         else:
             yield data
 
