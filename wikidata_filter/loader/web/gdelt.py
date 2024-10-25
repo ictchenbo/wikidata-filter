@@ -84,9 +84,9 @@ class GdeltTaskEmit(DataProvider):
             self.write_ts()
             self.update_ts()
             diff = datetime.datetime.now() - self.ts
-            total_seconds = diff.days * 86400 + diff.seconds
-            if total_seconds < 900:
-                time.sleep(900 - total_seconds)
+            total_seconds = diff.days * 86400 + diff.seconds - 3600*8
+            if total_seconds <= 900:
+                time.sleep(900)
 
 
 class GdeltLocal(DataProvider):

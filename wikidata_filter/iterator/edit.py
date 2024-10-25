@@ -76,7 +76,44 @@ class FlatMap(Flat):
         return super().on_data(val)
 
 
+class Convert(JsonIterator):
+    """对整条数据进行类型转换"""
+    def __init__(self, converter, ignore_errors: bool = True):
+        """
+        :param converter 转换函数，如int,float,str
+        :param ignore_errors 是否忽略错误
+        """
+        self.converter = converter
+        self.ignore_errors = ignore_errors
+
+    def on_data(self, data, *args):
+        try:
+            return self.converter(data)
+        except Exception as e:
+            if self.ignore_errors:
+                return None
+            raise e
+
+
+class FieldConvert(JsonIterator):
+    """对指定的字段进行数据类型转换"""
+    def __init__(self, key: str, converter):
+        """
+        :param key 字段名
+        :param converter 转换函数，如int,float,str
+        """
+        self.key = key
+        self.converter = converter
+
+    def on_data(self, data: dict, *args):
+        if data and data.get(self.key):
+            val = data[self.key]
+            data[self.key] = self.converter(val)
+        return data
+
+
 class FieldJson(JsonIterator):
+    """对指定的字符串类型字段转换为json"""
     def __init__(self, key: str):
         self.key = key
 
