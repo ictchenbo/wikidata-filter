@@ -1,4 +1,5 @@
 name: copy mongo table from one server to another
+description: MongoDB数据库表迁移/拷贝
 arguments: 1
 consts:
   mongo1:
@@ -16,6 +17,6 @@ loader: database.MongoLoader(**mongo1, collection=arg1)
 nodes:
   print: Print
   counter: Count
-  writer: iterator.database.MongoWriter(**mongo2, collection=arg1)
+  writer: database.MongoWriter(**mongo2, collection=arg1)
 
 processor: Chain(print, counter, writer)

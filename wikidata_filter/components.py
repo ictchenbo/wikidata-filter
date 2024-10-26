@@ -5,15 +5,13 @@ from wikidata_filter.loader.wikidata import *
 from wikidata_filter.iterator import *
 from wikidata_filter.iterator.wikidata import *
 from wikidata_filter.iterator.database import *
-from wikidata_filter.matcher import *
-from wikidata_filter.matcher.wikidata import WikidataMatcherV1, WikidataMatcherV2
+from wikidata_filter.iterator.matcher import *
 
 from wikidata_filter.util import SetFromCSV, SetFromJSON, KVFromCSV, KVFromJSON
 
 
 base1 = "wikidata_filter.iterator"
 base2 = "wikidata_filter.loader"
-base3 = "wikidata_filter.matcher"
 base4 = "wikidata_filter.util"
 
 
@@ -32,11 +30,6 @@ components = {
     f"{base2}.database.MongoLoader": MongoLoader,
     f"{base2}.database.MySQLLoader": MySQLLoader,
     f"{base2}.database.PostgresSQLLoader": PostgresSQLLoader,
-
-    f"{base3}.SimpleJsonMatcher": SimpleJsonMatcher,
-    f"{base3}.JsonPathMatcher": JsonPathMatcher,
-    f"{base3}.WikidataMatcherV1": WikidataMatcherV1,
-    f"{base3}.WikidataMatcher": WikidataMatcherV2,
 
     f"{base1}.Group": Group,
     f"{base1}.Chain": Chain,
@@ -73,6 +66,12 @@ components = {
     f"{base1}.database.CKWriter": CKWriter,
     f"{base1}.database.ESWriter": ESWriter,
     f"{base1}.database.MongoWriter": MongoWriter,
+
+    f"{base1}.matcher.SimpleJsonMatcher": SimpleJsonMatcher,
+    f"{base1}.matcher.JsonPathMatcher": JsonPathMatcher,
+    f"{base1}.matcher.WikidataMatcherV1": WikidataMatcherV1,
+    f"{base1}.matcher.WikidataMatcherV2": WikidataMatcherV2,
+    f"{base1}.matcher.WikidataMatcher": WikidataMatcherV2,
 
     f"{base4}.SetFromCSV": SetFromCSV,
     f"{base4}.SetFromJSON": SetFromJSON,

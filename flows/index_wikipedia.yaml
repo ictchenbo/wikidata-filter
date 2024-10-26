@@ -1,11 +1,12 @@
 name: write wikipedia to ES
+description: 对预处理后的维基百科页面建立ES索引
 arguments: 2
 consts:
   es_config:
     host: '10.208.61.113'
     port: 9200
     username: elastic
-    password: golaxyintelligence
+    password: *******
   remove_fields:
     - site
     - categories
@@ -23,6 +24,6 @@ loader: JsonLineFileLoader(arg1)
 nodes:
   n1: RemoveFields(*remove_fields)
   n2: RenameFields(rename_fields)
-  n3: iterator.database.ESWriter(index=arg2, **es_config)
+  n3: database.ESWriter(index=arg2, **es_config)
 
 processor: Chain(n2, n2, n3)

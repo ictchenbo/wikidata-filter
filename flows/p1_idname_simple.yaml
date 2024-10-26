@@ -1,5 +1,5 @@
 name: p1_idname_simple
-description:
+description: 输入wikidata dump文件（gz/json）简化数据结构并id-name映射文件
 arguments: 2
 
 loader: WikidataJsonDump(arg1)

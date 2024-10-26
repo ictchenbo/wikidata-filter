@@ -1,4 +1,6 @@
+import os
 import yaml
+
 from wikidata_filter.components import components
 from wikidata_filter.util.mod_util import load_cls
 
@@ -8,7 +10,19 @@ default_mod = 'iterator'
 
 
 def fullname(cls_name: str, label: str = None):
+    """
+    基于对象短名生成全限定名 如`database.mongodb.MongoLoader` -> `wikidata_filter.loader.database.mongodb.MongoLoader`
+    如果该对象在模块中引入，则可以简化，如`database.MongoLoader` -> `wikidata_filter.loader.database.MongoLoader`
+
+    如果指定了label参数，则从对应的子模块（如loader、matcher、iterator）查找 否则根据cls_name查找
+    如果cls_name包含模块路径，则从`wikidata_filter.`开始查找，否则从默认子模块iterator查找
+
+    :param cls_name 算子构造器名字（类名或函数名）
+    :param label 指定子模块的标签（loader/iterator/matcher）
+    """
     if label is not None:
+        if cls_name.startswith(f'{label}.'):
+            return f'{base_pkg}.{cls_name}'
         return f'{base_pkg}.{label}.{cls_name}'
     if '.' in cls_name:
         return f'{base_pkg}.{cls_name}'
@@ -16,9 +30,13 @@ def fullname(cls_name: str, label: str = None):
 
 
 def find_cls(full_name: str):
+    """
+    根据对象的全限定名加载对象 提前加载到`components`中可提高加载速度
+    """
     if full_name in components:
         return components[full_name]
     cls, mod, class_name = load_cls(full_name)
+    # 缓存对象
     components[full_name] = cls
     return cls
 
@@ -30,29 +48,29 @@ class ComponentManager:
         self.variables[var_name] = var
 
     def init_node(self, expr: str, label: str = None):
-        # get existing node
-        if expr in self.variables:
-            return self.variables[expr]
+        # TODO should reuse?
+        # if expr in self.variables:
+        #     return self.variables[expr]
 
-        cls_name = expr
-
-        if '(' in cls_name:
+        # split expr into constructor and call_part
+        constructor = expr
+        if '(' in constructor:
             pos = expr.find('(')
-            cls_name = expr[:pos]
+            constructor = expr[:pos]
             call_part = expr[pos:]
         else:
             call_part = '()'
-
-        cls = find_cls(fullname(cls_name, label=label))
-        class_name = cls_name
+        # get short class name from constructor
+        class_name = constructor
         if '.' in class_name:
             class_name = class_name[class_name.rfind('.')+1:]
-
+        class_name_full = fullname(constructor, label=label)
+        # find constructor object
+        cls = find_cls(class_name_full)
+        # register for later use
         self.register_var(class_name, cls)
-
-        construct = f'{class_name}{call_part}'
-
-        exec(f'__my_node__ = {construct}', globals(), self.variables)
+        # instantiate node, must use short name
+        exec(f'__my_node__ = {class_name}{call_part}', globals(), self.variables)
         return self.variables.get("__my_node__")
 
 
@@ -79,7 +97,7 @@ class ProcessFlow:
         self.loader = self.comp_mgr.init_node(flow.get('loader'), label='loader')
 
         # init processor
-        self.processor = self.comp_mgr.init_node(flow.get('processor'))
+        self.processor = self.comp_mgr.init_node(flow.get('processor'), label='iterator')
 
     def init_base_envs(self, *args, **kwargs):
         for i in range(len(args)):
@@ -89,13 +107,16 @@ class ProcessFlow:
 
     def init_consts(self, consts_def: dict):
         for k, val in consts_def.items():
+            if isinstance(val, str) and val.startswith("$"):
+                # consts的字符串变量如果以$开头 则获取环境变量
+                val = os.environ.get(val[1:])
             self.comp_mgr.register_var(k, val)
 
     def init_nodes(self, nodes_def: dict):
         for k, expr in nodes_def.items():
             expr = expr.strip()
-            if expr.startswith('='):
+            if expr.startswith('='):  # expression
                 node = eval(expr[1:], globals(), self.comp_mgr.variables)
             else:
-                node = self.comp_mgr.init_node(expr)
+                node = self.comp_mgr.init_node(expr, label='iterator')
             self.comp_mgr.register_var(k, node)

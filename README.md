@@ -4,6 +4,17 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
+- 2024.10.26
+1. 新增大模型处理算子`LLM` 可调用与OpenAI接口兼容的在线大模型接口，需要提供api_base、api_key，其他参数支持：model、proxy、prompt、temp等
+2. 基于`LLM`实现月之暗面（Kimi）大模型`Moonshot`、Siliconflow平台大模型`Siliconflow`大模型算子
+3. 新增大模型调用流程示例[查看](flows/test_llm.yaml) 填入api_key即可执行：`python main_flow.py flows/llm_local.yaml`
+4. 增加一些测试流程的测试样例数据[查看](test_data)
+5. 修改`JsonMatcher`，继承`Filter`，使得匹配对象可以直接作为过滤算子（之前是作为`Filter`的参数） `matcher`移动到`iterator`下
+6. 简化iterator的配置，nodes和processor定义的节点都可以不写`iterator` 如可以写`web.gdelt.Export`
+7. 支持获取环境变量，在consts中声明，如`api_key: $OPENAI_KEY` 表示从环境变量中读取OPENAI_KEY的值并赋给api_key
+8. 对多个流程补充描述说明
+
+
 - 2024.10.25
 1. 修改GDLET数据加载器`GdeltTaskEmit` 调整睡眠模式 避免访问还未生成的zip文件
 2. 新增`FieldConvert(key, converter)`算子，实现对指定字段进行类型转换，转换子包括`int` `float` `str` `bool`等
@@ -12,7 +23,7 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 - 2024.10.24
 1. 新增GDELT处理流程，持续下载[查看](flows/gdelt.yaml) 滚动下载export.CSV.zip文件
 2. 增加新的Loader `GdeltTaskEmit` 从指定时间开始下载数据并持续跟踪
-3. 新增经济学人民调数据处理算子 `iterator.web.polls.PollData` （需要手工下载CSV）、处理流程[查看](flows/load_polls.yaml)
+3. 新增经济学人民调数据处理算子 `iterator.web.polls.PollData` （需要手工下载CSV）、处理流程[查看](flows/test_polls.yaml)
 4. 修改`Flat`算子逻辑，如果输入为`dict`，则提取k-v，如果v也是`dict`，则把k填入v中（_key），最后输出v
 
 - 2024.10.17
@@ -22,7 +33,7 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 - 2024.10.15
 1. 修改CkWriter参数为 username tcp_port 明确使用TCP端口（默认9000，而不是HTTP端口8123）
 2. 新增字段值 String -> Json 算子 `FieldJson(key)`
-3. 新增加载json文件到ClickHouse流程[查看](flows/db_load_data_mongo_table.yaml)
+3. 新增加载json文件到ClickHouse流程[查看](flows/db_import_mongo.yaml)
 4. 新增ClickHouse表复制的流程[查看](flows/db_copy_clickhouse.yaml)
 
 - 2024.10.14
@@ -31,12 +42,12 @@ Wikidata与Wikipedia数据处理框架，提供Wikidata&Wikipedia Dump数据解�
 
 - 2024.10.02
 1. WriteJson WriterCSV增加编码参数设置
-2. 新增GDELT本地数据处理的简化流程[查看](flows/gdelt_local.yaml) 通过加载本地文件转化成JSON
+2. 新增GDELT本地数据处理的简化流程[查看](flows/test_gdelt.yaml) 通过加载本地文件转化成JSON
 
 - 2024.09.30
 1. 集成Reader API（`wikidata_filter.iterator.web.readerapi` 详见 https://jina.ai/reader/)
 2. 增减文本文件加载器 TxtLoader（详见 `wikidata_filter.loader.file.TxtLoader`）
-3. 新增Reader API的流程 [查看](flows/crawl_webpage_readerapi.yaml) 加载url列表文件 实现网页内容获取
+3. 新增Reader API的流程 [查看](flows/test_readerapi.yaml) 加载url列表文件 实现网页内容获取
 
 
 ## 项目特色

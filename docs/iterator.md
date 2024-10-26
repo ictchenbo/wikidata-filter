@@ -29,7 +29,7 @@ class JsonIterator:
 3. 过滤 `Filter(matcher)` 参数：过滤函数/Matcher对象 可参考[Matcher](#matcher)
 4. 缓冲 `Buffer(batch_size=100)` 参数：缓冲一定数量数据后再一起推送
 
-### Matcher
+### Matcher（也是Filter）
 1. 简单JSON匹配 `matcher.SimpleJsonMatcher(match_rules)`
 2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
 
@@ -85,7 +85,7 @@ class JsonIterator:
 8. 对item的labels/descriptions/abstract字段转化为中文简体 `ChineseSimple`
 9. 生成关系数据结构（**multiple**） `AsRelation`
 10. Wikidata基本匹配 `matcher.WikidataMatcherV1(match_relations)`
-11. 针对简化wikidata匹配 `matcher.WikidataMatcher(match_relations)`
+11. 针对简化wikidata匹配 `matcher.WikidataMatcher(match_relations)` （也可以用`matcher.WikidataMatcherV2`）
 
 
 ### Wikidata知识图谱处理
@@ -99,7 +99,7 @@ class JsonIterator:
 
 ### GDELT数据处理
 模块：`wikidata_filter.iterator.web.gdelt`
-1. 基于gdelt的更新文件（CSV.zip）及对应的schema文件生成json记录 `iterator.web.gdelt.Export`
+1. 基于gdelt的更新文件（CSV.zip）及对应的schema文件生成json记录 `iterator.web.gdelt.Export(save_path=None)` save_path保存下载文件的路径
 
 **说明** GDELT文件包括：
 - 事件表 `event-table`（schema见`config/gdelt/export.schema`）

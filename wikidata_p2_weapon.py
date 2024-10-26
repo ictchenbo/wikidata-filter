@@ -5,7 +5,7 @@ if __name__ == '__main__':
     from wikidata_filter.loader import JsonLineFileLoader
     from wikidata_filter.iterator import *
     from wikidata_filter.iterator.wikidata import *
-    from wikidata_filter.matcher.wikidata import WikidataMatcherV2
+    from wikidata_filter.iterator.matcher.wikidata import WikidataMatcherV2
     from wikidata_filter.util import KVFromJSON, SetFromCSV
 
     input_file = sys.argv[1]

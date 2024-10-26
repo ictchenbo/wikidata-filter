@@ -21,7 +21,7 @@ class Print(JsonIterator):
 
 class Filter(JsonIterator):
     """
-    匹配筛选
+    过滤节点 根据提供的匹配函数判断是否继续往后面传递数据
     """
     def __init__(self, matcher):
         super().__init__()
@@ -34,7 +34,7 @@ class Filter(JsonIterator):
 
 class Count(JsonIterator):
     """
-    计数节点
+    计数节点 对流经的数据进行计数 并按照一定间隔进行打印输出
     """
     def __init__(self, ticks=1000, label: str = '-'):
         super().__init__()

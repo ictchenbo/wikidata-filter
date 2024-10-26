@@ -19,7 +19,7 @@ loader: WikidataJsonDump(arg1)
 
 nodes:
   types: util.SetFromCSV('config/org_type.txt')
-  matcher: "matcher.WikidataMatcher({'P31': types})"
+  matcher: matcher.WikidataMatcher(P31=types)
   country_matcher: matcher.WikidataMatcher(country_types)
   weapon_matcher: matcher.WikidataMatcher(weapon_types)
   filter1: Filter(matcher)

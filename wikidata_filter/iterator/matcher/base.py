@@ -1,8 +1,13 @@
+from wikidata_filter.iterator.common import Filter
 
-class JsonMatcher:
+
+class JsonMatcher(Filter):
     """
     基于JSON数据的规则匹配
     """
+    def __init__(self):
+        super().__init__(self)
+    
     def match(self, row: dict) -> bool:
         pass
 

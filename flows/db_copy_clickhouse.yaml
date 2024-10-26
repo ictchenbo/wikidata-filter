@@ -1,4 +1,5 @@
 name: copy clickhouse table data from one server to another
+description: ClickHouse数据库表迁移/拷贝
 arguments: 2
 consts:
   click1:
@@ -14,6 +15,6 @@ loader: database.CKLoader(**click1, table=arg1)
 nodes:
   print: Print
   counter: Count
-  writer: iterator.database.CKWriter(**click2, table=arg2)
+  writer: database.CKWriter(**click2, table=arg2)
 
 processor: Chain(print, counter, writer)

@@ -1,4 +1,5 @@
 name: load json to mongodb
+description: JSON文件导入MongoDB数据库
 arguments: 1
 consts:
   mongo1:
@@ -15,6 +16,6 @@ loader: JsonLineFileLoader(arg1)
 nodes:
   print: Print
   counter: Count
-  writer: iterator.database.MongoWriter(**mongo1)
+  writer: database.MongoWriter(**mongo1)
 
 processor: Chain(print, counter, writer)

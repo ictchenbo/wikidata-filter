@@ -1,5 +1,5 @@
 name: p2_human
-description: filter human items data from p1.json
+description: 输入wikidata简化后JSON数据(如`p1_idname_simple.yaml`的输出) 过滤出人物实体，并筛选出主要的人物属性
 arguments: 2
 consts:
   types:
@@ -9,9 +9,8 @@ consts:
 loader: JsonLineFileLoader(arg1)
 
 nodes:
-  matcher: matcher.WikidataMatcher(types)
   props: util.SetFromCSV('config/props_human.txt')
-  n1: Filter(matcher)
+  n1: matcher.WikidataMatcher(types)
   n2: PropsFilter(props_set=props)
   n3: WriteJson(arg2)
 

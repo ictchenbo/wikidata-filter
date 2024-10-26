@@ -1,4 +1,5 @@
 import io
+import os
 from zipfile import ZipFile
 
 from wikidata_filter.base import relative_path
@@ -9,20 +10,21 @@ from wikidata_filter.util.file_loader import get_lines
 config_base = "config/gdelt"
 
 
-def write_file(url: str, content):
+def write_file(url: str, content, save_path: str):
     file_name = url.split('/')[-1]
-    file_name = f"data/gdelt/{file_name}"
+    file_name = os.path.join(save_path, file_name)
     with open(file_name, 'wb') as fout:
         fout.write(content)
     print("Gdelt zip saved to", file_name)
 
 
-def parse_csv(url: str):
+def parse_csv(url: str, save_path: str = None):
     if url.startswith("http://") or url.startswith("https://"):
         content = get_file(url)
         if len(content) < 100:
             return
-        write_file(url, content)
+        if save_path:
+            write_file(url, content)
         bytes_io = io.BytesIO(content)
         with ZipFile(bytes_io) as zipObj:
             filename = zipObj.filelist[0].filename
@@ -71,22 +73,23 @@ class SchemaBuilder:
         return {f: self.init_value(f, val) for f, val in zip(self.fields, values)}
 
 
-def join_schema(url: str, builder: SchemaBuilder) -> dict:
-    for row in parse_csv(url):
-        try:
-            yield builder.as_dict(row)
-        except:
-            print('Error', row)
-            pass
-
-
 class Export(JsonIterator):
+    """根据GDELT的Export和Mention结构定义 根据输入的URL或文件地址 自动下载（URL）或读取（本地文件）CSV.zip文件，处理成JSON格式"""
     event_builder = SchemaBuilder(relative_path(f'{config_base}/export.schema'))
     mention_builder = SchemaBuilder(relative_path(f'{config_base}/mention.schema'))
 
-    def __init__(self):
+    def __init__(self, save_path: str = None):
         super().__init__()
+        self.save_path = save_path
         self.return_multiple = True
+
+    def join_schema(self, url: str, builder: SchemaBuilder) -> dict:
+        for row in parse_csv(url, save_path=self.save_path):
+            try:
+                yield builder.as_dict(row)
+            except:
+                print('Error', row)
+                pass
 
     def on_data(self, row: dict or None, *args):
         url = row
@@ -95,8 +98,8 @@ class Export(JsonIterator):
         if isinstance(url, dict):
             url = row.get("url")
         if 'export.CSV' in url:
-            for row in join_schema(url, self.event_builder):
+            for row in self.join_schema(url, self.event_builder):
                 yield row
         elif 'mentions.CSV' in url:
-            for row in join_schema(url, self.mention_builder):
+            for row in self.join_schema(url, self.mention_builder):
                 yield row

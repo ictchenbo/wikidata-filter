@@ -1,5 +1,5 @@
-name: gdelt get data test
-description: download GDELT latest file and print
+name: GDELT_follow
+description: download GDELT continuously, write to json file. you can change the writer to some databases.
 arguments: 0
 
 loader: web.gdelt.GdeltTaskEmit(2024, 9, 1)
@@ -7,11 +7,11 @@ loader: web.gdelt.GdeltTaskEmit(2024, 9, 1)
 nodes:
   filter1: "Filter(lambda row: 'export.CSV' in row['url'])"
   filter2: "Filter(lambda row: 'mentions.CSV' in row['url'])"
-  row: iterator.web.gdelt.Export
+  row: web.gdelt.Export
   print: Print
   msg: Prompt('-----------------')
-  writer1: WriteJson(arg1)
-  writer2: WriteJson(arg2)
+  writer1: WriteJson('test_data/gdelt.export.json', append=True)
+  writer2: WriteJson('test_data/gdelt.mention.json', append=True)
   chain1: Chain(filter1, row, print)
   chain2: Chain(filter2, row, print)
   group: Group(chain1, chain2)
