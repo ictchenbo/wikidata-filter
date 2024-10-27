@@ -1,15 +1,15 @@
 name: p1_idname_simple
-description: 输入wikidata dump文件（gz/json）简化数据结构并id-name映射文件
-arguments: 2
+description: 输入wikidata dump文件（gz/json）简化数据结构并id-name映射文件 输入参数：dump文件路径；输出：test_data/p1.json
+arguments: 1
 
 loader: WikidataJsonDump(arg1)
 
 nodes:
   n1: IDNameMap
-  n2: WriteJson('data/id-name.json')
+  n2: WriteJson('test_data/id-name.json')
   n3: Simplify
   n4: SimplifyProps
-  n5: WriteJson(arg2)
+  n5: WriteJson('test_data/p1.json')
   chain1: Chain(n1, n2)
   chain2: Chain(n3, n4, n5)
 

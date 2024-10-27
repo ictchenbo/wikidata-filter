@@ -1,0 +1,14 @@
+name: TextProvider test
+description:
+arguments: 0
+consts:
+  path: $PATH
+
+#loader: RandomGenerator(5)
+loader: TextProvider(path, sep=';')
+
+nodes:
+  print: Print
+  count: Count
+
+processor: Chain(print, count)

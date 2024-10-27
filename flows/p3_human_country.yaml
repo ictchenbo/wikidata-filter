@@ -1,13 +1,14 @@
 name: p3_human_country
 description: 基于`p2_human.yaml`过滤的人物实体，进一步过滤指定国家的人。需要提供国家实体的ID，以英文逗号分隔
-arguments: 3
+arguments: 1
 
-loader: JsonLineFileLoader(arg1)
+loader: JsonLineFileLoader('test_data/p2_human.json')
 
 nodes:
   country_list: =arg3.split(',')
+  out_file: ='p2_human_'+arg3+'.json'
   matcher: matcher.WikidataMatcherV2(P27=country_list)
   filter: Filter(matcher)
-  writer: WriteJson(arg2)
+  writer: WriteJson('test_data/'+out_file)
 
 processor: Chain(filter, writer)

@@ -1,6 +1,6 @@
 name: p1 human
 description: 输入wikidata dump文件（gz/json）过滤出人物（Q5）条目，同时生成wikidata数据的id-name映射文件
-arguments: 3
+arguments: 1
 
 consts:
   types:
@@ -11,9 +11,9 @@ loader: WikidataJsonDump(arg1)
 
 nodes:
   n1: IDNameMap
-  n2: WriteJson(arg2)
+  n2: WriteJson('test_data/id-name.json')
   matcher: matcher.WikidataMatcherV1(types)
-  writer: WriteJson(arg3)
+  writer: WriteJson('test_data/p2_human.json')
   chain1: Chain(n1, n2)
   chain2: Chain(matcher, writer)
 

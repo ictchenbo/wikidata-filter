@@ -2,7 +2,7 @@
 
 模块：`wikidata_filter.iterator`
 
-组件构造：`Comp(*args, **kwargs)` `iterator.<module>.<Comp>(*args, **kwargs)`
+组件构造：`Comp(*args, **kwargs)` `<module>.<Comp>(*args, **kwargs)`
 
 
 ### 基类设计
@@ -55,9 +55,9 @@ class JsonIterator:
 
 
 ### 输出到数据库
-1. ElasticSearch `iterator.database.ESWriter(host="localhost",port=9200,user=None,password=None,index=None,buffer_size=1000)`
-2. ClickHouse `iterator.database.CKWriter(host='localhost',tcp_port=9000,username="default",password="",database='default',table=None, buffer_size=1000)`
-3. MongoDB `iterator.database.MongoWriter(host='localhost',port=27017,username=None,password=None,database='default',auth_db='admin',collection=None,buffer_size=1000)`
+1. ElasticSearch `database.ESWriter(host="localhost",port=9200,user=None,password=None,index=None,buffer_size=1000)`
+2. ClickHouse `database.CKWriter(host='localhost',tcp_port=9000,username="default",password="",database='default',table=None, buffer_size=1000)`
+3. MongoDB `database.MongoWriter(host='localhost',port=27017,username=None,password=None,database='default',auth_db='admin',collection=None,buffer_size=1000)`
 
 ### 组合节点
 1. 并行处理 `Group(*nodes)`
@@ -91,18 +91,17 @@ class JsonIterator:
 ### Wikidata知识图谱处理
 模块：`wikidata_filter.iterator.wikidata_graph`
 
-1. 生成Item和Property摘要 `iterator.wikidata_graph.Entity`
-2. 生成实体Item：`iterator.wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='item')`
-3. 生成属性Property：`iterator.wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='property')`
-4. 提取实体属性：`iterator.wikidata_graph.ItemProperty` （结果根据`_type`区分为：item_property property_property）
+1. 生成Item和Property摘要 `wikidata_graph.Entity`
+2. 生成实体Item：`wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='item')`
+3. 生成属性Property：`wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='property')`
+4. 提取实体属性：`wikidata_graph.ItemProperty` （结果根据`_type`区分为：item_property property_property）
 
 
 ### GDELT数据处理
 模块：`wikidata_filter.iterator.web.gdelt`
-1. 基于gdelt的更新文件（CSV.zip）及对应的schema文件生成json记录 `iterator.web.gdelt.Export(save_path=None)` save_path保存下载文件的路径
+1. 基于gdelt的更新文件（CSV.zip）及对应的schema文件生成json记录 `web.gdelt.Export(save_path=None)` save_path保存下载文件的路径
 
 **说明** GDELT文件包括：
 - 事件表 `event-table`（schema见`config/gdelt/export.schema`）
 - 事件提到表 `mention-table` （schema见`config/gdelt/mention.schema`）
 - 事件图谱 **TODO**
-

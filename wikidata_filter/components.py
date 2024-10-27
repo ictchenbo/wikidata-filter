@@ -1,13 +1,7 @@
-from wikidata_filter.loader import *
-from wikidata_filter.loader.database import *
-from wikidata_filter.loader.wikidata import *
-
-from wikidata_filter.iterator import *
+"""通过这个模块设置组件的简名或别名，方便流程yaml中使用"""
+from wikidata_filter.loader.wikidata import WikidataJsonDump, WikidataXmlIncr
 from wikidata_filter.iterator.wikidata import *
-from wikidata_filter.iterator.database import *
-from wikidata_filter.iterator.matcher import *
-
-from wikidata_filter.util import SetFromCSV, SetFromJSON, KVFromCSV, KVFromJSON
+from wikidata_filter.iterator.matcher import WikidataMatcherV2
 
 
 base1 = "wikidata_filter.iterator"
@@ -16,44 +10,6 @@ base4 = "wikidata_filter.util"
 
 
 components = {
-    f"{base2}.RandomGenerator": RandomGenerator,
-    f"{base2}.TxtLoader": TxtLoader,
-    f"{base2}.JsonLineFileLoader": JsonLineFileLoader,
-    f"{base2}.JsonLoader": JsonLoader,
-    f"{base2}.JsonArrayLoader": JsonArrayLoader,
-    f"{base2}.CSVLoader": CSVLoader,
-    f"{base2}.ExcelLoader": ExcelLoader,
-    f"{base2}.WikidataJsonDump": WikidataJsonDump,
-    f"{base2}.WikidataXmlIncr": WikidataXmlIncr,
-    f"{base2}.database.CKLoader": CKLoader,
-    f"{base2}.database.ESLoader": ESLoader,
-    f"{base2}.database.MongoLoader": MongoLoader,
-    f"{base2}.database.MySQLLoader": MySQLLoader,
-    f"{base2}.database.PostgresSQLLoader": PostgresSQLLoader,
-
-    f"{base1}.Group": Group,
-    f"{base1}.Chain": Chain,
-    f"{base1}.Repeat": Repeat,
-    f"{base1}.Filter": Filter,
-    f"{base1}.Prompt": Prompt,
-    f"{base1}.Print": Print,
-    f"{base1}.Count": Count,
-    f"{base1}.Buffer": Buffer,
-    f"{base1}.Select": Select,
-    f"{base1}.SelectVal": SelectVal,
-    f"{base1}.Map": Map,
-    f"{base1}.Flat": Flat,
-    f"{base1}.FlatMap": FlatMap,
-    f"{base1}.GroupBy": GroupBy,
-    f"{base1}.RemoveFields": RemoveFields,
-    f"{base1}.FillField": InjectField,
-    f"{base1}.FieldJson": FieldJson,
-    f"{base1}.AddFields": AddFields,
-    f"{base1}.UpdateFields": UpdateFields,
-    f"{base1}.ReverseKV": ReverseKV,
-    f"{base1}.RuleBasedTransform": RuleBasedTransform,
-    f"{base1}.WriteJson": WriteJson,
-    f"{base1}.WriteCSV": WriteCSV,
     f"{base1}.IDNameMap": IDNameMap,
     f"{base1}.Simplify": Simplify,
     f"{base1}.SimplifyProps": SimplifyProps,
@@ -63,18 +19,8 @@ components = {
     f"{base1}.ObjectAbstractInject": ItemAbstractInject,
     f"{base1}.AsRelation": AsRelation,
     f"{base1}.ChineseSimple": ChineseSimple,
-    f"{base1}.database.CKWriter": CKWriter,
-    f"{base1}.database.ESWriter": ESWriter,
-    f"{base1}.database.MongoWriter": MongoWriter,
-
-    f"{base1}.matcher.SimpleJsonMatcher": SimpleJsonMatcher,
-    f"{base1}.matcher.JsonPathMatcher": JsonPathMatcher,
-    f"{base1}.matcher.WikidataMatcherV1": WikidataMatcherV1,
-    f"{base1}.matcher.WikidataMatcherV2": WikidataMatcherV2,
     f"{base1}.matcher.WikidataMatcher": WikidataMatcherV2,
 
-    f"{base4}.SetFromCSV": SetFromCSV,
-    f"{base4}.SetFromJSON": SetFromJSON,
-    f"{base4}.KVFromCSV": KVFromCSV,
-    f"{base4}.KVFromJSON": KVFromJSON,
+    f"{base2}.WikidataJsonDump": WikidataJsonDump,
+    f"{base2}.WikidataXmlIncr": WikidataXmlIncr
 }

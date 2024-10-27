@@ -46,19 +46,32 @@ class Map(JsonIterator):
 
 
 class Flat(JsonIterator):
-    def __init__(self):
+    """
+    对输入数据进行扁平化处理
+    如果未提供key，对整个输入进行扁平化：
+      - 对于数组 arr -> iterator(arr)
+      - 对于字典：如果flat_mode='key'，则对key打散，否则对value打散
+    如果提供了key，则针对该字段进行上述扁平化。
+    """
+    def __init__(self, key: str = None, flat_mode: str = 'value'):
         self.return_multiple = True
+        self.key = key
+        self.flat_mode = flat_mode
 
     def on_data(self, data, *args):
-        if isinstance(data, list) or isinstance(data, tuple):
-            # print('Flat', data)
-            for item in data:
+        _data = data.get(self.key) if self.key else data
+        if isinstance(_data, list) or isinstance(_data, tuple):
+            for item in _data:
                 yield item
-        elif isinstance(data, dict):
-            for key, val in data.items():
-                if isinstance(val, dict):
-                    val["_key"] = key
-                yield val
+        elif isinstance(_data, dict):
+            if self.flat_mode == 'key':
+                for key in _data.keys():
+                    yield key
+            else:
+                for key, val in data.items():
+                    if isinstance(val, dict):
+                        val["_key"] = key
+                    yield val
         else:
             yield data
 
@@ -97,18 +110,19 @@ class Convert(JsonIterator):
 
 class FieldConvert(JsonIterator):
     """对指定的字段进行数据类型转换"""
-    def __init__(self, key: str, converter):
+    def __init__(self, key: str, converter, target_key: str = None):
         """
         :param key 字段名
         :param converter 转换函数，如int,float,str
         """
         self.key = key
         self.converter = converter
+        self.target_key = target_key or key
 
     def on_data(self, data: dict, *args):
         if data and data.get(self.key):
             val = data[self.key]
-            data[self.key] = self.converter(val)
+            data[self.target_key] = self.converter(val)
         return data
 
 

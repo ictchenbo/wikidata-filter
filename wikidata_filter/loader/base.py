@@ -2,6 +2,7 @@ from random import random
 
 
 class DataProvider:
+    """数据提供器接口 为流程供给数据"""
     def iter(self):
         pass
 
@@ -10,6 +11,27 @@ class DataProvider:
 
     def close(self):
         pass
+
+
+class ArrayProvider(DataProvider):
+    """基于数组提供数据"""
+    def __init__(self, data: list):
+        self.data = data
+
+    def iter(self):
+        for item in self.data:
+            yield item
+
+
+class TextProvider(DataProvider):
+    """基于文本提供数据 按照指定分隔符进行分割"""
+    def __init__(self, text: str, sep: str = '\n'):
+        self.data = text
+        self.sep = sep
+
+    def iter(self):
+        for item in self.data.split(self.sep):
+            yield item
 
 
 class RandomGenerator(DataProvider):

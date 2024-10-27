@@ -1,0 +1,18 @@
+name: p1 write wikidata item to es
+description: 输入wikidata dump文件（gz/json）简化数据结构并写入ES
+arguments: 2
+consts:
+  es:
+    host: localhost
+    port: 9200
+    index: wikidata
+
+nodes:
+  n1: Simplify
+  n2: SimplifyProps
+  rm: RemoveFields('claims')
+  n3: database.ESWriter(**es)
+  n4: Count
+
+loader: WikidataJsonDump(arg1)
+processor: Chain(n1, n2, rm, n3, n4)

@@ -1,6 +1,6 @@
 name: p2_country_all
 description: 输入wikidata简化后JSON数据(如`p1_idname_simple.yaml`的输出) 过滤出国家实体并填充实体摘要、属性名称、繁简体转换 获得直接可用的国家实体JSON
-arguments: 2
+arguments: 0
 consts:
   types:
     P31:
@@ -8,7 +8,7 @@ consts:
       - Q7275
   wiki_base: "data/"
 
-loader: JsonLineFileLoader(arg1)
+loader: JsonLineFileLoader('test_data/p1.json')
 
 nodes:
   props: util.SetFromCSV('config/props_country.txt')
@@ -21,6 +21,6 @@ nodes:
   n3: ObjectNameInject(id_name)
   n4: ItemAbstractInject(kv)
   n5: ChineseSimple()
-  writer: WriteJson(arg2)
+  writer: WriteJson('test_data/p3_country.json')
 
 processor: Chain(loader, n1, n2, n3, n4, n5, writer)

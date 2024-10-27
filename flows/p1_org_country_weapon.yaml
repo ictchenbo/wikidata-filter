@@ -1,6 +1,6 @@
 name: p1_org_country_weapon
 description: 输入wikidata dump文件（gz/json）过滤出 组织机构、国家、武器装备三类条目
-arguments: 4
+arguments: 1
 consts:
   country_types:
     P31:
@@ -25,9 +25,9 @@ nodes:
   filter1: Filter(matcher)
   filter2: Filter(country_matcher)
   filter3: Filter(weapon_matcher)
-  writer1: WriteJson(arg2)
-  writer2: WriteJson(arg3)
-  writer3: WriteJson(arg4)
+  writer1: WriteJson('test_data/p2_org.json')
+  writer2: WriteJson('test_data/p2_country.json')
+  writer3: WriteJson('test_data/p2_weapon.json')
   chain1: Chain(filter1, writer1)
   chain2: Chain(filter2, writer2)
   chain3: Chain(filter3, writer3)

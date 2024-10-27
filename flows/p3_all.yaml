@@ -1,10 +1,11 @@
 name: p3_all
-description: 基于P2处理结果（如`p2_human.yaml`）填充实体摘要、属性名称、繁简体转换
-arguments: 2
+description: 基于P1（如`p1_idname_simple.yaml`）或P2处理结果（如`p2_human.yaml`）填充实体摘要、属性名称、繁简体转换
+arguments: 0
 consts:
   wiki_base: "data/"
 
-loader: JsonLineFileLoader(arg1)
+loader: JsonLineFileLoader('test_data/p1.json')
+#loader: JsonLineFileLoader('test_data/p2_human.json')
 
 nodes:
   id_name: util.KVFromJSON('data/id-name.json', key_key='id', val_key='name')
@@ -14,6 +15,6 @@ nodes:
   n3: ObjectNameInject(id_name)
   n4: ItemAbstractInject(kv)
   n5: ChineseSimple()
-  writer: WriteJson(arg2)
+  writer: WriteJson('test_data/p3.json')
 
 processor: Chain(loader, n3, n4, n5, writer)

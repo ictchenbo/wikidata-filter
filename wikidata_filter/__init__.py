@@ -1,4 +1,5 @@
 from wikidata_filter.loader import DataProvider, FileLoader
+from wikidata_filter.loader.base import ArrayProvider, TextProvider
 from wikidata_filter.loader.wikidata import WikidataJsonDump
 from wikidata_filter.iterator.base import JsonIterator
 from wikidata_filter.flow_engine import ProcessFlow
@@ -15,8 +16,19 @@ def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False
     iterator.on_complete()
 
 
-def run_flow(flow_file: str, *args, finish_signal: bool = False):
+def run_flow(flow_file: str, *args, finish_signal: bool = False, input_data=None):
     flow = ProcessFlow(flow_file, *args)
+    print('loading YAML flow:', flow.name)
+    # 根据命令行参数构造loader
+    if input_data:
+        if isinstance(input_data, str):
+            _loader = TextProvider(input_data)
+        elif isinstance(input_data, list):
+            _loader = ArrayProvider(input_data)
+        else:
+            _loader = ArrayProvider([input_data])
+        flow.loader = _loader
+    assert flow.loader is not None, "loader为空！可通过yaml文件或命令行参数进行配置"
     run(flow.loader, flow.processor, finish_signal=finish_signal)
 
 

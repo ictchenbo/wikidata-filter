@@ -1,14 +1,14 @@
 name: p1_wikidata_graph
 description: transform wikidata dump to graph, including item/property/item_property/property_property
-arguments: 5
+arguments: 1
 
 loader: WikidataJsonDump(arg1)
 
 nodes:
-  writer1: WriteJson(arg2)
-  writer2: WriteJson(arg3)
-  writer3: WriteJson(arg4)
-  writer4: WriteJson(arg5)
+  writer1: WriteJson('test_data/item.json')
+  writer2: WriteJson('test_data/property.json')
+  writer3: WriteJson('test_data/item_property.json')
+  writer4: WriteJson('test_data/property_property.json')
 
   rm_type: RemoveFields('_type')
 
