@@ -1,13 +1,27 @@
 class JsonIterator:
+    """流程处理算子（不包括数据加载）的基础接口"""
     return_multiple: bool = False
 
+    def _set(self, **kwargs):
+        """设置组件参数，提供对象属性链式设置"""
+        for k, w in kwargs.items():
+            setattr(self, k, w)
+        return self
+
+    def _get(self, key: str):
+        """获取组件参数"""
+        return getattr(self, key)
+
     def on_start(self):
+        """处理数据前"""
         pass
 
     def on_data(self, data: dict or None, *args):
+        """处理每一条数据"""
         pass
 
     def on_complete(self):
+        """"结束处理"""
         pass
 
 

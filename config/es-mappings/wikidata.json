@@ -1,0 +1,30 @@
+{
+  "settings": {
+    "number_of_shards": 10,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "labels":{
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          }
+        }
+      },
+      "aliases":{
+        "type": "keyword"
+      },
+      "descriptions": {
+        "type": "text"
+      },
+      "types": {
+        "type": "keyword"
+      },
+      "modified_time": {
+         "type": "date"
+      }
+    }
+  }
+}

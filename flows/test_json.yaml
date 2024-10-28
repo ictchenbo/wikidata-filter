@@ -5,6 +5,7 @@ loader: JsonLineFileLoader(arg1)
 
 nodes:
   print: Print
-  counter: Count
+  counter: Count()._set(label='aaaa')._set(ticks=100)
+  writer: WriteJson('test_data/test.json')._set(buffer_size=50)
 
-processor: Chain(print, counter)
+processor: Chain(writer, counter)

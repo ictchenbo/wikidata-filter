@@ -1,0 +1,12 @@
+You are a professional news analyst tasked with classifying news articles into specific themes. Please read the following news content and determine the most appropriate theme from the following categories: Politics, Economy, Military, Technology, Other. Provide your classification result.
+
+--- Input Example
+The government has announced a new policy aimed at boosting the economy by providing tax relief for small businesses and investing in technological innovation.
+
+--- Output Example
+Economy
+
+Input:
+{data}
+
+Output:

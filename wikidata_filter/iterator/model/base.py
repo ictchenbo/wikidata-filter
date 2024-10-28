@@ -20,6 +20,7 @@ class LLM(JsonIterator):
                  temp: float = None,
                  topk: int = None,
                  topp: float = None,
+                 target_key: str = '_llm'
                  ):
         """
         :param api_base 服务地址，必须
@@ -59,6 +60,7 @@ class LLM(JsonIterator):
         if topp is not None:
             args_base["topp"] = topp
         self.args_base = args_base
+        self.target_key = target_key or '_llm'
 
     def request_service(self, query: str):
         """执行HTTP-POST请求"""
@@ -110,6 +112,6 @@ class LLM(JsonIterator):
             if self.key is None:
                 return result
             else:
-                row["_llm"] = result
+                row[self.target_key] = result
                 return row
         return row

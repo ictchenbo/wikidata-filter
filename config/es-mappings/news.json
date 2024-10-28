@@ -1,0 +1,39 @@
+{
+  "settings": {
+    "number_of_shards": 10,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "title":{
+        "type": "text"
+      },
+      "content": {
+        "type": "text"
+      },
+      "publish_time": {
+         "type": "date",
+         "format": "epoch_millis"
+      },
+      "site": {
+        "type": "keyword"
+      },
+      "author": {
+        "type": "keyword"
+      },
+      "url": {
+        "type": "text",
+        "index": false
+      },
+      "tag1":{
+        "type": "keyword"
+      },
+      "tag2":{
+        "type": "keyword"
+      },
+      "tag3":{
+        "type": "keyword"
+      }
+    }
+  }
+}

@@ -82,11 +82,9 @@ class ComponentManager:
         cls = find_cls(class_name_full)
         # register for later use
         self.register_var(class_name, cls)
-        # instantiate node, eval虽然简单，但是存在限制：由于Python语法限制，必须使用组件短名
+        # eval虽然简单，但是存在限制：由于Python语法限制，必须使用组件短名
         # 因此流程中不同节点的短名不能冲突 TODO 使用ast解析？
-        # exec(f'__my_node__ = {class_name}{call_part}', globals(), self.variables)
         new_node = eval(f'{class_name}{call_part}', globals(), self.variables)
-        # return self.variables.get("__my_node__")
         return new_node
 
 

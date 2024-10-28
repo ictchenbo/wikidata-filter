@@ -10,25 +10,20 @@
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
+- 2024.10.28
+1. 合并`Converter`、`FieldConverter`到`Map`算子，支持对字段进行转换，支持设置目标字段
+2. 修改`Select`以支持嵌套字段`user.name.firstname`形式
+3. 新增天玑大模型接口调用`GoGPT(api_base,field,ignore_errors,prompt)`
+4. 新增一个[新闻处理流程](flows/news_process.yaml) 通过提示大模型实现新闻主题分类、地名识别并并建立ES索引
+5. 新增文本处理算子模块 `iterator.nlp` 提供常用文本处理
+6. 为基类`JsonIterator`增加_set链式方法，简化算子属性设置和子类实现（子类__init__不需要设置每个基类参数）比如可以写：`WriteJson('test_data/test.json')._set(buffer_size=50)`
+7. 重新实现缓冲基类`Buffer`（具有一定大小的缓冲池）、缓冲写基类`BufferedWriter`，文本写基类`WriteText`继承`BufferedWriter`
+
+
 - 2024.10.27
 1. 修改`main_flow` 支持参数设置，详细查看帮助：`python main_flow.py -h` 支持通过命令行提供loader数据
 2. 增加两个简单的loader组件：`ArrayProvider(arr)`、`TextProvider(txt, sep='\n')` 可参考[简单流程](flows/test_simple.yaml)
 3. 简化各流程文件的参数设置 方便快速使用
-
-- 2024.10.26
-1. 新增大模型处理算子`LLM` 可调用与OpenAI接口兼容的在线大模型接口，需要提供api_base、api_key，其他参数支持：model、proxy、prompt、temp等
-2. 基于`LLM`实现月之暗面（Kimi）大模型`Moonshot`、Siliconflow平台大模型`Siliconflow`大模型算子
-3. 新增大模型调用流程示例[查看](flows/test_llm.yaml) 填入api_key即可执行：`python main_flow.py flows/llm_local.yaml`
-4. 增加一些测试流程的测试样例数据[查看](test_data)
-5. 修改`JsonMatcher`，继承`Filter`，使得匹配对象可以直接作为过滤算子（之前是作为`Filter`的参数） `matcher`移动到`iterator`下
-6. 简化iterator的配置，nodes和processor定义的节点都可以不写`iterator` 如可以写`web.gdelt.Export`
-7. 支持获取环境变量，在consts中声明，如`api_key: $OPENAI_KEY` 表示从环境变量中读取OPENAI_KEY的值并赋给api_key
-8. 对多个流程补充描述说明
-
-- 2024.10.25
-1. 修改GDLET数据加载器`GdeltTaskEmit` 调整睡眠模式 避免访问还未生成的zip文件
-2. 新增`FieldConvert(key, converter)`算子，实现对指定字段进行类型转换，转换子为任意支持一个参数的函数 如`int` `float` `str` `bool`、`util.lang_util.zh_simple`等
-3. 新增`Convert(converter)`算子，实现对记录的类型转换，转换子包括`int` `float` `str` `bool`等
 
 ## 项目特色
 1. 通过`yaml`格式定义流程，上手容易
@@ -78,7 +73,7 @@ processor: Group(n1, n2, n3)
 - 示例2：输入wikidata dump文件（gz/json）生成id-name映射文件（方便根据ID查询名称），同时对数据结构进行简化 `flows/p1_idname_simple.yaml`
 ```yaml
 name: p1_idname_simple
-arguments: 2
+arguments: 1
 
 loader: WikidataJsonDump(arg1)
 
@@ -87,7 +82,7 @@ nodes:
   n2: WriteJson('data/id-name.json')
   n3: Simplify
   n4: SimplifyProps
-  n5: WriteJson(arg2)
+  n5: WriteJson('test_data/p1.json')
   chain1: Chain(n1, n2)
   chain2: Chain(n3, n4, n5)
 
@@ -98,15 +93,15 @@ processor: Group(chain1, chain2)
 ```yaml
 name: p1_wikidata_graph
 description: transform wikidata dump to graph, including item/property/item_property/property_property
-arguments: 5
+arguments: 1
 
 loader: WikidataJsonDump(arg1)
 
 nodes:
-  writer1: WriteJson(arg2)
-  writer2: WriteJson(arg3)
-  writer3: WriteJson(arg4)
-  writer4: WriteJson(arg5)
+  writer1: WriteJson('test_data/item.json')
+  writer2: WriteJson('test_data/property.json')
+  writer3: WriteJson('test_data/item_property.json')
+  writer4: WriteJson('test_data/property_property.json')
 
   rm_type: RemoveFields('_type')
 
@@ -165,6 +160,21 @@ Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
 
 ## 开发日志
+- 2024.10.26
+1. 新增大模型处理算子`LLM` 可调用与OpenAI接口兼容的在线大模型接口，需要提供api_base、api_key，其他参数支持：model、proxy、prompt、temp等
+2. 基于`LLM`实现月之暗面（Kimi）大模型`Moonshot`、Siliconflow平台大模型`Siliconflow`大模型算子
+3. 新增大模型调用流程示例[查看](flows/test_llm.yaml) 填入api_key即可执行：`python main_flow.py flows/llm_local.yaml`
+4. 增加一些测试流程的测试样例数据[查看](test_data)
+5. 修改`JsonMatcher`，继承`Filter`，使得匹配对象可以直接作为过滤算子（之前是作为`Filter`的参数） `matcher`移动到`iterator`下
+6. 简化iterator的配置，nodes和processor定义的节点都可以不写`iterator` 如可以写`web.gdelt.Export`
+7. 支持获取环境变量，在consts中声明，如`api_key: $OPENAI_KEY` 表示从环境变量中读取OPENAI_KEY的值并赋给api_key
+8. 对多个流程补充描述说明
+
+- 2024.10.25
+1. 修改GDLET数据加载器`GdeltTaskEmit` 调整睡眠模式 避免访问还未生成的zip文件
+2. 新增`FieldConvert(key, converter)`算子，实现对指定字段进行类型转换，转换子为任意支持一个参数的函数 如`int` `float` `str` `bool`、`util.lang_util.zh_simple`等
+3. 新增`Convert(converter)`算子，实现对记录的类型转换，转换子包括`int` `float` `str` `bool`等
+
 - 2024.10.24
 1. 新增GDELT处理流程，持续下载[查看](flows/gdelt.yaml) 滚动下载export.CSV.zip文件
 2. 增加新的Loader `GdeltTaskEmit` 从指定时间开始下载数据并持续跟踪

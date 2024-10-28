@@ -19,6 +19,7 @@ class Moonshot(LLM):
                  temp: float = None,
                  topk: int = None,
                  topp: float = None,
+                 target_key: str = '_llm'
                  ):
         """
                 :param api_key API的Key 必须
@@ -30,4 +31,4 @@ class Moonshot(LLM):
                 :param topk TopK参数
                 :param topp TopP参数
         """
-        super().__init__(API_BASE, field=field, api_key=api_key, model=MODEL_NAME, proxy=proxy, prompt=prompt, ignore_errors=ignore_errors,temp=temp,topk=topk,topp=topp)
+        super().__init__(API_BASE, field=field, api_key=api_key, model=MODEL_NAME, proxy=proxy, prompt=prompt, ignore_errors=ignore_errors,temp=temp,topk=topk,topp=topp,target_key=target_key)

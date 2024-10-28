@@ -1,0 +1,50 @@
+name: process news from mongodb
+description: 从MongoDB加载新闻数据，进行主题分类、地点识别，写入ES。ES索引mapping查看`config/es-mappings/news.json`
+arguments: 0
+consts:
+  mongo1:
+    host: 10.60.1.145
+    database: global-news
+    collection: news
+  es_config:
+    host: 10.208.61.117
+    port: 9200
+    index: news
+    buffer_size: 10
+  chatglm4: http://10.208.63.29:8888
+  gogpt_13b: http://10.208.63.29:8890
+  baichuan_13b: http://10.208.63.29:8891
+  renames:
+    content.title: title
+    content.content: content
+    content.date: date
+    event_time_date: publish_time
+
+loader: database.MongoLoader(**mongo1)
+
+nodes:
+  prompt1: util.files.read_text('config/prompt/news_classify.txt')
+  prompt2: util.files.read_text('config/prompt/news_country_rec.txt')
+
+  select: Select('id', 'content.title', 'content.content', 'url', 'event_time_date')
+  rename: RenameFields(**renames)
+  concat: ConcatFields('cont', 'title', 'content', sep='\n')
+  short_content: Map(lambda s:s[:200], 'cont', target_key='short_content')
+  remove: RemoveFields('cont')
+  chain1: Chain(select, rename, concat, short_content, remove)
+
+  class1: model.GoGPT(api_base=chatglm4, field='short_content', prompt=prompt1)
+  rename1: RenameFields(_llm='tag1')
+  llm1: Chain(class1, rename1)
+
+  class2: model.GoGPT(api_base=chatglm4, field='short_content', prompt=prompt2)
+  rename2: RenameFields(_llm='tag2')
+  llm2: Chain(class2, rename2)
+
+  tags: nlp.tags.Splitter('tag1', 'tag2')
+  remove2: RemoveFields('short_content')
+  print: Print
+  writer: database.ESWriter(**es_config)
+  counter: Count(ticks=10)
+
+processor: Chain(chain1, llm1, llm2, remove2, tags, writer, counter)

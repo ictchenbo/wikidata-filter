@@ -1,50 +1,65 @@
+"""输出到文件的算子"""
 import json
 from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.common import BufferedWriter
 
 
-class WriteFile(JsonIterator):
-    """
-        输出数据到文件
-    """
-    def __init__(self, output_file: str, append: bool = False, encoding: str = None):
-        super().__init__()
-        self.writer = open(output_file, 'a' if append else 'w', encoding=encoding)
+class WriteText(BufferedWriter):
+    writer = None
+    """带缓冲的文本文件写，通常换行分隔。由于文件IO自带缓冲，通常不需要这么做，但可以支持更好的写入性能"""
+    def __init__(self, output_file: str, append: bool = False, encoding: str = "utf8", buffer_size: int = 1000, sep: str = '\n'):
+        super().__init__(buffer_size=buffer_size)
+        self.output_file = output_file
+        self.sep = sep
+        self.append = append
+        self.encoding = encoding
+
+    def write_batch(self, data: list):
+        # lazy ini
+        if self.writer is None:
+            self.writer = open(self.output_file, 'a' if self.append else 'w', encoding=self.encoding)
+        lines = []
+        for item in data:
+            lines.append(self.serialize(item))
+        self.writer.write(self.sep.join(lines))
+        print('batch written to file')
+
+    def serialize(self, item) -> str:
+        """序列化为文本"""
+        return str(item)
 
     def on_complete(self):
+        super().on_complete()
         self.writer.close()
 
 
-class WriteJson(WriteFile):
+class WriteJson(WriteText):
     """
     写JSON文件
     """
-    def __init__(self, output_file: str, append: bool = False, encoding: str = "utf8"):
-        super().__init__(output_file, append=append, encoding=encoding)
+    def __init__(self, output_file: str):
+        super().__init__(output_file)
 
-    def on_data(self, item: dict or None, *args):
-        self.writer.write(json.dumps(item, ensure_ascii=False))
-        self.writer.write('\n')
-        return item
+    def serialize(self, item) -> str:
+        return json.dumps(item, ensure_ascii=False)
 
 
-class WriteCSV(WriteFile):
+class WriteCSV(WriteText):
     """
     写CSV文件
     """
-    def __init__(self, output_file: str, keys: list = None, seperator=',', append: bool = False, encoding: str = None):
-        super().__init__(output_file, append=append, encoding=encoding)
+    def __init__(self, output_file: str, keys: list = None, seperator=','):
+        super().__init__(output_file)
         self.keys = keys
         self.seperator = seperator
 
-    def on_data(self, item: dict or None, *args):
+    def serialize(self, item) -> str:
+        line = []
         if self.keys is None:
             for k, v in item.items():
-                self.writer.write(str(v))
-                self.writer.write(self.seperator)
+                line.append(str(v))
         else:
             for k in self.keys:
                 self.writer.write(str(item.get(k)))
-                self.writer.write(self.seperator)
-        self.writer.write('\n')
-        return item
 
+        return self.seperator.join(line)

@@ -1,13 +1,13 @@
 name: write wikipedia to ES
 description: 对预处理后的维基百科页面建立ES索引
-arguments: 2
+arguments: 1
 consts:
   es_config:
     host: '10.208.61.113'
     port: 9200
     username: elastic
     password: *******
-    index: zhwiki
+    index: goinv3_document_wikidata
   remove_fields:
     - site
     - categories

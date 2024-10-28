@@ -9,6 +9,8 @@
 1. 抽象基类 `JsonIterator` 定义了数据处理的接口
 ```python
 class JsonIterator:
+    return_multiple: bool = False
+    
     def on_start(self):
         pass
 
@@ -17,53 +19,55 @@ class JsonIterator:
 
     def on_complete(self):
         pass
-
-    def return_multiple(self):
-        return False
 ```
 
-
-### 基础类
-1. 打印数据 `Print` 方便调试或日志记录 无参数
-2. 计数 `Count(ticks=1000, label='-')` 对数据进行统计，方便观察 参数：ticks、label
-3. 过滤 `Filter(matcher)` 参数：过滤函数/Matcher对象 可参考[Matcher](#matcher)
-4. 缓冲 `Buffer(batch_size=100)` 参数：缓冲一定数量数据后再一起推送
-
-### Matcher（也是Filter）
-1. 简单JSON匹配 `matcher.SimpleJsonMatcher(match_rules)`
-2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
-
-
-### 修改类
-1. 投影操作 `Select(*keys)`
-2. 数据映射转换 `Map(mapper)`
-3. 移除字段 `RemoveFields(*keys)`
-4. 重命名字段 `RenameFields(**kwargs)`
-5. 字段添加 `AddFields(**kwargs)`
-6. 字段更新 `UpdateFields(**kwargs)`
-7. 字段填充 `InjectField(kv,inject_path, reference_path)`
-8. 对调KV `ReverseKV()`
-9. 基于规则的转换 `RuleBasedTransform(rules)`
-10. 字段扁平化 `Flat(key)`
-11. 扁平化转换 `FlatMap(mapper)`
-12. 字段作为JSON加载 `FieldJson(key)`
-13. 按照某个字段对数据进行分组 `GroupBy(key)`
-
-### 输出文件
-1. JSON文件 `WriteJSON(output_file,append=False)`
-2. CSV文件 `WriteCSV(output_file,keys=None,append=False)`
-
-
-### 输出到数据库
-1. ElasticSearch `database.ESWriter(host="localhost",port=9200,user=None,password=None,index=None,buffer_size=1000)`
-2. ClickHouse `database.CKWriter(host='localhost',tcp_port=9000,username="default",password="",database='default',table=None, buffer_size=1000)`
-3. MongoDB `database.MongoWriter(host='localhost',port=27017,username=None,password=None,database='default',auth_db='admin',collection=None,buffer_size=1000)`
+提供`_set`方法，支持链式设置组件属性，如`Count()._set(ticks=100)._set(label='aaa')`
 
 ### 组合节点
 1. 并行处理 `Group(*nodes)`
 2. 串行处理 `Chain(*nodes)`
 3. 重复数据 `Repeat(num_of_repeats)`
 
+### 基础类
+1. 打印数据 `Print` 方便调试或日志记录 无参数
+2. 计数 `Count(ticks=1000, label='-')` 对数据进行统计，方便观察 参数：ticks、label
+3. 过滤 `Filter(matcher)` 参数：过滤函数/Matcher对象 可参考[Matcher](#matcher)
+
+### Matcher（也是Filter）
+1. 简单JSON匹配 `matcher.SimpleJsonMatcher(match_rules)`
+2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
+
+### 修改类
+1. 投影操作 `Select(*keys)` 支持嵌套字段 如`user.name`
+2. 数据映射转换 `Map(mapper, key=None, target_key=None)` 如果指定了key，则是针对该字段的映射
+3. 移除字段 `RemoveFields(*keys)`
+4. 重命名字段 `RenameFields(**kwargs)`
+5. 字段添加 `AddFields(**kwargs)` 仅添加不存在的字段
+6. 字段更新 `UpdateFields(**kwargs)` Upsert模式
+7. 字段填充 `InjectField(kv,inject_path, reference_path)`
+8. 对调KV `ReverseKV()`
+9. 基于规则的转换 `RuleBasedTransform(rules)`
+10. 字段扁平化 `Flat(key, flat_mode='value')` 通过flat_mode指定扁平化模式 支持对数组、字典类型的字段或整个输入进行扁平化
+11. 扁平化转换 `FlatMap(mapper)` 对mapper结果进行扁平化
+12. 字段作为JSON加载 `FieldJson(key)`
+13. 按照某个字段对数据进行分组 `GroupBy(key)`
+14. 复制字段 `CopyFields(*keys)` 复制已有的字段 如果目标字段名存在 则覆盖
+15. 拼接字段 `ConcatFields(target_key,*source_keys, sep='_')` 将source_keys拼接作为target_key字段
+
+### 缓冲处理基类
+1. 基本缓冲类 收集一批数据再集中往后传递 `Buffer(buffer_size=1000,mode='batch')`
+2. 缓冲写基类 用于进行数据库和文件带缓冲输出 `BufferedWriter(buffer_size=1000,mode='single')`
+3. 分组处理 `GroupBy(key, emit_fast=True)` 对数据进行分组，然后整组往后传递
+
+### 输出文件
+1. 文本文件(带缓冲) `WriteText(output_file: str, append: bool = False, encoding: str = "utf8", buffer_size: int = 1000, sep: str = '\n')`
+2. JSON文件 `WriteJSON(output_file,append=False)`
+3. CSV文件 `WriteCSV(output_file,keys=None,append=False)`
+
+### 输出到数据库
+1. ElasticSearch `database.ESWriter(host="localhost",port=9200,user=None,password=None,index=None,buffer_size=1000)`
+2. ClickHouse `database.CKWriter(host='localhost',tcp_port=9000,username="default",password="",database='default',table=None, buffer_size=1000)`
+3. MongoDB `database.MongoWriter(host='localhost',port=27017,username=None,password=None,database='default',auth_db='admin',collection=None,buffer_size=1000)`
 
 ### Wikidata处理
 模块：`wikidata_filter.iterator.wikidata`
@@ -105,3 +109,17 @@ class JsonIterator:
 - 事件表 `event-table`（schema见`config/gdelt/export.schema`）
 - 事件提到表 `mention-table` （schema见`config/gdelt/mention.schema`）
 - 事件图谱 **TODO**
+
+
+### 大模型处理
+模块：`wikidata_filter.iterator.model`
+
+提供了月之暗面（Kimi）、Siliconflow、天玑等模型/模型平台服务调用，作为数据处理算子
+1. Siliconflow平台 `model.Siliconflow(api_key,field,proxy,model,prompt,ignore_errors=True)`
+2. 天玑平台 `model.GoGPT(api_base,field,prompt,ignore_errors=True)` 
+
+
+### 自然语言处理
+模块：`wikidata_filter.iterator.nlp`
+1. 标签分割 `nlp.tags.Splitter(*keys)` 对指定字段进行分割处理，转换为标签数组
+

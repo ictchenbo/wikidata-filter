@@ -35,8 +35,9 @@ class ESWriter(BufferedWriter):
             lines.append(row_data)
         body = '\n'.join(lines)
         body += '\n'
+        print(f"{self.url}/{self.index_name} bulk")
         res = requests.post(f'{self.url}/{self.index_name}/_bulk', data=body, headers=header, auth=self.auth)
         if res.status_code != 200:
-            print(res.text)
+            print("Warning, ES bulk load failed:", res.text)
             return False
         return True
