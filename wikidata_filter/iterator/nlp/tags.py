@@ -6,9 +6,9 @@ def split(text: str):
     if not text:
         return []
     if ':' in text:
-        text = text[text.find(':') + 1]
+        text = text[text.find(':') + 1:]
     if '：' in text:
-        text = text[text.find('：') + 1]
+        text = text[text.find('：') + 1:]
     parts = re.split('[;；。]+', text)
     return [p.strip() for p in parts]
 

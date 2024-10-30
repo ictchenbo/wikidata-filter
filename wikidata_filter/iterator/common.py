@@ -47,11 +47,11 @@ class Count(JsonIterator):
     def on_data(self, item: dict or None, *args):
         self.counter += 1
         if self.counter % self.ticks == 0:
-            print(f'Counter[{self.label}]', self.counter)
+            print(f'Counter[{self.label}]:', self.counter)
         return item
 
     def on_complete(self):
-        print(f'Counter[{self.label}] total', self.counter)
+        print(f'Counter[{self.label}] finish, total:', self.counter)
 
 
 class Reduce(JsonIterator):
@@ -75,15 +75,16 @@ class Buffer(Reduce):
 
     def on_data(self, item: dict or None, *args):
         self.buffer.append(item)
+        # print(f'add to buffer {len(self.buffer)}/{self.buffer_size}')
+        temp = None
         # if full
         if len(self.buffer) >= self.buffer_size:
+            # print('buffer full, commit')
             temp = self.buffer
             self.commit(temp)
             self.buffer = []  # 当前缓冲池清空
-            if self.mode == "buffer":
-                return temp  # 往后传递数据
-        if self.mode == "buffer":
-            return None  # 不需要往后传递任何数据
+        if self.mode == "batch":
+            return temp  # 往后传递数据
         else:
             return item
 

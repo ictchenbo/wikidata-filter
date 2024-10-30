@@ -10,6 +10,7 @@ from wikidata_filter.util.web_util import get_text
 base_url = 'http://data.gdeltproject.org/gdeltv2'
 url_all_file = f"{base_url}/masterfilelist.txt"
 url_latest_file = f"{base_url}/lastupdate.txt"
+ZONE_DIFF = 8
 
 
 def get_page_parse(url):
@@ -72,21 +73,34 @@ class GdeltTaskEmit(DataProvider):
     def update_ts(self):
         self.ts += datetime.timedelta(minutes=15)
 
+    def wait_or_continue(self):
+        now = datetime.datetime.now() - datetime.timedelta(hours=ZONE_DIFF)
+        if now > self.ts:
+            diff = now - self.ts
+            total_seconds = diff.days * 86400 + diff.seconds
+            if total_seconds > 900:
+                return True
+        else:
+            diff = self.ts - now
+            total_seconds = diff.days * 86400 + diff.seconds
+        seconds = max(total_seconds, 900)
+        print(f"waiting for {seconds} seconds")
+        time.sleep(seconds)
+        return False
+
     def iter(self):
         while True:
-            print("Running:", self.ts.strftime('%m-%d %H:%M'))
+            self.wait_or_continue()
+            print("Processing:", self.ts.strftime('%m-%d %H:%M'))
             timestamp_str = self.ts.strftime('%Y%m%d%H%M%S')
             csv_zip_url = f'{base_url}/{timestamp_str}.export.CSV.zip'
             yield {
                 "_id": timestamp_str,
                 "url": csv_zip_url
             }
-            self.write_ts()
             self.update_ts()
-            diff = datetime.datetime.now() - self.ts
-            total_seconds = diff.days * 86400 + diff.seconds - 3600*8
-            if total_seconds <= 900:
-                time.sleep(900)
+            # 记录更新后的TS（即下次任务TS），如果被kill，下次启动不会重复处理
+            self.write_ts()
 
 
 class GdeltLocal(DataProvider):
