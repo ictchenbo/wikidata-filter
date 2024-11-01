@@ -10,6 +10,12 @@
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
+- 2024.11.01
+1. 增加工具模块 `util.dates`，可获取当前时间`util.dates.current()`(秒) `util.dates.current_date()`（字符串） `util.dates.current_ts()`（毫秒）
+2. 增加工具模块 `util.files`，读取文本文件 `util.files.read_text(filename)`
+3. 增加Loader `JsonFree` 读取格式化JSON文件，自动判断json对象边界
+4. 简化几个Loader的命名：`Text` `Json` `JsonLine` `JsonArray` `CSV` `Excel` ExcelStream`
+
 - 2024.10.28
 1. 合并`Converter`、`FieldConverter`到`Map`算子，支持对字段进行转换，支持设置目标字段
 2. 修改`Select`以支持嵌套字段`user.name.firstname`形式
@@ -19,11 +25,6 @@
 6. 为基类`JsonIterator`增加_set链式方法，简化算子属性设置和子类实现（子类__init__不需要设置每个基类参数）比如可以写：`WriteJson('test_data/test.json')._set(buffer_size=50)`
 7. 重新实现缓冲基类`Buffer`（具有一定大小的缓冲池）、缓冲写基类`BufferedWriter`，文本写基类`WriteText`继承`BufferedWriter`
 
-
-- 2024.10.27
-1. 修改`main_flow` 支持参数设置，详细查看帮助：`python main_flow.py -h` 支持通过命令行提供loader数据
-2. 增加两个简单的loader组件：`ArrayProvider(arr)`、`TextProvider(txt, sep='\n')` 可参考[简单流程](flows/test_simple.yaml)
-3. 简化各流程文件的参数设置 方便快速使用
 
 ## 项目特色
 1. 通过`yaml`格式定义流程，上手容易
@@ -158,8 +159,12 @@ YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 
 Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
-
 ## 开发日志
+- 2024.10.27
+1. 修改`main_flow` 支持参数设置，详细查看帮助：`python main_flow.py -h` 支持通过命令行提供loader数据
+2. 增加两个简单的loader组件：`ArrayProvider(arr)`、`TextProvider(txt, sep='\n')` 可参考[简单流程](flows/test_simple.yaml)
+3. 简化各流程文件的参数设置 方便快速使用
+
 - 2024.10.26
 1. 新增大模型处理算子`LLM` 可调用与OpenAI接口兼容的在线大模型接口，需要提供api_base、api_key，其他参数支持：model、proxy、prompt、temp等
 2. 基于`LLM`实现月之暗面（Kimi）大模型`Moonshot`、Siliconflow平台大模型`Siliconflow`大模型算子
