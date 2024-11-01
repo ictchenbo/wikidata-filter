@@ -4,7 +4,7 @@ arguments: 0
 consts:
   wiki_base: "data/"
 
-loader: JsonLineFileLoader('test_data/p1.json')
+loader: JsonLine('test_data/p1.json')
 #loader: JsonLineFileLoader('test_data/p2_human.json')
 
 nodes:

@@ -2,7 +2,7 @@ name: p1_wikidata_graph
 description: transform wikidata dump to graph, including item/property/item_property/property_property
 arguments: 1
 
-loader: WikidataJsonDump(arg1)
+loader: wikidata.WikidataJsonDump(arg1)
 
 nodes:
   writer1: WriteJson('test_data/item.json')

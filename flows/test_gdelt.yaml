@@ -2,11 +2,10 @@ name: gdelt process using local data
 description: 使用本地数据测试gdelt数据处理
 arguments: 0
 
-#loader: TxtLoader('test_data/masterfilelist.txt'
-loader: TxtLoader('test_data/gdelt_test.csv')
+loader: Text('test_data/gdelt_test.csv')
 
 nodes:
-  row: iterator.web.gdelt.Export
+  row: web.gdelt.Export
   writer: WriteJson('test_data/gdelt.export.json', encoding='utf8')
 
 processor: Chain(row, writer)

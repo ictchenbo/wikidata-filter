@@ -149,3 +149,14 @@ class ConcatFields(JsonIterator):
         vals = [str(data.get(k, '')) for k in self.source_keys]
         data[self.target] = self.sep.join(vals)
         return data
+
+
+class FormatFields(JsonIterator):
+    def __init__(self, key: str, **kwargs):
+        self.key = key
+        self.values = kwargs
+
+    def on_data(self, data: dict or None, *args):
+        if self.key in data:
+            data[self.key] = data[self.key].format(**self.values)
+        return data

@@ -11,7 +11,7 @@ consts:
     database: <dbname>
     collection: table
 
-loader: JsonLineFileLoader(arg1)
+loader: JsonLine(arg1)
 
 nodes:
   print: Print

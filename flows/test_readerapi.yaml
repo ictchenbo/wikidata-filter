@@ -2,11 +2,11 @@ name: craw web page by Reader API
 description: 使用Reader API对指定URL的网页获取其内容
 arguments: 0
 
-loader: TxtLoader('test_data/urls.txt')
+loader: Text('test_data/urls.txt')
 
 nodes:
   msg: Prompt('-----------------')
-  row: iterator.web.readerapi.ReaderAPI(api_key='jina_546c74213c784959a87c39b75a6efdaeQxwqYuQ-tIfMcHyO70FMWQNraqAb')
+  row: web.readerapi.ReaderAPI(api_key='jina_546c74213c784959a87c39b75a6efdaeQxwqYuQ-tIfMcHyO70FMWQNraqAb')
   print: Print
 
 processor: Chain(msg, row, print)

@@ -5,7 +5,7 @@ consts:
   path: $PATH
 
 #loader: RandomGenerator(5)
-loader: TextProvider(path, sep=';')
+loader: Text(path, sep=';')
 
 nodes:
   print: Print

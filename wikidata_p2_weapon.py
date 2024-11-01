@@ -2,7 +2,7 @@ if __name__ == '__main__':
     import sys
 
     from wikidata_filter import run
-    from wikidata_filter.loader import JsonLineFileLoader
+    from wikidata_filter.loader import JsonLine
     from wikidata_filter.iterator import *
     from wikidata_filter.iterator.wikidata import *
     from wikidata_filter.iterator.matcher.wikidata import WikidataMatcherV2
@@ -37,4 +37,4 @@ if __name__ == '__main__':
         Count()
     )
 
-    run(JsonLineFileLoader(input_file), chains)
+    run(JsonLine(input_file), chains)

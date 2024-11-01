@@ -4,7 +4,7 @@ from wikidata_filter.loader.base import DataProvider
 DATETIME_FORMAT = '%Y-%m-%d %H:%M'
 
 
-class ExcelLoader(DataProvider):
+class Excel(DataProvider):
     """
     Excel文件内容加载
     """
@@ -59,7 +59,7 @@ class ExcelLoader(DataProvider):
                     yield sheet, row
 
 
-class ExcelLoaderStream(DataProvider):
+class ExcelStream(DataProvider):
     def __init__(self, input_file: str, sheets: list = None, with_header: bool = True):
         self.input_file = input_file
         self.sheets = sheets

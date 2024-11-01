@@ -1,8 +1,8 @@
 name: GTD get data test
 description: parse GTD Excel from https://www.start.umd.edu/gtd/contact/download
 
-loader: ExcelLoaderStream('data/gtd/globalterrorismdb_0522dist.xlsx')
-#loader: ExcelLoader('data/gtd/globalterrorismdb_2021Jan-June_1222dist.xlsx')
+loader: ExcelStream('data/gtd/globalterrorismdb_0522dist.xlsx')
+
 
 nodes:
   print: Print

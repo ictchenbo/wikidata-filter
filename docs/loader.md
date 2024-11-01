@@ -9,12 +9,14 @@
 2. 抽象基类 `FileLoader` 文件数据加载器
 
 ### 文件加载器
-1. 按行读取文本文件 `TxtLoader(input_file, encoding="utf8")` 每行为字符串
-2. JSON行文件 `JsonLineFileLoader(input_file, encoding="utf8")` 每行按照JSON进行解析，以字典`dict`结构进行传递。
-3. JSON数组文件 `JsonArrayLoader(input_file, encoding="utf8")` 整个文件为一个JSON数组，依次传递数组中的每个元素。
-4. CSV文件 `CSVLoader(input_file, sep: str = ',', with_header: bool = False, encoding='utf8')` 按照CSV文件进行解析，如果带有表头，则以字典结构进行传递，否则以单元格列表进行传递。
-5. Excel文件流式 `ExcelLoaderStream(input_file, sheets, with_header)`
-6. Excel文件全量 `ExcelLoader(input_file, sheets, with_header)`
+1. 按行读取文本文件 `Text(input_file, encoding="utf8")` 每行为字符串直接传递。
+2. JSON行文件 `JsonLine(input_file, encoding="utf8")` 每行按照JSON进行解析并传递。
+3. JSON数组文件 `JsonArray(input_file, encoding="utf8")` 整个文件为一个JSON数组，依次传递数组中的每个元素。
+4. JSON文件 `Json(input_file, encoding="utf8")` 整个文件为一个JSON对象传递给后续节点。
+5. JSON自由文件 `JsonFree(input_file, encoding="utf8")` 针对格式化json文件，自动检测JSON对象并传递给后续节点。
+6. CSV文件 `CSV(input_file, sep: str = ',', with_header: bool = False, encoding='utf8')` 按照CSV文件进行解析，如果带有表头，则以字典结构进行传递，否则以单元格列表进行传递。
+7. Excel文件流式 `ExcelStream(input_file, sheets, with_header)`
+8. Excel文件全量 `Excel(input_file, sheets, with_header)`
 
 
 ### wikidata文件
@@ -36,7 +38,7 @@
 
 
 ### GTD（全球恐怖主义事件库）
-GTD文件为Excel，通过`ExcelLoaderStream` 进行加载，可参考`flows/gtd_test.yaml`
+GTD文件为Excel，通过`ExcelStream` 进行加载，可参考`flows/gtd_test.yaml`
 
 
 ### 数据库加载器

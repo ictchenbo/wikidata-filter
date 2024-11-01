@@ -1,18 +1,15 @@
 import json
 
-from wikidata_filter.loader import LineBasedFileLoader, FileLoader
-from wikidata_filter.util.file_loader import open_file
+from wikidata_filter.loader.file import Text, FileLoader
 
 
-class WikidataJsonDump(LineBasedFileLoader):
+class WikidataJsonDump(Text):
     """
     Wikidata全量数据，Json格式，是一个非常大的Json Array，第一行为[，最后一行为]，中间每行为一个Json，行末带逗号
     尽管理论上可以直接用json.load，但并不推荐！
     """
     def __init__(self, input_file: str):
-        super().__init__()
-        self.instream = open_file(input_file)
-        self.hold = True
+        super().__init__(input_file)
 
     def iter(self):
         for line in super().iter():

@@ -8,7 +8,7 @@ consts:
       - Q7275
   wiki_base: "data/"
 
-loader: JsonLineFileLoader('test_data/p1.json')
+loader: JsonLine('test_data/p1.json')
 
 nodes:
   props: util.SetFromCSV('config/props_country.txt')

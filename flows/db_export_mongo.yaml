@@ -1,0 +1,16 @@
+name: copy mongo table from one server to another
+arguments: 1
+consts:
+  mongo1:
+    host: 10.60.1.145
+    port: 27017
+    database: gdelt
+
+loader: database.MongoLoader(**mongo1, collection=arg1)
+
+nodes:
+  print: Print
+  counter: Count
+  writer: WriteJson(arg1+'.json')
+
+processor: Chain(print, counter)

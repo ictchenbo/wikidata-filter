@@ -1,0 +1,21 @@
+name: load json to clickhouse
+arguments: 0
+consts:
+  click1:
+    host: 10.208.57.5
+    tcp_port: 59000
+    database: gdelt
+  mongo1:
+    host: 10.60.1.145
+    port: 27017
+    database: gdelt
+
+loader: database.CKLoader(**click1, table='domain_bnn')
+
+nodes:
+  print: Print
+  counter: Count
+  rename: RenameFields(domain="_id")
+  writer: database.MongoWriter(**mongo1, collection='domain')
+
+processor: Chain(print, rename, writer, counter)

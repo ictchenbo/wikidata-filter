@@ -1,0 +1,13 @@
+name: p3_relation_human_human
+description: 基于`p2_human.yaml`过滤的人物实体，生成人物-人物关系数据，
+arguments: 3
+
+loader: JsonLine(arg1)
+
+nodes:
+  human_set: util.SetFromJSON(arg2)
+  filter: ValuesFilter(props_set=human_set)
+  to_relation: AsRelation
+  writer: WriteJson(arg3)
+
+processor: Chain(filter, to_relation, writer)

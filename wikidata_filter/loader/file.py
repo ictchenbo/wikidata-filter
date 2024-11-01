@@ -16,70 +16,42 @@ class FileLoader(DataProvider):
             self.instream.close()
 
 
-class LineBasedFileLoader(FileLoader):
-    """
-    基于行的文件加载器
-    """
-    def __init__(self, encoding="utf8"):
-        super().__init__()
-        self.encoding = encoding
-
-    def iter(self):
-        for line in self.instream:
-            yield line.decode(self.encoding)
-
-
 class CompressFileLoader(FileLoader):
     def __init__(self, input_file, mode='rb'):
         super().__init__()
         self.instream = open_file(input_file, mode)
 
 
-class JsonLineFileLoader(LineBasedFileLoader):
+class Text(FileLoader):
+    """基于行的文本文件加载器"""
+    def __init__(self, input_file: str, encoding='utf8'):
+        self.encoding = encoding
+        self.instream = open_file(input_file, "rb")
+        self.hold = True
+
+    def iter(self):
+        for line in self.instream:
+            yield line.decode(self.encoding)
+
+
+class JsonLine(Text):
     """
      Json行文件
     """
     def __init__(self, input_file, encoding="utf8"):
-        super().__init__(encoding=encoding)
-        if isinstance(input_file, str):
-            self.instream = open_file(input_file, mode='rb')
-            self.hold = True
-        else:
-            self.instream = input_file
+        super().__init__(input_file, encoding=encoding)
 
     def iter(self):
         for line in super().iter():
             yield json.loads(line)
 
 
-class JsonLoader(FileLoader):
-    def __init__(self, input_file, encoding="utf8"):
-        super().__init__()
-        if isinstance(input_file, str):
-            self.instream = open_file(input_file, mode='rb')
-            self.hold = True
-        else:
-            self.instream = input_file
-        self.encoding = encoding
-
-    def iter(self):
-        content = self.instream.read().decode(self.encoding)
-        row = json.loads(content)
-        yield row
-
-
-class JsonArrayLoader(FileLoader):
+class JsonArray(Text):
     """
     整个文件作为JsonArray
     """
     def __init__(self, input_file, encoding="utf8"):
-        super().__init__()
-        if isinstance(input_file, str):
-            self.instream = open_file(input_file, mode='rb')
-            self.hold = True
-        else:
-            self.instream = input_file
-        self.encoding = encoding
+        super().__init__(input_file, encoding)
 
     def iter(self):
         content = self.instream.read().decode(self.encoding)
@@ -88,13 +60,45 @@ class JsonArrayLoader(FileLoader):
             yield item
 
 
-class CSVLoader(LineBasedFileLoader):
+class Json(Text):
+    """整个文件作为一个JSON对象（不管是dict还是list）"""
+    def __init__(self, input_file, encoding="utf8"):
+        super().__init__(input_file, encoding)
+
+    def iter(self):
+        content = self.instream.read().decode(self.encoding)
+        row = json.loads(content)
+        yield row
+
+
+class JsonFree(Text):
+    """对格式化JSON文件进行加载 自动检测边界"""
+    def __init__(self, input_file, encoding="utf8"):
+        super().__init__(input_file, encoding)
+
+    def iter(self):
+        lines = []
+        for line in super().iter():
+            line_s = line.rstrip()
+            if lines:
+                lines.append(line_s)
+                if line_s == ']' or line_s == '}':
+                    one = json.loads(''.join(lines))
+                    yield one
+                    lines.clear()
+            else:
+                if not line_s:
+                    continue
+                lines.append(line_s)
+        if lines:
+            yield ''.join(lines)
+
+
+class CSV(Text):
     def __init__(self, input_file: str, sep: str = ',', header: bool = True, encoding='utf8'):
-        super().__init__(encoding=encoding)
+        super().__init__(input_file, encoding=encoding)
         self.header = header
         self.sep = sep
-        self.instream = open_file(input_file, "rb")
-        self.hold = True
 
     def iter(self):
         try:
@@ -111,12 +115,6 @@ class CSVLoader(LineBasedFileLoader):
                     yield dict(zip(header, row))
             else:
                 yield row
-
-
-class TxtLoader(LineBasedFileLoader):
-    def __init__(self, input_file: str, encoding='utf8'):
-        super().__init__(encoding=encoding)
-        self.instream = open_file(input_file, "rb")
 
 
 class DirectoryLoader(DataProvider):

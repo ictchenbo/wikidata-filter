@@ -6,7 +6,7 @@ consts:
     host: localhost
     tcp_port: 9000
 
-loader: JsonArrayLoader(arg1)
+loader: JsonArray(arg1)
 
 nodes:
   print: Print

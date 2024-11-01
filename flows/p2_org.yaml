@@ -2,7 +2,7 @@ name: p2_org
 description: 输入wikidata简化后JSON数据(如`p1_idname_simple.yaml`的输出) 过滤出组织机构相关实体 并筛选出主要属性
 arguments: 0
 
-loader: JsonLineFileLoader("test_data/p1.json")
+loader: JsonLine("test_data/p1.json")
 
 nodes:
   types: util.SetFromCSV('config/org_type.txt')

@@ -1,4 +1,4 @@
-from wikidata_filter.loader import DataProvider, FileLoader
+from wikidata_filter.loader import DataProvider
 from wikidata_filter.loader.base import ArrayProvider, TextProvider
 from wikidata_filter.loader.wikidata import WikidataJsonDump
 from wikidata_filter.iterator.base import JsonIterator
