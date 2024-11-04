@@ -128,5 +128,11 @@ class ProcessFlow:
     def init_nodes(self, nodes_def: dict):
         for k, expr in nodes_def.items():
             expr = expr.strip()
-            node = self.comp_mgr.init_node(expr)
+
+            # 特殊逻辑 支持nodes中初始化loader组件
+            label = None
+            if k.startswith("loader"):
+                label = "loader"
+
+            node = self.comp_mgr.init_node(expr, label=label)
             self.comp_mgr.register_var(k, node)

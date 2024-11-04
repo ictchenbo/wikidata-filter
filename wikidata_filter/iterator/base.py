@@ -24,13 +24,21 @@ class JsonIterator:
         """"结束处理"""
         pass
 
+    @property
+    def name(self):
+        return self.__class__.__name__
+
+    def __str__(self):
+        return f'{self.name}[multiple={self.return_multiple}]'
+
 
 class Group(JsonIterator):
     """
     迭代器组 将多个迭代器组合在一起
     """
-    def __init__(self, *args):
+    def __init__(self, *args, skip_none=True):
         super().__init__()
+        self.skip_none = skip_none
         self.iterators = [*args]
 
     def add(self, iterator: JsonIterator):
@@ -54,12 +62,14 @@ class Chain(Group):
     """
     链式 前一个的输出作为后一个的输入
     """
-    def __init__(self, *args, ignore_errors=True):
-        super().__init__(*args)
+    def __init__(self, *args, ignore_errors=True, skip_none=True):
+        super().__init__(*args, skip_none=skip_none)
         self.ignore_errors = ignore_errors
         self.return_multiple = True
 
     def on_data(self, data: dict or None, *args):
+        if self.skip_none and data is None:
+            return None
         queue = [data]
         for it in self.iterators:
             new_queue = []  # cache for next processor, though there's only one item for most time
@@ -98,6 +108,7 @@ class Chain(Group):
 
 
 class Repeat(JsonIterator):
+    """重复发送某个数据多次"""
     def __init__(self, num_of_repeats: int):
         super().__init__()
         self.num_of_repeats = num_of_repeats

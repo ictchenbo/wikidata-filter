@@ -6,7 +6,14 @@ def get_text(url):
 
 
 def get_json(url):
-    return requests.get(url).json()
+    try:
+        res = requests.get(url)
+        if res.status_code == 200:
+            return res.json()
+        print("Error:", res.text)
+        return None
+    except:
+        print("Error occur: requests.get", url)
 
 
 def get_file(url, most_times=5):

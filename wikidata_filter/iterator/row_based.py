@@ -1,4 +1,5 @@
 from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.util.dates import current_ts
 
 
 class ReverseKV(JsonIterator):
@@ -63,3 +64,11 @@ class RuleBasedTransform(JsonIterator):
                 ret[t] = res
         return ret
 
+
+class AddTS(JsonIterator):
+    def __init__(self, key: str):
+        self.key = key
+
+    def on_data(self, data: dict, *args):
+        data[self.key] = current_ts()
+        return data

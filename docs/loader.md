@@ -8,6 +8,9 @@
 1. 抽象基类 `DataLoader` 定义了数据加载器的接口
 2. 抽象基类 `FileLoader` 文件数据加载器
 
+### 辅助加载器
+1. 定时轮询加载器`TimedLoader` 可基于一个已有的加载器进行定时轮询 适合数据库轮询、服务监控等场景
+
 ### 文件加载器
 1. 按行读取文本文件 `Text(input_file, encoding="utf8")` 每行为字符串直接传递。
 2. JSON行文件 `JsonLine(input_file, encoding="utf8")` 每行按照JSON进行解析并传递。
@@ -39,6 +42,10 @@
 
 ### GTD（全球恐怖主义事件库）
 GTD文件为Excel，通过`ExcelStream` 进行加载，可参考`flows/gtd_test.yaml`
+
+
+### Web API加载器
+1. 简单URL加载器（返回JSON的接口） `web.api.URLSimple(url)`
 
 
 ### 数据库加载器
@@ -95,6 +102,7 @@ database.MongoLoader(host='10.208.57.13', table='nodes')
 
 4. MySQL `MySQLLoader` 参数同ClickHouse
 5. PostgresSQL `PostgresSQLLoader` 参数同ClickHouse
+
 
 ### 其他加载器
 

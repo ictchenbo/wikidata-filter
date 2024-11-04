@@ -1,4 +1,6 @@
+import time
 from random import random
+from wikidata_filter.util.dates import current_time
 
 
 class DataProvider:
@@ -11,6 +13,10 @@ class DataProvider:
 
     def close(self):
         pass
+
+    @property
+    def name(self):
+        return self.__class__.__name__
 
 
 class ArrayProvider(DataProvider):
@@ -35,6 +41,7 @@ class TextProvider(DataProvider):
 
 
 class RandomGenerator(DataProvider):
+    """随机生成器"""
     def __init__(self, num_of_times: int = 0):
         self.num_of_times = num_of_times
 
@@ -45,3 +52,39 @@ class RandomGenerator(DataProvider):
         else:
             while True:
                 yield random()
+
+
+class TimedLoader(DataProvider):
+    """定时轮询器 定时无限（或指定次数）调用提供的Loader 比如定时进行数据库轮询或接口轮询"""
+    def __init__(self, that: DataProvider, interval: int = 15, num_of_times: int = 0):
+        self.that = that
+        self.interval = interval
+        self.num_of_times = num_of_times
+
+    def iter(self):
+        counter = 0
+        while True:
+            print(f"{self} running at: ", current_time())
+            counter += 1
+            for item in self.that.iter():
+                yield item
+
+            if 0 < self.num_of_times <= counter:
+                break
+
+            time.sleep(self.interval)
+
+    def __str__(self):
+        return f"TimedPull[{self.that.name}, interval={self.interval}]"
+
+
+class FuncCallProvider(DataProvider):
+    """函数调用包装器 提供调用函数的结果"""
+    def __init__(self, function, *args, **kwargs):
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
+
+    def iter(self):
+        res = self.function(*self.args, **self.kwargs)
+        yield res
