@@ -9,9 +9,9 @@ consts:
 
 nodes:
   loader: web.api.URLSimple('http://10.60.1.145:8080/goinv3/api/v1/dashboard/_count')
-  date1: util.dates.current_time('%Y%m%d%H%M%S')
+#  date1: util.dates.current_time('%Y%m%d%H%M%S')
   select: Select('data', 'status')
-  add_fields: AddFields(_id=date1, app='goinv3', key='dashboard')
+  add_fields: AddFields(app='goinv3', key='dashboard')
   add_ts: AddTS('created_time')
   copy_ts: CopyFields(created_time='modified_time')
   writer: database.MongoWriter(**mongo, buffer_size=1)
