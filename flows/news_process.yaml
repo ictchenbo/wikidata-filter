@@ -1,5 +1,5 @@
 name: process news from mongodb
-description: 从MongoDB加载新闻数据，进行主题分类、地点识别，建立ES全文索引和Qdrant向量化索引。ES索引mapping查看`config/es-mappings/news.json`
+description: 从MongoDB轮询读取新闻，进行主题分类、地点识别，建立ES全文索引和Qdrant向量化索引。ES索引mapping查看`config/es-mappings/news.json`
 arguments: 0
 consts:
   mongo1:
@@ -11,9 +11,11 @@ consts:
     port: 9200
     index: news
     buffer_size: 10
+  qdrant_config:
+    host: 10.60.1.145
+    port: 6333
+    collection: chunk
   chatglm4: http://10.208.63.29:8888
-  gogpt_13b: http://10.208.63.29:8890
-  baichuan_13b: http://10.208.63.29:8891
   bge_large_zh: http://10.208.63.29:8001/embed
   renames:
     content.title: title
@@ -21,9 +23,9 @@ consts:
     content.date: date
     event_time_date: publish_time
 
-loader: database.MongoLoader(**mongo1)
-
 nodes:
+  loader: database.MongoLoader(**mongo1, sortby="_id", limit=1000)
+
   prompt1: util.files.read_text('config/prompt/news_classify.txt')
   prompt2: util.files.read_text('config/prompt/news_country_rec.txt')
 
@@ -34,17 +36,11 @@ nodes:
   remove: RemoveFields('cont')
   chain1: Chain(select, rename, concat, short_content, remove)
 
-  class1: model.GoGPT(api_base=chatglm4, field='short_content', prompt=prompt1)
-  rename1: RenameFields(_llm='tag1')
-  llm1: Chain(class1, rename1)
+  class1: model.GoGPT(api_base=chatglm4, field='short_content', prompt=prompt1, target_key='tag1')
+  class2: model.GoGPT(api_base=chatglm4, field='short_content', prompt=prompt2, target_key='tag2')
 
-  class2: model.GoGPT(api_base=chatglm4, field='short_content', prompt=prompt2)
-  rename2: RenameFields(_llm='tag2')
-  llm2: Chain(class2, rename2)
-
-  tags: nlp.tags.Splitter('tag1', 'tag2')
   remove2: RemoveFields('short_content')
-  print: Print
+  tags: nlp.tags.Splitter('tag1', 'tag2')
   writer: database.ESWriter(**es_config)
 
   counter: Count(ticks=10)
@@ -55,4 +51,5 @@ nodes:
   write_qd: database.Qdrant(**qdrant_config)
   write2: Chain(chunk, flat, vector, write_qd)
 
-processor: Chain(chain1, llm1, llm2, remove2, tags, writer, write2, counter)
+loader: TimedLoader(loader, interval=3600)
+processor: Chain(chain1, class1, class2, remove2, tags, writer, write2, counter)

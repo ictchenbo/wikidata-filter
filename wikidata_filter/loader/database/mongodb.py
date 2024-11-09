@@ -1,5 +1,3 @@
-import time
-from wikidata_filter.util.dates import current_time
 from wikidata_filter.loader.base import DataProvider
 
 
