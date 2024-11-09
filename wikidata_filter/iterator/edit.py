@@ -30,23 +30,33 @@ class Flat(JsonIterator):
       - 对于字典：如果flat_mode='key'，则对key打散，否则对value打散
     如果提供了key，则针对该字段进行上述扁平化。
     """
-    def __init__(self, key: str = None, flat_mode: str = 'value'):
+    def __init__(self, key: str = None, flat_mode: str = 'value', inherit_props: bool = False):
         self.return_multiple = True
         self.key = key
         self.flat_mode = flat_mode
+        self.inherit_props = inherit_props
+
+    def new_item(self, data: dict, item):
+        ret = dict(**data)
+        ret[self.key] = item
+        return ret
 
     def on_data(self, data, *args):
         _data = data.get(self.key) if self.key else data
         _data = self.transform(_data)
         if isinstance(_data, list) or isinstance(_data, tuple):
-            for item in _data:
-                yield item
+            if self.inherit_props and isinstance(data, dict):
+                for item in _data:
+                    yield self.new_item(data, item)
+            else:
+                for item in _data:
+                    yield item
         elif isinstance(_data, dict):
             if self.flat_mode == 'key':
                 for key in _data.keys():
                     yield key
             else:
-                for key, val in data.items():
+                for key, val in _data.items():
                     if isinstance(val, dict):
                         val["_key"] = key
                     yield val

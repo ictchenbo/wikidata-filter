@@ -166,3 +166,4 @@ tests/
 local/
 
 .ts
+test*.py

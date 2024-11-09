@@ -1,7 +1,6 @@
 # wikidata-filter
-一个简单但是实用、灵活、可配置、开箱即用的Python数据处理框架，提供**Wikidata** / **Wikipedia** / **GDELT**等多种开源数据的处理流程；
-支持txt/json/csv/excel等文件格式、MySQL/PostgreSQL/MongoDB/ClickHouse/ElasticSearch等数据库作为输入和输出；
-提供**大模型**、**Web API**等多种处理算子
+一个简单实用、灵活可配、开箱即用的Python数据处理（ETL）框架，提供**Wikidata** / **Wikipedia** / **GDELT**等多种开源情报数据的处理流程；
+支持**大模型**、**API**、常见文件、数据库等多种输入输出及转换处理，支撑各类数据接入、大数据处理、AI智能分析任务。
 
 项目持续丰富中，欢迎反馈各类数据处理需求，持续丰富Data Intelligence
 
@@ -10,28 +9,25 @@
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
-- 2024.11.04
-1. 新增轮询加载器`TimedLoader(loader)` 可基于一个已有的加载器进行定时轮询 适合数据库轮询、服务监控等场景
-2. 新增URL加载器`web.api.URLSimple(url)` 接口返回作为JSON数据传递
-3. 修改`flow_engine` 实现nodes中定义loader （节点名以"loader"开头）
-4. 新增流程[查看](flows/api_monitor.yaml) 实现对URL接口持续监控
-
-
-- 2024.11.01
-1. 增加工具模块 `util.dates`，可获取当前时间`util.dates.current()`(秒) `util.dates.current_date()`（字符串） `util.dates.current_ts()`（毫秒）
-2. 增加工具模块 `util.files`，读取文本文件 `util.files.read_text(filename)`
-3. 增加Loader `JsonFree` 读取格式化JSON文件，自动判断json对象边界
-4. 简化几个Loader的命名：`Text` `Json` `JsonLine` `JsonArray` `CSV` `Excel` `ExcelStream`
+- 2024.11.09
+1. 新增文本分段算子 `nlp.splitter.TextSplit(key, target_key, algorithm='simple')` 实现文本chunk化，便于建立向量化索引。chunk算法持续扩展
+2. 新增qdrant数据库算子 `database.Qdrant(host: str = 'localhost', port: int = 6333, api_key=None, collection: str = "chunks", buffer_size: int = 100, vector_field='vector')`
+3. 新增向量化算子 `model.embed.Local(api_base: str, field: str, target_key: str = '_embed')` 调用向量化服务实现对指定文本字段生成向量。下一步实现OpenAI接口的向量化算子
+4. 修改[新闻处理流](flows/news_process.yaml)，增加分段->向量化->写入qdrant的处理节点
 
 ## 项目特色
-1. 通过`yaml`格式定义流程，上手容易
-2. 内置数十种ETL算子，配置简单
-3. 支持常见数据库的读取和写入
-4. 内置特色数据资源处理流程：
-   - wikipedia 维基百科
-   - wikidata 维基数据
-   - GDELT 谷歌全球社会事件数据库 （流式，直接下载）
-   - GTD 全球恐怖主义事件库 
+1. 通过**yaml**格式定义流程，上手容易
+2. 内置数十种ETL算子，配置简单，包括大模型处理、数据库读写、API访问、文件读写等多种类型
+3. 内置特色数据资源处理流程，开箱即用：
+   - wikipedia 维基百科[页面处理](wikipedia_page.py) [建立索引](flows/index_wikipedia.yaml) [ES索引配置](config/es-mappings/enwiki.json)
+   - [wikidata 维基数据](flows/p1_wikidata_graph.yaml)
+   - [GDELT 谷歌全球社会事件数据库 （流式，直接下载）](flows/gdelt.yaml)
+   - [GTD 全球恐怖主义事件库](flows/test_gtd.yaml)
+   - [民调数据（经济学人美国大选专题）](flows/test_polls.yaml)
+   - [新闻文本解析&向量化索引](flows/news_process.yaml)
+   - [ReaderAPI](flows/test_readerapi.yaml)
+   - [大模型处理](flows/test_llm.yaml)
+   - more...
 
 
 ## 核心概念
@@ -157,6 +153,18 @@ YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
 ## 开发日志
+- 2024.11.04
+1. 新增轮询加载器`TimedLoader(loader)` 可基于一个已有的加载器进行定时轮询 适合数据库轮询、服务监控等场景
+2. 新增URL加载器`web.api.URLSimple(url)` 接口返回作为JSON数据传递
+3. 修改`flow_engine` 实现nodes中定义loader （节点名以"loader"开头）
+4. 新增流程[查看](flows/api_monitor.yaml) 实现对URL接口持续监控
+
+- 2024.11.01
+1. 增加工具模块 `util.dates`，可获取当前时间`util.dates.current()`(秒) `util.dates.current_date()`（字符串） `util.dates.current_ts()`（毫秒）
+2. 增加工具模块 `util.files`，读取文本文件 `util.files.read_text(filename)`
+3. 增加Loader `JsonFree` 读取格式化JSON文件，自动判断json对象边界
+4. 简化几个Loader的命名：`Text` `Json` `JsonLine` `JsonArray` `CSV` `Excel` `ExcelStream`
+
 - 2024.10.28
 1. 合并`Converter`、`FieldConverter`到`Map`算子，支持对字段进行转换，支持设置目标字段
 2. 修改`Select`以支持嵌套字段`user.name.firstname`形式

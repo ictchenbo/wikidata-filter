@@ -117,9 +117,9 @@ class JsonIterator:
 提供了月之暗面（Kimi）、Siliconflow、天玑等模型/模型平台服务调用，作为数据处理算子
 1. Siliconflow平台 `model.Siliconflow(api_key,field,proxy,model,prompt,ignore_errors=True)`
 2. 天玑平台 `model.GoGPT(api_base,field,prompt,ignore_errors=True)` 
-
+3. 向量化处理 `model.embed.Local(api_base: str, field: str, target_key: str = '_embed')` 调用向量化服务实现对指定文本字段生成向量。
 
 ### 自然语言处理
 模块：`wikidata_filter.iterator.nlp`
 1. 标签分割 `nlp.tags.Splitter(*keys)` 对指定字段进行分割处理，转换为标签数组
-
+2. 文本分段（chunk化） `nlp.splitter.TextSplit(key, target_key, algorithm='simple')` 实现文本chunk化，便于建立向量化索引。

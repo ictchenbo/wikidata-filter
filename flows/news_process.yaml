@@ -1,5 +1,5 @@
 name: process news from mongodb
-description: 从MongoDB加载新闻数据，进行主题分类、地点识别，写入ES。ES索引mapping查看`config/es-mappings/news.json`
+description: 从MongoDB加载新闻数据，进行主题分类、地点识别，建立ES全文索引和Qdrant向量化索引。ES索引mapping查看`config/es-mappings/news.json`
 arguments: 0
 consts:
   mongo1:
@@ -14,6 +14,7 @@ consts:
   chatglm4: http://10.208.63.29:8888
   gogpt_13b: http://10.208.63.29:8890
   baichuan_13b: http://10.208.63.29:8891
+  bge_large_zh: http://10.208.63.29:8001/embed
   renames:
     content.title: title
     content.content: content
@@ -45,6 +46,13 @@ nodes:
   remove2: RemoveFields('short_content')
   print: Print
   writer: database.ESWriter(**es_config)
+
   counter: Count(ticks=10)
 
-processor: Chain(chain1, llm1, llm2, remove2, tags, writer, counter)
+  chunk: nlp.splitter.TextSplit(key='content',target_key='chunks')
+  flat: Flat(key='chunks', inherit_props=True)
+  vector: model.embed.Local(api_base=bge_large_zh, field='chunks', target_key='vector')
+  write_qd: database.Qdrant(**qdrant_config)
+  write2: Chain(chunk, flat, vector, write_qd)
+
+processor: Chain(chain1, llm1, llm2, remove2, tags, writer, write2, counter)
