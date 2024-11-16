@@ -1,11 +1,12 @@
 import time
+from typing import Iterable, Any
 from random import random
 from wikidata_filter.util.dates import current_time
 
 
 class DataProvider:
     """数据提供器接口 为流程供给数据"""
-    def iter(self):
+    def iter(self) -> Iterable[Any]:
         pass
 
     def __call__(self, *args, **kwargs):
@@ -17,6 +18,9 @@ class DataProvider:
     @property
     def name(self):
         return self.__class__.__name__
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class ArrayProvider(DataProvider):
@@ -40,7 +44,7 @@ class TextProvider(DataProvider):
             yield item
 
 
-class RandomGenerator(DataProvider):
+class Random(DataProvider):
     """随机生成器"""
     def __init__(self, num_of_times: int = 0):
         self.num_of_times = num_of_times

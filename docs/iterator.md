@@ -24,7 +24,7 @@ class JsonIterator:
 提供`_set`方法，支持链式设置组件属性，如`Count()._set(ticks=100)._set(label='aaa')`
 
 ### 组合节点
-1. 并行处理 `Group(*nodes)`
+1. 并行处理 `Fork(*nodes)`
 2. 串行处理 `Chain(*nodes)`
 3. 重复数据 `Repeat(num_of_repeats)`
 
@@ -57,7 +57,7 @@ class JsonIterator:
 ### 缓冲处理基类
 1. 基本缓冲类 收集一批数据再集中往后传递 `Buffer(buffer_size=1000,mode='batch')`
 2. 缓冲写基类 用于进行数据库和文件带缓冲输出 `BufferedWriter(buffer_size=1000,mode='single')`
-3. 分组处理 `GroupBy(key, emit_fast=True)` 对数据进行分组，然后整组往后传递
+3. 分组处理 `Group(by, emit_fast=True)` 对数据进行分组，然后整组往后传递
 
 ### 输出文件
 1. 文本文件(带缓冲) `WriteText(output_file: str, append: bool = False, encoding: str = "utf8", buffer_size: int = 1000, sep: str = '\n')`
@@ -123,3 +123,9 @@ class JsonIterator:
 模块：`wikidata_filter.iterator.nlp`
 1. 标签分割 `nlp.tags.Splitter(*keys)` 对指定字段进行分割处理，转换为标签数组
 2. 文本分段（chunk化） `nlp.splitter.TextSplit(key, target_key, algorithm='simple')` 实现文本chunk化，便于建立向量化索引。
+
+
+### OpenAPI格式转换
+模块：`wikidata_filter.iterator.web.openapi`
+1. 解析OpenAPI `iterator.web.openapi.FromOpenAPI`
+2. 生成OpenAPI `iterator.web.openapi.ToOpenAPI`

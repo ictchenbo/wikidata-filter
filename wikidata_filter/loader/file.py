@@ -10,16 +10,14 @@ class FileLoader(DataProvider):
     """
     hold: bool = False
     instream = None
+    filename: str = None
 
     def close(self):
         if self.hold and self.instream:
             self.instream.close()
 
-
-class CompressFileLoader(FileLoader):
-    def __init__(self, input_file, mode='rb'):
-        super().__init__()
-        self.instream = open_file(input_file, mode)
+    def __str__(self):
+        return f"{self.name}('{self.filename}')"
 
 
 class Text(FileLoader):
@@ -28,6 +26,7 @@ class Text(FileLoader):
         self.encoding = encoding
         self.instream = open_file(input_file, "rb")
         self.hold = True
+        self.filename = input_file
 
     def iter(self):
         for line in self.instream:
@@ -82,6 +81,7 @@ class JsonFree(Text):
             line_s = line.rstrip()
             if lines:
                 lines.append(line_s)
+                # 遇到]或}行 认为是JSON对象或JSON数组的结束
                 if line_s == ']' or line_s == '}':
                     one = json.loads(''.join(lines))
                     yield one
@@ -90,11 +90,10 @@ class JsonFree(Text):
                 if not line_s:
                     continue
                 lines.append(line_s)
-        if lines:
-            yield ''.join(lines)
 
 
 class CSV(Text):
+    """读取CSV文件 每行作为一个对象传输"""
     def __init__(self, input_file: str, sep: str = ',', header: bool = True, encoding='utf8'):
         super().__init__(input_file, encoding=encoding)
         self.header = header
@@ -117,8 +116,14 @@ class CSV(Text):
                 yield row
 
 
-class DirectoryLoader(DataProvider):
-    def __init__(self, directory_path: str, suffix: str = None):
+class Directory(DataProvider):
+    """扫描文件夹 对指定后缀的文件按照默认参数进行读取"""
+    def __init__(self, directory_path: str, *suffix, recursive: bool = False):
+        """
+        :param directory_path 指定文件夹路径
+        :param *suffix 文件的后缀
+        :param recursive 是否递归遍历文件夹
+        """
         self.path = directory_path
         self.suffix = suffix
-
+        self.recursive = recursive

@@ -112,6 +112,8 @@ class ProcessFlow:
         # init processor, maybe None
         self.processor = self.comp_mgr.init_node(flow.get('processor'), label='iterator')
 
+        self.end_signal = flow.get("finish_signal") is True
+
     def init_base_envs(self, *args, **kwargs):
         for i in range(len(args)):
             self.comp_mgr.register_var(f'arg{i + 1}', args[i])

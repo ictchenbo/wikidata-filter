@@ -1,19 +1,33 @@
+from typing import Any
+from types import GeneratorType
 from wikidata_filter.loader import DataProvider
 from wikidata_filter.loader.base import ArrayProvider, TextProvider
 from wikidata_filter.loader.wikidata import WikidataJsonDump
-from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.base import Message, JsonIterator
 from wikidata_filter.flow_engine import ProcessFlow
 
 
 def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False):
+    print(f"Run flow: \nloader: {data_provider}\nprocessor: {iterator}\nfinish_signal: {finish_signal}")
+    print("------------------------")
     iterator.on_start()
+
+    # 注意，由于iterator.on_data可能包含yield，因此仅调用iterator.on_data(data)可能不会真正执行
+    def execute(data: Any, *args):
+        res = iterator.on_data(data, *args)
+        if isinstance(res, GeneratorType):
+            for _ in res:
+                pass
+
     for item in data_provider.iter():
-        iterator.on_data(item)
+        execute(item)
+
     data_provider.close()
     if finish_signal:
-        iterator.on_data(None)
+        execute(Message.end())
 
     iterator.on_complete()
+    print("------------------------")
 
 
 def run_flow(flow_file: str, *args, finish_signal: bool = False, input_data=None):
@@ -29,7 +43,7 @@ def run_flow(flow_file: str, *args, finish_signal: bool = False, input_data=None
             _loader = ArrayProvider([input_data])
         flow.loader = _loader
     assert flow.loader is not None, "loader为空！可通过yaml文件或命令行参数进行配置"
-    run(flow.loader, flow.processor, finish_signal=finish_signal)
+    run(flow.loader, flow.processor, finish_signal=finish_signal or flow.end_signal)
 
 
 def process_wikidata(infile: str, iterator: JsonIterator, parallels: int = 1, parallel_runner: str = "multi_thread"):

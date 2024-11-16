@@ -21,6 +21,9 @@ class Map(JsonIterator):
         else:
             return self.mapper(data)
 
+    def __str__(self):
+        return f'{self.name}[key={self.key}, target_key={self.target_key}]'
+
 
 class Flat(JsonIterator):
     """
@@ -30,8 +33,9 @@ class Flat(JsonIterator):
       - 对于字典：如果flat_mode='key'，则对key打散，否则对value打散
     如果提供了key，则针对该字段进行上述扁平化。
     """
+    return_multiple = True
+
     def __init__(self, key: str = None, flat_mode: str = 'value', inherit_props: bool = False):
-        self.return_multiple = True
         self.key = key
         self.flat_mode = flat_mode
         self.inherit_props = inherit_props
@@ -42,6 +46,8 @@ class Flat(JsonIterator):
         return ret
 
     def on_data(self, data, *args):
+        if data is None:
+            return []
         _data = data.get(self.key) if self.key else data
         _data = self.transform(_data)
         if isinstance(_data, list) or isinstance(_data, tuple):
@@ -65,6 +71,9 @@ class Flat(JsonIterator):
 
     def transform(self, data):
         return data
+
+    def __str__(self):
+        return f"{self.name}(key='{self.key}', flat_mode='{self.flat_mode}')"
 
 
 class FlatMap(Flat):

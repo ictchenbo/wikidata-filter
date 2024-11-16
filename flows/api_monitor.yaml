@@ -18,6 +18,6 @@ nodes:
   print: Print
   count: Count
 
-loader: TimedPull(loader, interval=5)
+loader: TimedLoader(loader, interval=5)
 
 processor: Chain(select, add_fields, add_ts, copy_ts, writer, count)

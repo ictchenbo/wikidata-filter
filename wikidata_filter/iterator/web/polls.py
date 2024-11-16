@@ -21,6 +21,8 @@ class PollData(JsonIterator):
         self.poll_key = poll_key
 
     def on_data(self, row, *args):
+        if row is None:
+            return None
         key, values = row["key"], row["values"]
         if not values:
             return None

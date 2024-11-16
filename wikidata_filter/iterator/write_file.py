@@ -1,6 +1,5 @@
 """输出到文件的算子"""
 import json
-from wikidata_filter.iterator.base import JsonIterator
 from wikidata_filter.iterator.common import BufferedWriter
 
 
@@ -18,10 +17,10 @@ class WriteText(BufferedWriter):
         # lazy ini
         if self.writer is None:
             self.writer = open(self.output_file, 'a' if self.append else 'w', encoding=self.encoding)
-        lines = []
-        for item in data:
-            lines.append(self.serialize(item))
+        lines = [self.serialize(item) for item in data]
         self.writer.write(self.sep.join(lines))
+        self.writer.write(self.sep)
+        self.writer.flush()
         print('batch written to file')
 
     def serialize(self, item) -> str:
@@ -30,7 +29,11 @@ class WriteText(BufferedWriter):
 
     def on_complete(self):
         super().on_complete()
-        self.writer.close()
+        if self.writer:
+            self.writer.close()
+
+    def __str__(self):
+        return f"{self.name}(output_file='{self.output_file}', sep='{self.sep}', append={self.append}, encoding='{self.encoding}', buffer_size={self.buffer_size})"
 
 
 class WriteJson(WriteText):

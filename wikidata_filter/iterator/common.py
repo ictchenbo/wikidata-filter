@@ -7,7 +7,8 @@ class Prompt(JsonIterator):
         self.msg = msg
 
     def on_data(self, data: dict or None, *args):
-        print(self.msg)
+        if data is not None:
+            print(self.msg)
         return data
 
 
@@ -16,7 +17,8 @@ class Print(JsonIterator):
     打印数据，方便查看中间结果
     """
     def on_data(self, data: dict or None, *args):
-        print(data)
+        if data is not None:
+            print(data)
         return data
 
 
@@ -30,7 +32,7 @@ class Filter(JsonIterator):
         self.matcher = matcher
 
     def on_data(self, data: dict or None, *args):
-        if self.matcher(data):
+        if data is not None and self.matcher(data):
             return data
 
 
@@ -45,9 +47,10 @@ class Count(JsonIterator):
         self.label = label
 
     def on_data(self, item: dict or None, *args):
-        self.counter += 1
-        if self.counter % self.ticks == 0:
-            print(f'Counter[{self.label}]:', self.counter)
+        if item is not None:
+            self.counter += 1
+            if self.counter % self.ticks == 0:
+                print(f'Counter[{self.label}]:', self.counter)
         return item
 
     def on_complete(self):
@@ -56,7 +59,6 @@ class Count(JsonIterator):
 
 class Reduce(JsonIterator):
     """对数据进行规约(many->1/0) 向后传递规约结果"""
-    pass
 
 
 class Buffer(Reduce):
@@ -74,6 +76,11 @@ class Buffer(Reduce):
         self.mode = mode
 
     def on_data(self, item: dict or None, *args):
+        if item is None:
+            if self.buffer:
+                self.commit(self.buffer)
+                self.buffer.clear()
+            return None
         self.buffer.append(item)
         # print(f'add to buffer {len(self.buffer)}/{self.buffer_size}')
         temp = None
@@ -92,10 +99,8 @@ class Buffer(Reduce):
         """提交当前缓冲数据 比如写入数据库或文件"""
         print("buffer data commited, num of rows:", len(buffer))
 
-    def on_complete(self):
-        if self.buffer:
-            self.commit(self.buffer)
-            self.buffer.clear()
+    def __str__(self):
+        return f"{self.name}(buffer_size={self.buffer_size}, mode='{self.mode}')"
 
 
 class BufferedWriter(Buffer):
