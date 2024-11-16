@@ -34,7 +34,7 @@ class JsonIterator:
 3. 过滤 `Filter(matcher)` 参数：过滤函数/Matcher对象 可参考[Matcher](#matcher)
 
 ### Matcher（也是Filter）
-1. 简单JSON匹配 `matcher.SimpleJsonMatcher(match_rules)`
+1. 简单JSON匹配 `matcher.SimpleJsonMatcher(**match_rules)`
 2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
 
 ### 修改类
@@ -53,6 +53,8 @@ class JsonIterator:
 13. 按照某个字段对数据进行分组 `GroupBy(key)`
 14. 复制字段 `CopyFields(*keys)` 复制已有的字段 如果目标字段名存在 则覆盖
 15. 拼接字段 `ConcatFields(target_key,*source_keys, sep='_')` 将source_keys拼接作为target_key字段
+16. 属性扁平化 `FlatProperty(*keys, inherit_props=False)` 提取指定属性进行返回
+
 
 ### 缓冲处理基类
 1. 基本缓冲类 收集一批数据再集中往后传递 `Buffer(buffer_size=1000,mode='batch')`

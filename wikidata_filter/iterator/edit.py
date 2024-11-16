@@ -1,3 +1,5 @@
+from typing import Any
+
 from wikidata_filter.iterator.base import JsonIterator
 
 
@@ -86,3 +88,28 @@ class FlatMap(Flat):
 
     def transform(self, data):
         return self.mapper(data)
+
+
+class FlatProperty(JsonIterator):
+    """获取指定key的字段值进行返回，支持合并其他字段。相当于对object字段做提升"""
+
+    return_multiple = True
+
+    def __init__(self, *keys, inherit_props: bool = False):
+        assert len(keys) > 0, "必须指定一个或多个字段名称"
+        if isinstance(keys[0], list) or isinstance(keys[0], tuple):
+            self.keys = keys[0]
+        else:
+            self.keys = keys
+        self.inherit_props = inherit_props
+
+    def on_data(self, data: Any, *args):
+        for key in self.keys:
+            if key not in data:
+                continue
+            val = data[key]
+            if self.inherit_props:
+                for k, v in data.items():
+                    if k not in self.keys:
+                        val[k] = v
+            yield val

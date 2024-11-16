@@ -1,4 +1,6 @@
-def extract_val(val: dict, path: list):
+def extract(val: dict, path: list or str):
+    if isinstance(path, str):
+        path = path.split('.')
     for key in path:
         if key not in val:
             return None
@@ -6,7 +8,7 @@ def extract_val(val: dict, path: list):
     return val
 
 
-def fill_val(target: dict, path: list, value):
+def fill(target: dict, path: list, value):
     for part in path[:-1]:
         if part not in target:
             target = target[part] = {}

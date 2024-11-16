@@ -1,0 +1,14 @@
+name: 加载OpenSanctions的FTM格式，获取人员信息
+arguments: 0
+
+loader: JsonLine('test_data/opensanctions-entities.ftm.json')
+
+nodes:
+  filter: matcher.SimpleJsonMatcher(schema='Person')
+  remove: RemoveFields('referents', 'datasets', 'schema', 'target', 'first_seen', 'last_seen')
+  rename: RenameFields(caption='label', last_change='modified_time', id='_id')
+  flat: FlatProperty('properties', inherit_props=True)
+  print: Print
+  counter: Count
+
+processor: Chain(filter, remove, rename, flat, print, counter)

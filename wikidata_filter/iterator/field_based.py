@@ -1,26 +1,28 @@
 import json
 from wikidata_filter.iterator.base import JsonIterator
-from wikidata_filter.util.json_op import extract_val, fill_val
+from wikidata_filter.util.jsons import extract, fill
 
 
 class Select(JsonIterator):
     """
     Select操作 key支持嵌套，如`user.name`表示user字段下面的name字段 并将name作为结果字段名
     """
-    def __init__(self, *keys):
+    def __init__(self, *keys, short_key: bool = False):
         super().__init__()
-        if keys:
-            if isinstance(keys[0], list) or isinstance(keys[0], tuple):
-                self.keys = keys[0]
-            else:
-                self.keys = keys
+        assert len(keys) > 0, "必须指定一个或多个字段名称"
+        if isinstance(keys[0], list) or isinstance(keys[0], tuple):
+            self.keys = keys[0]
+        else:
+            self.keys = keys
         self.path = {}
         for key in self.keys:
             path = key.split('.')
+            if short_key:
+                key = path[-1]
             self.path[key] = path
 
     def on_data(self, data: dict or None, *args):
-        return {key: extract_val(data, path) for key, path in self.path.items()}
+        return {key: extract(data, path) for key, path in self.path.items()}
 
 
 class SelectVal(JsonIterator):
@@ -130,10 +132,10 @@ class InjectField(JsonIterator):
         self.reference_path = reference_path
 
     def on_data(self, item: dict or None, *args):
-        match_val = extract_val(item, self.reference_path)
+        match_val = extract(item, self.reference_path)
         if match_val and match_val in self.kv:
             val = self.kv[match_val]
-            fill_val(item, self.inject_path, val)
+            fill(item, self.inject_path, val)
         return item
 
 

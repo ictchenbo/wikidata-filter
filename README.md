@@ -13,6 +13,8 @@
 1. 重写 `Chain`处理逻辑，可作为普通节点提供输出；判断每个子节点输出，如果是生成器，则用for获取
 2. 重写`run`方法，针对部分处理节点的`on_data`方法可能包含`yield`（对应返回为生成器），对结果进行判断
 3. 新增`openapi`JSON文件结构解析算子 `iterator.web.openapi.FromOpenAPI`和`iterator.web.openapi.ToOpenAPI`
+4. 新增**OpenSanctions**FTM数据格式的人员`Person`转换流程[查看](flows/opensanctions_peps.yaml)
+5. 新增属性提升处理算子 `FlatProperty(*keys, inherit_props=False)` 返回特定字段的值
 
 
 ## 项目特色
@@ -24,6 +26,7 @@
    - [GDELT 谷歌全球社会事件数据库 （流式，直接下载）](flows/gdelt.yaml)
    - [GTD 全球恐怖主义事件库](flows/test_gtd.yaml)
    - [民调数据（经济学人美国大选专题）](flows/test_polls.yaml)
+   - [OpenSanctions](flows/opensanctions_peps.yaml)
    - [新闻文本解析&向量化索引](flows/news_process.yaml)
    - [ReaderAPI](flows/test_readerapi.yaml)
    - [大模型处理](flows/test_llm.yaml)
