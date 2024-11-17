@@ -17,4 +17,4 @@ nodes:
   chain1: Chain(n1, n2)
   chain2: Chain(matcher, writer)
 
-processor: Group(chain1, chain2)
+processor: Fork(chain1, chain2)

@@ -1,5 +1,5 @@
 import requests
-from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.base import JsonIterator, Any
 
 
 class Local(JsonIterator):
@@ -9,7 +9,7 @@ class Local(JsonIterator):
         self.field = field
         self.target_key = target_key
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: Any, *args):
         if self.field not in data:
             print("Warning! No such field:", self.field)
             return data

@@ -13,12 +13,15 @@ class Map(JsonIterator):
         self.mapper = mapper
         self.target_key = target_key or key
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: Any, *args):
         if self.key:
-            if self.key in data:
-                data[self.target_key] = self.mapper(data[self.key])
+            if isinstance(data, dict):
+                if self.key in data:
+                    data[self.target_key] = self.mapper(data[self.key])
+                else:
+                    print("Warning, no such field:", self.key)
             else:
-                print("Warning, no such field:", self.key)
+                print("Warning, data is not dict:", data)
             return data
         else:
             return self.mapper(data)
@@ -35,8 +38,6 @@ class Flat(JsonIterator):
       - 对于字典：如果flat_mode='key'，则对key打散，否则对value打散
     如果提供了key，则针对该字段进行上述扁平化。
     """
-    return_multiple = True
-
     def __init__(self, key: str = None, flat_mode: str = 'value', inherit_props: bool = False):
         self.key = key
         self.flat_mode = flat_mode
@@ -47,9 +48,7 @@ class Flat(JsonIterator):
         ret[self.key] = item
         return ret
 
-    def on_data(self, data, *args):
-        if data is None:
-            return []
+    def on_data(self, data: Any, *args):
         _data = data.get(self.key) if self.key else data
         _data = self.transform(_data)
         if isinstance(_data, list) or isinstance(_data, tuple):
@@ -69,13 +68,13 @@ class Flat(JsonIterator):
                         val["_key"] = key
                     yield val
         else:
-            yield data
+            return data
 
     def transform(self, data):
         return data
 
     def __str__(self):
-        return f"{self.name}(key='{self.key}', flat_mode='{self.flat_mode}')"
+        return f"{self.name}(key={str(self.key) if self.key else None}, flat_mode='{self.flat_mode}', inherit_props={self.inherit_props})"
 
 
 class FlatMap(Flat):
@@ -90,12 +89,10 @@ class FlatMap(Flat):
         return self.mapper(data)
 
 
-class FlatProperty(JsonIterator):
+class FlatProperty(Flat):
     """获取指定key的字段值进行返回，支持合并其他字段。相当于对object字段做提升"""
-
-    return_multiple = True
-
     def __init__(self, *keys, inherit_props: bool = False):
+        super().__init__()
         assert len(keys) > 0, "必须指定一个或多个字段名称"
         if isinstance(keys[0], list) or isinstance(keys[0], tuple):
             self.keys = keys[0]
@@ -103,7 +100,7 @@ class FlatProperty(JsonIterator):
             self.keys = keys
         self.inherit_props = inherit_props
 
-    def on_data(self, data: Any, *args):
+    def on_data(self, data: dict, *args):
         for key in self.keys:
             if key not in data:
                 continue
@@ -113,3 +110,6 @@ class FlatProperty(JsonIterator):
                     if k not in self.keys:
                         val[k] = v
             yield val
+
+    def __str__(self):
+        return f"{self.name}(keys={self.keys}, inherit_props={self.inherit_props})"

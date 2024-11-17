@@ -1,4 +1,4 @@
-from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.edit import Map, Flat
 from wikidata_filter.iterator.wikidata import get_name, get_snak
 
 
@@ -6,11 +6,11 @@ name_keys = ["zh-cn", "zh-hk", "zh", "en"]
 name_en_keys = ["en"]
 
 
-class Entity(JsonIterator):
+class Entity(Map):
     """
     输出wikidata item/property基本信息
     """
-    def on_data(self, entity: dict or None, *args):
+    def on_data(self, entity: dict, *args):
         if "labels" not in entity or "descriptions" not in entity:
             return None
         eid = entity["id"]
@@ -74,15 +74,11 @@ def get_qualifiers(claim, pid):
             }
 
 
-class ItemProperty(JsonIterator):
+class ItemProperty(Flat):
     """
     输出wikidata的实体属性和属性属性
     """
-    def __init__(self):
-        super().__init__()
-        self.return_multiple = True
-
-    def on_data(self, entity: dict or None, *args):
+    def on_data(self, entity: dict, *args):
         if entity["type"] != "item":
             return None
         for prop, prop_props in get_props(entity):
@@ -91,3 +87,23 @@ class ItemProperty(JsonIterator):
             for prop_prop in prop_props:
                 prop_prop["_type"] = "property_property"
                 yield prop_prop
+
+
+class Relation(Flat):
+    """
+    转换为关系结构
+    """
+    def on_data(self, item: dict, *args):
+        subject_id = item["id"]
+        subject_name = item.get("labels")
+        claims = item.get('claims', {})
+        for relation, objects in claims.items():
+            for obj in objects:
+                yield {
+                    "_id": obj["id"],
+                    "subject_id": subject_id,
+                    "subject_name": subject_name,
+                    "relation": relation,
+                    "object_id": obj["datavalue"],
+                    "object_name": obj.get("labels")
+                }

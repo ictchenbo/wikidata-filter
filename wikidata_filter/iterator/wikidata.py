@@ -1,5 +1,7 @@
 from wikidata_filter.iterator.base import JsonIterator
-from wikidata_filter.util.lang_util import zh_simple
+from wikidata_filter.iterator.edit import Map
+from wikidata_filter.iterator.field_based import DictEditBase
+from wikidata_filter.util.langs import zh_simple
 
 
 def get_label(v):
@@ -29,28 +31,25 @@ name_keys = ["zh-cn", "zh-hans", "zh-sg", "zh-hk", "zh-tw", "zh-mo", "en"]
 wiki_sites = ["zhwiki", "enwiki"]
 
 
-class IDNameMap(JsonIterator):
+class IDNameMap(Map):
     """
     建立ID到name的映射
     """
-    def on_data(self, item: dict or None, *args):
+    def __call__(self, item: dict):
         return {
             "id": item["id"],
             "name": get_name(item.get('labels'), name_keys)
         }
 
 
-class Simplify(JsonIterator):
+class Simplify(Map):
     """
     对wikidata对象进行简化
     {id: str, labels: str, descriptions: str, aliases: list[str], claims: dict[str, list], sitelinks}
     """
     del_keys = ['type', 'title', 'ns', 'pageid']
 
-    def on_data(self, item: dict or None, *args):
-        if not item or not isinstance(item, dict):
-            print("INVALID dict", item)
-            return None
+    def __call__(self, item: dict):
         for key in self.del_keys:
             if key in item:
                 del item[key]
@@ -145,7 +144,7 @@ def get_props(claims: dict):
     return ret
 
 
-class SimplifyProps(JsonIterator):
+class SimplifyProps(Map):
     """
     对原wikidata对象属性(claims)进行简化
     claims := dict[str, list[Prop]]
@@ -153,24 +152,24 @@ class SimplifyProps(JsonIterator):
     QProp := {hash: str, datatype: PropDataType, datavalue: PropVal }
     PropDataType :=  wikibase-entityid | globecoordinate | quantity | time | monolingualtext | novalue | somevalue
     """
-    def on_data(self, item: dict or None, *args):
-        claims = get_props(item.get("claims", {}))
-        item['claims'] = claims
+    def __call__(self, item: dict):
+        item['claims'] = get_props(item.get("claims", {}))
         return item
 
 
-class PropsFilter(JsonIterator):
+class PropsFilter(Map):
     """
     对属性进行过滤 仅保留指定的属性列表
     """
     def __init__(self, props_set: set = None, props_list_file: str = None):
+        super().__init__(self)
         props_set = props_set or set()
         if props_list_file:
-            from wikidata_filter.util.file_loader import SetFromCSV
+            from wikidata_filter.util import SetFromCSV
             props_set.update(SetFromCSV(props_list_file))
         self.props_set = props_set
 
-    def on_data(self, item: dict or None, *args):
+    def __call__(self, item: dict):
         new_claims = {}
         for key, vals in item.get("claims", {}).items():
             if key in self.props_set:
@@ -188,7 +187,7 @@ class ValuesFilter(PropsFilter):
     def __init__(self, props_set: set = None, props_list_file: str = None):
         super().__init__(props_set=props_set, props_list_file=props_list_file)
 
-    def on_data(self, item: dict or None, *args):
+    def __call__(self, item: dict):
         new_claims = {}
         for key, vals in item.get("claims", {}).items():
             new_vals = [val for val in vals if val.get("datatype") == "wikibase-entityid" and val["datavalue"] in self.props_set]
@@ -202,22 +201,22 @@ class ValuesFilter(PropsFilter):
         return item
 
 
-class ObjectNameInject(JsonIterator):
+class ObjectNameInject(DictEditBase):
     """
     基于给定的KV缓存 对当前实体的属性值实体增加其名称
     """
     FILL_KEY = 'labels'
 
-    def __init__(self, kv: dict):
-        self.kv = kv
+    def __init__(self, kv=None, **kwargs):
+        super().__init__(kv or kwargs)
 
     def fill_val(self, target: dict):
-        if target["datatype"] in ["item", "wikibase-entityid"] and target.get("datavalue") in self.kv:
+        if target["datatype"] in ["item", "wikibase-entityid"] and target.get("datavalue") in self.templates:
             ref_key = target.get("datavalue")
             # print('filled', ref_key)
-            target[self.FILL_KEY] = self.kv[ref_key]
+            target[self.FILL_KEY] = self.templates[ref_key]
 
-    def on_data(self, item: dict or None, *args):
+    def __call__(self, item: dict):
         for prop, claims in item.get('claims', {}).items():
             for claim in claims:
                 self.fill_val(claim)
@@ -238,7 +237,7 @@ class ItemAbstractInject(JsonIterator):
         self.source_key = source_key
         self.fill_key = fill_key
 
-    def on_data(self, item: dict or None, *args):
+    def on_data(self, item: dict, *args):
         if self.source_key in item:
             site = item[self.source_key]
             sitename = site["site"]
@@ -255,7 +254,7 @@ class ItemAbstractInject(JsonIterator):
 class ChineseSimple(JsonIterator):
     keys = ['labels', 'descriptions', 'abstract']
 
-    def on_data(self, item: dict or None, *args):
+    def on_data(self, item: dict, *args):
         for key in self.keys:
             if key in item and item[key]:
                 item[key] = zh_simple(item[key])
@@ -266,27 +265,3 @@ class ChineseSimple(JsonIterator):
                     claim['labels'] = zh_simple(claim['labels'])
 
         return item
-
-
-class AsRelation(JsonIterator):
-    """
-    转换为关系结构
-    """
-    def __init__(self):
-        super().__init__()
-        self.return_multiple = True
-
-    def on_data(self, item: dict or None, *args):
-        subject_id = item["id"]
-        subject_name = item.get("labels")
-        claims = item.get('claims', {})
-        for relation, objects in claims.items():
-            for obj in objects:
-                yield {
-                    "_id": obj["id"],
-                    "subject_id": subject_id,
-                    "subject_name": subject_name,
-                    "relation": relation,
-                    "object_id": obj["datavalue"],
-                    "object_name": obj.get("labels")
-                }

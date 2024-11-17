@@ -7,7 +7,7 @@ loader: JsonLine(arg1)
 nodes:
   human_set: util.SetFromJSON(arg2)
   filter: ValuesFilter(props_set=human_set)
-  to_relation: AsRelation
+  to_relation: Relation
   writer: WriteJson(arg3)
 
 processor: Chain(filter, to_relation, writer)

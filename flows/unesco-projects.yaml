@@ -1,0 +1,37 @@
+name: 加载联合国教科文组织的项目数据
+description: 对联合国教科文组织的项目清单CSV文件进行字段重命名和简单处理 方便入库
+arguments: 0
+finish_signal: true
+consts:
+  rename:
+    Project ID: _id
+    Project Title: title
+    Parent project ID: _parent
+    Project Budget (USD): budget
+    Cumulative Incurred Expenditures (USD): cumulative_cost
+    Start Date: start_date
+    End Date: end_date
+    Beneficiary Country / Region: beneficiary_country
+
+loader: CSV('test_data/unesco-projects-20241113.csv')
+
+nodes:
+  as_int: "=lambda s: None if s=='-' else int(s.replace(',', ''))"
+  as_count: "=lambda v: len(v)"
+  as_sum: "=lambda v: sum([p.get('budget') or 0 for p in v])"
+  as_sum2: "=lambda v: sum([p.get('cumulative_cost') or 0 for p in v])"
+  rename1: RenameFields(**rename)
+  map1: Map(as_int, key='budget')
+  map2: Map(as_int, key='cumulative_cost')
+  print: Print
+  writer1: WriteJson('test_data/unesco-projects.json')
+  counter1: Count(label='project')
+  group: Group(by='beneficiary_country', emit_fast=False)
+  count: Map(as_count, key='values', target_key='num_of_projects')
+  total_budget: Map(as_sum, key='values', target_key='total_budget')
+  total_cost: Map(as_sum2, key='values', target_key='total_cost')
+  rm: RemoveFields('values')
+  writer: WriteJson('test_data/unesco-projects-stat.json')
+  counter2: Count(label='country/district stat')
+
+processor: Chain(rename1, map1, map2,writer1, counter1, group, count, total_budget, total_cost, rm, writer, counter2)

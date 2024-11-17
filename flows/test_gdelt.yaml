@@ -6,6 +6,6 @@ loader: Text('test_data/gdelt_test.csv')
 
 nodes:
   row: web.gdelt.Export
-  writer: WriteJson('test_data/gdelt.export.json', encoding='utf8')
+  writer: WriteJson('test_data/gdelt.export.json')
 
 processor: Chain(row, writer)

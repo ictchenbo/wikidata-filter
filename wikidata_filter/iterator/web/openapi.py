@@ -4,6 +4,7 @@
 """
 import os
 import re
+from typing import Any
 
 from wikidata_filter.iterator import Flat, Reduce
 from wikidata_filter.util.dates import current_ts
@@ -269,7 +270,7 @@ def as_parameters(**kwargs):
 
 def write(model_list: list) -> dict:
     """将本系统的API结构转换成OpenAPI"""
-    print("total APIs:", len(model_list))
+    # print("total APIs:", len(model_list))
     main_model = model_list[0]
 
     paths = {}
@@ -321,12 +322,10 @@ def write(model_list: list) -> dict:
 
 
 class FromOpenAPI(Flat):
-    def transform(self, data):
+    def transform(self, data: Any, *args) -> list:
         return read(data)
 
 
 class ToOpenAPI(Reduce):
     def on_data(self, data, *args):
-        if data is None:
-            return None
         return write(data.get("values") or [])

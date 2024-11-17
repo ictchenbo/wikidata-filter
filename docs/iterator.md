@@ -14,11 +14,18 @@ class JsonIterator:
     def on_start(self):
         pass
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: Any, *args):
         pass
 
+    def __process__(self, data: Any or None):
+        pass
+    
     def on_complete(self):
         pass
+
+    @property
+    def name(self):
+        return self.__class__.__name__
 ```
 
 提供`_set`方法，支持链式设置组件属性，如`Count()._set(ticks=100)._set(label='aaa')`

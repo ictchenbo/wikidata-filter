@@ -17,7 +17,7 @@ class Splitter(JsonIterator):
     def __init__(self, *keys):
         self.keys = keys
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: dict, *args):
         for key in self.keys:
             if key in data:
                 data[key] = split(data.get(key))

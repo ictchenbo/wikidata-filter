@@ -3,9 +3,9 @@ description: parse GTD Excel from https://www.start.umd.edu/gtd/contact/download
 
 loader: ExcelStream('data/gtd/globalterrorismdb_0522dist.xlsx')
 
-
 nodes:
   print: Print
   counter: Count(ticks=1000, label='GTD')
 
-processor: Print()
+processor: Chain(print, counter)
+

@@ -29,4 +29,4 @@ nodes:
   chain_entity: Chain(entity, group1)
   chain_property: Chain(property, group2)
 
-processor: Group(chain_entity, chain_property)
+processor: Fork(chain_entity, chain_property)

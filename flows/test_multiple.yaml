@@ -1,10 +1,10 @@
 name: test multiple
 
-loader: RandomGenerator(100)
+loader: Random(100)
 
 nodes:
   n1: Repeat(5)
   n2: Count(ticks=5, label='Repeat')
   n3: Print
 
-processor: Group(n1, n2, n3)
+processor: Fork(n1, n2, n3)

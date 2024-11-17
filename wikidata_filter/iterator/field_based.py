@@ -1,5 +1,6 @@
 import json
 from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.edit import Map
 from wikidata_filter.util.jsons import extract, fill
 
 
@@ -8,12 +9,12 @@ class Select(JsonIterator):
     Select操作 key支持嵌套，如`user.name`表示user字段下面的name字段 并将name作为结果字段名
     """
     def __init__(self, *keys, short_key: bool = False):
-        super().__init__()
         assert len(keys) > 0, "必须指定一个或多个字段名称"
         if isinstance(keys[0], list) or isinstance(keys[0], tuple):
             self.keys = keys[0]
         else:
             self.keys = keys
+        self.short_key = short_key
         self.path = {}
         for key in self.keys:
             path = key.split('.')
@@ -21,8 +22,11 @@ class Select(JsonIterator):
                 key = path[-1]
             self.path[key] = path
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: dict, *args):
         return {key: extract(data, path) for key, path in self.path.items()}
+
+    def __str__(self):
+        return f"{self.name}(keys={self.keys}, short_key={self.short_key})"
 
 
 class SelectVal(JsonIterator):
@@ -33,23 +37,11 @@ class SelectVal(JsonIterator):
         super().__init__()
         self.key = key
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: dict, *args):
         return data.get(self.key)
 
-
-class FieldJson(JsonIterator):
-    """对指定的字符串类型字段转换为json"""
-    def __init__(self, key: str):
-        self.key = key
-
-    def on_data(self, data: dict or None, *args):
-        if data and data.get(self.key):
-            val = data[self.key]
-            if isinstance(val, str):
-                val = val.replace("'", '"')
-                print(val)
-                data[self.key] = json.loads(val)
-        return data
+    def __str__(self):
+        return f"{self.name}(key={self.key})"
 
 
 class RemoveFields(JsonIterator):
@@ -64,74 +56,79 @@ class RemoveFields(JsonIterator):
             else:
                 self.keys = keys
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: dict, *args):
         return {k: v for k, v in data.items() if k not in self.keys}
 
+    def __str__(self):
+        return f"{self.name}(keys={self.keys})"
 
-class AddFields(JsonIterator):
+
+class DictEditBase(JsonIterator):
+    templates: dict = {}
+
+    def __init__(self, tmp: dict):
+        self.templates = tmp
+
+    def __str__(self):
+        return f"{self.name}(**{self.templates})"
+
+
+class AddFields(DictEditBase):
     """添加字段 如果不存在"""
     def __init__(self, **kwargs):
-        self.adds = kwargs or {}
+        super().__init__(kwargs)
 
-    def on_data(self, data, *args):
-        for k, v in self.adds.items():
+    def on_data(self, data: dict, *args):
+        for k, v in self.templates.items():
             if k not in data:
                 data[k] = v
         return data
 
 
-class RenameFields(JsonIterator):
+class RenameFields(DictEditBase):
     """对字段重命名"""
     def __init__(self, **kwargs):
-        super().__init__()
-        self.rename_template = kwargs
+        super().__init__(kwargs)
 
-    def on_data(self, data: dict or None, *args):
-        for s, t in self.rename_template.items():
+    def on_data(self, data: dict, *args):
+        for s, t in self.templates.items():
             if s in data:
                 data[t] = data.pop(s)
         return data
 
 
-class UpdateFields(JsonIterator):
+class UpdateFields(DictEditBase):
     """更新字段，Upsert模式"""
-    def __init__(self, other: dict):
-        super().__init__()
-        self.that = other
+    def __init__(self, **kwargs):
+        super().__init__(kwargs)
 
-    def on_data(self, data: dict or None, *args):
-        for s, t in self.that.items():
+    def on_data(self, data: dict, *args):
+        for s, t in self.templates.items():
             data[t] = data[s]
         return data
 
 
-class CopyFields(JsonIterator):
+class CopyFields(DictEditBase):
     """复制已有的字段 如果目标字段名存在 则覆盖"""
     def __init__(self, **kwargs):
-        super().__init__()
-        self.copy_template = kwargs
+        super().__init__(kwargs)
 
-    def on_data(self, data: dict or None, *args):
-        for s, t in self.copy_template.items():
+    def on_data(self, data: dict, *args):
+        for s, t in self.templates.items():
             data[t] = data.get(s)
         return data
 
 
 class InjectField(JsonIterator):
     """
-    基于给定的KV缓存 对当前数据进行填充
+    基于给定的KV缓存对当前数据进行填充
     """
     def __init__(self, kv: dict, inject_path: str or list, reference_path: str):
-        if isinstance(inject_path, str):
-            inject_path = inject_path.split('.')
-        if isinstance(reference_path, str):
-            reference_path = reference_path.split('.')
-
         self.kv = kv
         self.inject_path = inject_path
         self.reference_path = reference_path
 
-    def on_data(self, item: dict or None, *args):
+    def on_data(self, item: dict, *args):
         match_val = extract(item, self.reference_path)
         if match_val and match_val in self.kv:
             val = self.kv[match_val]
@@ -147,18 +144,38 @@ class ConcatFields(JsonIterator):
         self.source_keys = source_keys
         self.sep = sep
 
-    def on_data(self, data: dict or None, *args):
+    def on_data(self, data: dict, *args):
         vals = [str(data.get(k, '')) for k in self.source_keys]
         data[self.target] = self.sep.join(vals)
         return data
 
 
-class FormatFields(JsonIterator):
+class FieldJson(Map):
+    """对指定的字符串类型字段转换为json"""
+    def __init__(self, key: str):
+        super().__init__(self, key)
+        assert key is not None, "key should be None"
+
+    def __call__(self, val):
+        if isinstance(val, str):
+            val = val.replace("'", '"')
+            print(val)
+            return json.loads(val)
+        return val
+
+
+class FormatFields(Map):
+    """对指定字段（为模板字符串）使用指定的值进行填充"""
     def __init__(self, key: str, **kwargs):
-        self.key = key
+        super().__init__(self, key)
+        assert key is not None, "key should be None"
+        assert len(kwargs) > 0, "**kwargs should not be empty"
         self.values = kwargs
 
-    def on_data(self, data: dict or None, *args):
-        if self.key in data:
-            data[self.key] = data[self.key].format(**self.values)
-        return data
+    def __call__(self, val):
+        if isinstance(val, str):
+            return val.format(**self.values)
+        return val
+
+    def __str__(self):
+        return f"{self.name}({self.key}, **{self.values})"

@@ -14,7 +14,7 @@ def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False
 
     # 注意，由于iterator.on_data可能包含yield，因此仅调用iterator.on_data(data)可能不会真正执行
     def execute(data: Any, *args):
-        res = iterator.on_data(data, *args)
+        res = iterator.__process__(data)
         if isinstance(res, GeneratorType):
             for _ in res:
                 pass
@@ -23,8 +23,8 @@ def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False
         execute(item)
 
     data_provider.close()
-    if finish_signal:
-        execute(Message.end())
+    # if finish_signal:
+    execute(Message.end())
 
     iterator.on_complete()
     print("------------------------")
