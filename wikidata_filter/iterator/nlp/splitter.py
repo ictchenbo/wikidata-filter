@@ -11,7 +11,7 @@ def split_simple(content: str, max_length: int = 100):
     res = []
     while len(content) > max_length:
         pos = max_length - 1
-        while content[pos] not in "。？！；\n" and pos < len(content):
+        while pos < len(content) and content[pos] not in "。？！；\n":
             pos += 1
         if pos < len(content):
             res.append(content[:pos+1])

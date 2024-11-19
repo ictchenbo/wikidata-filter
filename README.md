@@ -9,6 +9,11 @@
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
+- 2024.11.19
+1. 新增文件夹加载器`Directory(paths, *suffix, recursive=False, type_mapping=None, **kwargs)` 根据文件后缀名调用具体的加载器进行加载（.txt .json .jsonl .jsonf .jsona .xls）
+2. 新增[文件夹处理流程](flows/directory_loader.yaml)
+3. 修改Flat处理逻辑
+
 - 2024.11.17
 1. `JsonIterator`增加`__process__(data)`方法，如果需要接收特殊消息（如结束END/定时TIMEOUT/刷新FLUSH），则重写此方法。默认逻辑为如果data不为None，调用`on_data`进行具体数据处理。
 2. 流程中不需要显示生命finish_sinal，`run`在数据结束后自动发送一个特殊消息`Message.end()`
@@ -27,16 +32,17 @@
 1. 通过**yaml**格式定义流程，上手容易
 2. 内置数十种ETL算子，配置简单，包括大模型处理、数据库读写、API访问、文件读写等多种类型
 3. 内置特色数据资源处理流程，开箱即用：
-   - wikipedia 维基百科[页面处理](wikipedia_page.py) [建立索引](flows/index_wikipedia.yaml) [ES索引配置](config/es-mappings/enwiki.json)
+   - [wikipedia 维基百科页面处理](wikipedia_page.py) [建立索引](flows/index_wikipedia.yaml) [ES索引配置](config/es-mappings/enwiki.json)
    - [wikidata 维基数据](flows/p1_wikidata_graph.yaml)
    - [GDELT 谷歌全球社会事件数据库 （流式，直接下载）](flows/gdelt.yaml)
-   - [GTD 全球恐怖主义事件库](flows/test_gtd.yaml)
-   - [民调数据（经济学人美国大选专题）](flows/test_polls.yaml)
+   - [GTD 全球恐怖主义事件库](flows/gtd_local.yaml)
+   - [民调数据（经济学人美国大选专题）](flows/polls.yaml)
+   - [预测市场数据](flows/futures.yaml)
    - [OpenSanctions全球制裁实体名单或涉政治、犯罪与经济重点人物、公司](flows/opensanctions_peps.yaml) [测试数据](test_data/opensanctions-entities.ftm.json)
    - [联合国教科文组织项目数据](flows/unesco-projects.yaml)
    - [新闻文本解析&向量化索引](flows/news_process.yaml)
    - [ReaderAPI](flows/test_readerapi.yaml)
-   - [大模型处理](flows/test_llm.yaml)
+   - [大模型处理](flows/llm_simple.yaml)
    - more...
 
 
@@ -198,7 +204,7 @@ Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 - 2024.10.26
 1. 新增大模型处理算子`LLM` 可调用与OpenAI接口兼容的在线大模型接口，需要提供api_base、api_key，其他参数支持：model、proxy、prompt、temp等
 2. 基于`LLM`实现月之暗面（Kimi）大模型`Moonshot`、Siliconflow平台大模型`Siliconflow`大模型算子
-3. 新增大模型调用流程示例[查看](flows/test_llm.yaml) 填入api_key即可执行：`python main_flow.py flows/llm_local.yaml`
+3. 新增大模型调用流程示例[查看](flows/llm_simple.yaml) 填入api_key即可执行：`python main_flow.py flows/llm_local.yaml`
 4. 增加一些测试流程的测试样例数据[查看](test_data)
 5. 修改`JsonMatcher`，继承`Filter`，使得匹配对象可以直接作为过滤算子（之前是作为`Filter`的参数） `matcher`移动到`iterator`下
 6. 简化iterator的配置，nodes和processor定义的节点都可以不写`iterator` 如可以写`web.gdelt.Export`
@@ -213,7 +219,7 @@ Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 - 2024.10.24
 1. 新增GDELT处理流程，持续下载[查看](flows/gdelt.yaml) 滚动下载export.CSV.zip文件
 2. 增加新的Loader `GdeltTaskEmit` 从指定时间开始下载数据并持续跟踪
-3. 新增经济学人民调数据处理算子 `iterator.web.polls.PollData` （需要手工下载CSV）、处理流程[查看](flows/test_polls.yaml)
+3. 新增经济学人民调数据处理算子 `iterator.web.polls.PollData` （需要手工下载CSV）、处理流程[查看](flows/polls.yaml)
 4. 修改`Flat`算子逻辑，如果输入为`dict`，则提取k-v，如果v也是`dict`，则把k填入v中（_key），最后输出v
 
 - 2024.10.17
@@ -232,7 +238,7 @@ Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
 - 2024.10.02
 1. WriteJson WriterCSV增加编码参数设置
-2. 新增GDELT本地数据处理的简化流程[查看](flows/test_gdelt.yaml) 通过加载本地文件转化成JSON
+2. 新增GDELT本地数据处理的简化流程[查看](flows/gdelt_local.yaml) 通过加载本地文件转化成JSON
 
 - 2024.09.30
 1. 集成Reader API（`wikidata_filter.iterator.web.readerapi` 详见 https://jina.ai/reader/)

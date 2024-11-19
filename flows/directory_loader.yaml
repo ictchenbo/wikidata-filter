@@ -1,0 +1,23 @@
+name: directory_loader
+description: 文件夹加载器 支持指定一个文件夹 根据文件后缀名进行具体文件的加载发送
+arguments: 0
+
+loader: Directory('test_data/news', 'all')
+
+nodes:
+  print: Print
+  count1: Count(label='json')
+  select1: SelectVal('data', inherit_props=True)
+
+  flat: Flat(key='nodes', inherit_props=True)
+  count2: Count(label='doc1')
+  count3: Count(label='doc2')
+
+  chunk: nlp.splitter.TextSplit(key='content',target_key='chunks')
+  flat_chunk: Flat(key='chunks', inherit_props=True)
+  count4: Count(label='chunk')
+
+  rm: RemoveFields('content')
+  rename: RenameFields(title='topic')
+
+processor: Chain(count1, select1, flat, count2, rename, flat, count3, chunk, flat_chunk, rm, print, count4)

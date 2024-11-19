@@ -114,16 +114,3 @@ class CSV(Text):
                     yield dict(zip(header, row))
             else:
                 yield row
-
-
-class Directory(DataProvider):
-    """扫描文件夹 对指定后缀的文件按照默认参数进行读取"""
-    def __init__(self, directory_path: str, *suffix, recursive: bool = False):
-        """
-        :param directory_path 指定文件夹路径
-        :param *suffix 文件的后缀
-        :param recursive 是否递归遍历文件夹
-        """
-        self.path = directory_path
-        self.suffix = suffix
-        self.recursive = recursive

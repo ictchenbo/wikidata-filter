@@ -31,17 +31,28 @@ class Select(JsonIterator):
 
 class SelectVal(JsonIterator):
     """
-    Select操作
+    字段值选择操作 指定字段key的值作为新的数据返回
     """
-    def __init__(self, key):
-        super().__init__()
+    def __init__(self, key: str, inherit_props: bool = False):
         self.key = key
+        self.inherit_props = inherit_props
 
     def on_data(self, data: dict, *args):
-        return data.get(self.key)
+        if not isinstance(data, dict):
+            print("SelectVal Warning: data must be dict")
+            return data
+        keyval = data.get(self.key)
+        if self.inherit_props:
+            if isinstance(keyval, dict):
+                for k, v in data.items():
+                    if k != self.key:
+                        keyval[k] = v
+            else:
+                print("SelectVal Warning: field value must be dict when inherit_props is True")
+            return keyval
 
     def __str__(self):
-        return f"{self.name}(key={self.key})"
+        return f"{self.name}('{self.key}', inherit_props={self.inherit_props})"
 
 
 class RemoveFields(JsonIterator):

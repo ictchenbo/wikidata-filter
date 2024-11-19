@@ -27,7 +27,7 @@ class Map(JsonIterator):
             return self.mapper(data)
 
     def __str__(self):
-        return f'{self.name}[key={self.key}, target_key={self.target_key}]'
+        return f"{self.name}(key='{self.key}', target_key='{self.target_key}')"
 
 
 class Flat(JsonIterator):
@@ -38,31 +38,53 @@ class Flat(JsonIterator):
       - 对于字典：如果flat_mode='key'，则对key打散，否则对value打散
     如果提供了key，则针对该字段进行上述扁平化。
     """
-    def __init__(self, key: str = None, flat_mode: str = 'value', inherit_props: bool = False):
+    def __init__(self, key: str = None, flat_mode: str = 'kv', inherit_props: bool = False):
         self.key = key
         self.flat_mode = flat_mode
         self.inherit_props = inherit_props
+        if inherit_props:
+            assert self.key is not None, "key should not be None if inherit_props=True"
 
     def new_item(self, data: dict, item):
-        ret = dict(**data)
-        ret[self.key] = item
-        return ret
+        if isinstance(item, dict):
+            # 子项为字典 避免被继承字段覆盖。如果需要用继承字段 可以先重命名
+            for k, v in data.items():
+                if k != self.key:
+                    item[k] = v
+            return item
+        else:
+            # 子项为非字典
+            ret = dict(**data)
+            ret[self.key] = item
+            return ret
 
     def on_data(self, data: Any, *args):
+        if self.key and not isinstance(data, dict):
+            print('Flat Warning: data must be dict if the key is specified')
+            return data
         _data = data.get(self.key) if self.key else data
         _data = self.transform(_data)
         if isinstance(_data, list) or isinstance(_data, tuple):
             if self.inherit_props and isinstance(data, dict):
+                # 字段继承
                 for item in _data:
                     yield self.new_item(data, item)
             else:
+                # 不继承 直接返回
                 for item in _data:
                     yield item
         elif isinstance(_data, dict):
-            if self.flat_mode == 'key':
+            # 对字典数据 提供三种扁平化方式，适合整齐KV字典转换为列表
+            if self.flat_mode == 'kv':
+                # 返回K-V对
+                for key, val in _data.items():
+                    yield key, val
+            elif self.flat_mode == 'key':
+                # 返回Key，适合整齐KV字典
                 for key in _data.keys():
                     yield key
-            else:
+            elif self.flat_mode == 'value':
+                # 返回Key，适合整齐KV字典
                 for key, val in _data.items():
                     if isinstance(val, dict):
                         val["_key"] = key
@@ -74,7 +96,8 @@ class Flat(JsonIterator):
         return data
 
     def __str__(self):
-        return f"{self.name}(key={str(self.key) if self.key else None}, flat_mode='{self.flat_mode}', inherit_props={self.inherit_props})"
+        key = f"'{self.key}'" if self.key else None
+        return f"{self.name}(key={key}, flat_mode='{self.flat_mode}', inherit_props={self.inherit_props})"
 
 
 class FlatMap(Flat):

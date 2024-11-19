@@ -71,6 +71,7 @@ class Multiple(JsonIterator):
         return self
 
     def on_start(self):
+        print(id(self), 'on_start')
         for it in self.nodes:
             it.on_start()
 
@@ -80,7 +81,7 @@ class Multiple(JsonIterator):
 
     def __str__(self):
         nodes = [it.__str__() for it in self.nodes]
-        return f'{self.name}[nodes={",".join(nodes)}]'
+        return f'{self.name}[nodes={nodes}]'
 
 
 class Fork(Multiple):
@@ -155,10 +156,6 @@ class Chain(Multiple):
         if queue:
             for one in queue:
                 yield one
-
-    def __str__(self):
-        nodes = [str(it) for it in self.nodes]
-        return f'{self.name}(nodes={nodes})'
 
 
 class Repeat(JsonIterator):

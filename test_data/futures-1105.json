@@ -1,0 +1,60 @@
+{
+    "_id" : "{date1}_Polymarket",
+    "event_id" : "us_president_2024",
+    "name" : "",
+    "poll_time_start" : "",
+    "poll_time_end" : "",
+    "source" : {
+        "type" : "机构",
+        "name" : "Polymarket",
+        "is_future" : true,
+        "url" : "https://polymarket.com/event/presidential-election-winner-2024"
+    },
+    "publish_time" : "{date2}",
+    "results" : {
+        "national" : {
+            "Harris" : 39.5,
+            "Trump" : 60.5
+        }
+    }
+}
+{
+    "_id" : "{date1}_PredictIt",
+    "event_id" : "us_president_2024",
+    "name" : "",
+    "poll_time_start" : "",
+    "poll_time_end" : "",
+    "source" : {
+        "type" : "机构",
+        "name" : "PredictIt",
+        "is_future" : true,
+        "url" : "https://www.predictit.org/markets/detail/7456/Who-will-win-the-2024-US-presidential-election"
+    },
+    "publish_time" : "{date2}",
+    "results" : {
+        "national" : {
+            "Harris" : 51,
+            "Trump" : 53
+        }
+    }
+}
+{
+    "_id" : "{date1}_smarkets",
+    "event_id" : "us_president_2024",
+    "name" : "",
+    "poll_time_start" : "",
+    "poll_time_end" : "",
+    "source" : {
+        "type" : "机构",
+        "name" : "smarkets",
+        "is_future" : true,
+        "url" : "https://smarkets.com/listing/politics/us/2024-presidential-election"
+    },
+    "publish_time" : "{date2}",
+    "results" : {
+        "national" : {
+            "Harris" : 40.98,
+            "Trump" : 59.17
+        }
+    }
+}
