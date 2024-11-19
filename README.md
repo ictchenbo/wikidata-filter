@@ -76,7 +76,7 @@ nodes:
   n3: Print
 
 loader: RandomGenerator(100)
-processor: Group(n1, n2, n3)
+processor: Fork(n1, n2, n3)
 
 ```
 
@@ -96,7 +96,7 @@ nodes:
   chain1: Chain(n1, n2)
   chain2: Chain(n3, n4, n5)
 
-processor: Group(chain1, chain2)
+processor: Fork(chain1, chain2)
 ```
 
 - 示例3：基于wikidata生成简单图谱结构，包含Item/Property/Item_Property/Property_Property 四张表 `flows/p1_wikidata_graph.yaml`
@@ -120,19 +120,19 @@ nodes:
   filter_property: "Filter(lambda p: p['_type']=='property')"
   chain1: Chain(filter_item, rm_type, writer1)
   chain2: Chain(filter_property, rm_type, writer2)
-  group1: Group(chain1, chain2)
+  group1: Fork(chain1, chain2)
 
   property: wikidata_graph.ItemProperty
   filter_item_property: "Filter(lambda p: p['_type']=='item_property')"
   filter_property_property: "Filter(lambda p: p['_type']=='property_property')"
   chain3: Chain(filter_item_property, rm_type, writer3)
   chain4: Chain(filter_property_property, rm_type, writer4)
-  group2: Group(chain3, chain4)
+  group2: Fork(chain3, chain4)
 
   chain_entity: Chain(entity, group1)
   chain_property: Chain(property, group2)
 
-processor: Group(chain_entity, chain_property)
+processor: Fork(chain_entity, chain_property)
 ```
 
 4. 启动流程

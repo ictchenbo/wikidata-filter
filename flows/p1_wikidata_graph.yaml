@@ -17,14 +17,14 @@ nodes:
   filter_property: "Filter(lambda p: p['_type']=='property')"
   chain1: Chain(filter_item, rm_type, writer1)
   chain2: Chain(filter_property, rm_type, writer2)
-  group1: Group(chain1, chain2)
+  group1: Fork(chain1, chain2)
 
   property: wikidata_graph.ItemProperty
   filter_item_property: "Filter(lambda p: p['_type']=='item_property')"
   filter_property_property: "Filter(lambda p: p['_type']=='property_property')"
   chain3: Chain(filter_item_property, rm_type, writer3)
   chain4: Chain(filter_property_property, rm_type, writer4)
-  group2: Group(chain3, chain4)
+  group2: Fork(chain3, chain4)
 
   chain_entity: Chain(entity, group1)
   chain_property: Chain(property, group2)
