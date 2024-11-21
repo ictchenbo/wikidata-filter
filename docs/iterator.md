@@ -44,7 +44,7 @@ class JsonIterator:
 1. 简单JSON匹配 `matcher.SimpleJsonMatcher(**match_rules)`
 2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
 
-### 修改类
+### 修改转换
 1. 投影操作 `Select(*keys)` 支持嵌套字段 如`user.name`
 2. 数据映射转换 `Map(mapper, key=None, target_key=None)` 如果指定了key，则是针对该字段的映射
 3. 移除字段 `RemoveFields(*keys)`
@@ -57,10 +57,14 @@ class JsonIterator:
 10. 字段扁平化 `Flat(key, flat_mode='value')` 通过flat_mode指定扁平化模式 支持对数组、字典类型的字段或整个输入进行扁平化
 11. 扁平化转换 `FlatMap(mapper)` 对mapper结果进行扁平化
 12. 字段作为JSON加载 `FieldJson(key)`
-13. 按照某个字段对数据进行分组 `GroupBy(key)`
-14. 复制字段 `CopyFields(*keys)` 复制已有的字段 如果目标字段名存在 则覆盖
-15. 拼接字段 `ConcatFields(target_key,*source_keys, sep='_')` 将source_keys拼接作为target_key字段
-16. 属性扁平化 `FlatProperty(*keys, inherit_props=False)` 提取指定属性进行返回
+13. 复制字段 `CopyFields(*keys)` 复制已有的字段 如果目标字段名存在 则覆盖
+14. 拼接字段 `ConcatFields(target_key,*source_keys, sep='_')` 将source_keys拼接作为target_key字段
+15. 属性扁平化 `FlatProperty(*keys, inherit_props=False)` 提取指定属性进行返回
+
+
+### 统计分析类
+1. 按照某个字段对数据进行分组 `Group(by=key, emit_fast=True)` 对数据分组，然后再往后传递
+2. 采样 `Sample(rate=0.01)` 
 
 
 ### 缓冲处理基类

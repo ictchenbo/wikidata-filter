@@ -21,6 +21,22 @@
 7. Excel文件流式 `ExcelStream(input_file, sheets, with_header)`
 8. Excel文件全量 `Excel(input_file, sheets, with_header)`
 
+### 文件夹加载
+通用文件夹加载 `Directory(folders, *suffix, recursive=False, type_mapping={}) `，参数说明：
+- folders 指定文件或文件夹 
+- *suffix 指定后缀名数组 如'.json' '.csv'，'all'表示全部支持的类型（此时其他参数会被忽略）
+- recursive 进行递归处理，如果为True，会遍历子文件夹
+- type_mapping 对文件类型进行映射 如`{'.json': '.jsonl'}`表示将`.json`文件当做`.jsonl`文件处理
+
+已支持的文件类型（默认后缀名）：
+- .txt -> Text
+- .csv -> CSV
+- .json -> Json
+- .jsona -> JsonArray
+- .jsonl -> JsonLine
+- .jsonf -> JsonFree
+- .xls -> ExcelStream
+- .xlsx -> ExcelStream
 
 ### wikidata文件
 提供两种wikidata文件格式加载器：

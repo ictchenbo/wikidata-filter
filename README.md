@@ -9,6 +9,9 @@
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
+- 2024.11.21
+1. 新增采样算子`Sample(rate=0.01)` 对数据进行采样
+
 - 2024.11.19
 1. 新增文件夹加载器`Directory(paths, *suffix, recursive=False, type_mapping=None, **kwargs)` 根据文件后缀名调用具体的加载器进行加载（.txt .json .jsonl .jsonf .jsona .xls）
 2. 新增[文件夹处理流程](flows/directory_loader.yaml)
