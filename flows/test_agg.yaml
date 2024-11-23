@@ -1,0 +1,14 @@
+name: 加载CSV文件，分组并统计
+arguments: 0
+loader: CSV('test_data/economist_1024_polltracker-polls.csv')
+
+nodes:
+  print: Print
+  counter: Count
+  select: Select('poll_id', 'start_date', 'end_date', 'pollster', 'sample_size', 'sponsors', 'candidate_name', 'pct', 'date')
+  group: Group(by='poll_id')
+  g_count: aggs.Count()
+  g_meansize: aggs.Mean('sample_size')
+
+
+processor: Chain(group, g_meansize, print)

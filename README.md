@@ -9,26 +9,14 @@
 关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
 ## New！
+- 2024.11.23
+1. 新增`aggs`算子模块，提供基本的聚合统计功能，配合`Group`使用。包括`Reduce` `ReduceBy` `Count` `Sum` `Mean` `Min` `Max` `Std` `Var`
+ 以及 `Head` `Tail` `Sample` `Distinct` `OrderBy`等
+2. 新增`sample.Distinct` 以支持去重，可重写其`exists(val)`方法实现更加高级的重复数据判别
+
+
 - 2024.11.21
 1. 新增采样算子`Sample(rate=0.01)` 对数据进行采样
-
-- 2024.11.19
-1. 新增文件夹加载器`Directory(paths, *suffix, recursive=False, type_mapping=None, **kwargs)` 根据文件后缀名调用具体的加载器进行加载（.txt .json .jsonl .jsonf .jsona .xls）
-2. 新增[文件夹处理流程](flows/directory_loader.yaml)
-3. 修改Flat处理逻辑
-
-- 2024.11.17
-1. `JsonIterator`增加`__process__(data)`方法，如果需要接收特殊消息（如结束END/定时TIMEOUT/刷新FLUSH），则重写此方法。默认逻辑为如果data不为None，调用`on_data`进行具体数据处理。
-2. 流程中不需要显示生命finish_sinal，`run`在数据结束后自动发送一个特殊消息`Message.end()`
-3. 为大部分组件添加`__str__`实现 方便展示组件对象信息
-4. 新增联合国教科文组织项目数据处理流程[查看](flows/unesco-projects.yaml)及相关[测试数据](test_data/unesco-projects-20241113.csv)
-
-- 2024.11.16
-1. 重写 `Chain`处理逻辑，可作为普通节点提供输出；判断每个子节点输出，如果是生成器，则用for获取
-2. 重写`run`方法，针对部分处理节点的`on_data`方法可能包含`yield`（对应返回为生成器），对结果进行判断
-3. 新增[`openapi`JSON文件](test_data/opensanctions-openapi.json)结构解析算子 `iterator.web.openapi.FromOpenAPI`和`iterator.web.openapi.ToOpenAPI`
-4. 新增**OpenSanctions**FTM数据格式的人员`Person`转换流程[查看](flows/opensanctions_peps.yaml)
-5. 新增属性提升处理算子 `FlatProperty(*keys, inherit_props=False)` 返回特定字段的值
 
 
 ## 项目特色
@@ -69,21 +57,23 @@
 
 3. 流程定义
 
-- 示例1：生成100个随机数并重复5遍 `flows/test_multiple.yaml`
+- 示例1：加载联合国教科文组织的项目清单CSV文件，按受益国家分组，统计项目数量、总预算、总支出 [查看详情](flows/unesco-projects-aggs.yaml) [流程对比](flows/unesco-projects.yaml)
 
 ```yaml
-name: test multiple
+loader: CSV('test_data/unesco-projects-20241113.csv')
+
 nodes:
-  n1: Repeat(5)
-  n2: Count(ticks=5, label='Repeat')
-  n3: Print
+  print: Print
+  rename1: RenameFields(**rename)
+  group: Group(by='beneficiary_country', emit_fast=False)
+  g_count: aggs.Count
+  g_total_budget: aggs.Sum('budget')
+  g_total_cost: aggs.Sum('cumulative_cost')
 
-loader: RandomGenerator(100)
-processor: Fork(n1, n2, n3)
-
+processor: Chain(rename1, group, g_total_cost, print)
 ```
 
-- 示例2：输入wikidata dump文件（gz/json）生成id-name映射文件（方便根据ID查询名称），同时对数据结构进行简化 `flows/p1_idname_simple.yaml`
+- 示例2：输入wikidata dump文件（gz/json）生成id-name映射文件（方便根据ID查询名称），同时对数据结构进行简化，[查看详情](flows/p1_idname_simple.yaml)
 ```yaml
 name: p1_idname_simple
 arguments: 1
@@ -102,7 +92,7 @@ nodes:
 processor: Fork(chain1, chain2)
 ```
 
-- 示例3：基于wikidata生成简单图谱结构，包含Item/Property/Item_Property/Property_Property 四张表 `flows/p1_wikidata_graph.yaml`
+- 示例3：基于wikidata生成简单图谱结构，包含Item/Property/Item_Property/Property_Property四张表 [查看详情](flows/p1_wikidata_graph.yaml)
 ```yaml
 name: p1_wikidata_graph
 description: transform wikidata dump to graph, including item/property/item_property/property_property
@@ -139,20 +129,25 @@ processor: Fork(chain_entity, chain_property)
 ```
 
 4. 启动流程
-**示例一**
 ```shell
- python main_flow.py flows/test_multiple.yaml
+ python main_flow.py <flow-file-path>
 ```
 
-**示例二**
-```shell
- python main_flow.py flows/p1_idname_simple.yaml dump.json
-```
+## 应用场景
+本项目具有众多数据处理分析应用场景：
+- 数据结构转换
+- 数据库备份、同步
+- 数据采集（如GDELT数据）
+- 数据解析与NLP处理
+- 索引构建，包括全文索引、向量索引
+- 知识图谱构建
+- Web API功能/数据集成
+- 服务监测
+- 离线数据分析
+- ...
 
-**示例三**
-```shell
- python main_flow.py flows/p1_wikidata_graph.yaml dump.json
-```
+可以在[这里](flows)找到很多开箱即用的流程。
+
 
 ## 使用者文档 User Guide
 
@@ -172,6 +167,24 @@ YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
 ## 开发日志
+- 2024.11.19
+1. 新增文件夹加载器`Directory(paths, *suffix, recursive=False, type_mapping=None, **kwargs)` 根据文件后缀名调用具体的加载器进行加载（.txt .json .jsonl .jsonf .jsona .xls）
+2. 新增[文件夹处理流程](flows/directory_loader.yaml)
+3. 修改Flat处理逻辑
+
+- 2024.11.17
+1. `JsonIterator`增加`__process__(data)`方法，如果需要接收特殊消息（如结束END/定时TIMEOUT/刷新FLUSH），则重写此方法。默认逻辑为如果data不为None，调用`on_data`进行具体数据处理。
+2. 流程中不需要显示生命finish_sinal，`run`在数据结束后自动发送一个特殊消息`Message.end()`
+3. 为大部分组件添加`__str__`实现 方便展示组件对象信息
+4. 新增联合国教科文组织项目数据处理流程[查看](flows/unesco-projects.yaml)及相关[测试数据](test_data/unesco-projects-20241113.csv)
+
+- 2024.11.16
+1. 重写 `Chain`处理逻辑，可作为普通节点提供输出；判断每个子节点输出，如果是生成器，则用for获取
+2. 重写`run`方法，针对部分处理节点的`on_data`方法可能包含`yield`（对应返回为生成器），对结果进行判断
+3. 新增[`openapi`JSON文件](test_data/opensanctions-openapi.json)结构解析算子 `iterator.web.openapi.FromOpenAPI`和`iterator.web.openapi.ToOpenAPI`
+4. 新增**OpenSanctions**FTM数据格式的人员`Person`转换流程[查看](flows/opensanctions_peps.yaml)
+5. 新增属性提升处理算子 `FlatProperty(*keys, inherit_props=False)` 返回特定字段的值
+
 - 2024.11.09
 1. 新增文本分段算子 `nlp.splitter.TextSplit(key, target_key, algorithm='simple')` 实现文本chunk化，便于建立向量化索引。chunk算法持续扩展
 2. 新增qdrant数据库算子 `database.Qdrant(host: str = 'localhost', port: int = 6333, api_key=None, collection: str = "chunks", buffer_size: int = 100, vector_field='vector')`

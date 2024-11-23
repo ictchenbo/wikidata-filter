@@ -1,19 +1,12 @@
-from typing import Any
-
+"""本模块为聚合分析相关算子 提供分组、缓存"""
 from wikidata_filter.iterator.base import JsonIterator
 
 
-class Reduce(JsonIterator):
+class ReduceBase(JsonIterator):
     """对数据进行规约(many->1/0) 向后传递规约结果"""
 
-    def __process__(self, data: Any, *args):
-        if data is None:
-            print(f'{self.name}: END/Flush signal received.')
 
-        return data
-
-
-class Buffer(Reduce):
+class Buffer(ReduceBase):
     """
     缓冲节点 当到达的数据填满缓冲池后再一起向后传递。主要用于批处理场景。
     未来可以扩展 如带时限的缓冲
@@ -81,7 +74,7 @@ class BufferedWriter(Buffer):
         pass
 
 
-class Group(Reduce):
+class Group(ReduceBase):
     """分组规约，基于指定字段的值进行分组"""
     groups = {}
     last_key = None

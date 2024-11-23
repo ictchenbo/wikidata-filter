@@ -1,5 +1,5 @@
 
-from wikidata_filter.iterator.aggregate import BufferedWriter
+from wikidata_filter.iterator.aggregation import BufferedWriter
 
 
 class MongoWriter(BufferedWriter):

@@ -1,0 +1,26 @@
+name: 加载联合国教科文组织的项目数据
+description: 加载联合国教科文组织的项目清单CSV文件，按受益国家分组，统计项目数量、总预算、总支出
+arguments: 0
+finish_signal: true
+consts:
+  rename:
+    Project ID: _id
+    Project Title: title
+    Parent project ID: _parent
+    Project Budget (USD): budget
+    Cumulative Incurred Expenditures (USD): cumulative_cost
+    Start Date: start_date
+    End Date: end_date
+    Beneficiary Country / Region: beneficiary_country
+
+loader: CSV('test_data/unesco-projects-20241113.csv')
+
+nodes:
+  print: Print
+  rename1: RenameFields(**rename)
+  group: Group(by='beneficiary_country', emit_fast=False)
+  g_count: aggs.Count
+  g_total_budget: aggs.Sum('budget')
+  g_total_cost: aggs.Sum('cumulative_cost')
+
+processor: Chain(rename1, group, g_total_cost, print)

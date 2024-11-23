@@ -1,6 +1,5 @@
 name: 加载经济学人的民调趋势数据（CSV）文件进行处理 生成JSON格式
 arguments: 1
-finish_signal: True
 loader: CSV('test_data/economist_' + arg1 + '_polltracker-polls.csv')
 
 nodes:

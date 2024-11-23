@@ -65,7 +65,13 @@ class JsonIterator:
 ### 统计分析类
 1. 按照某个字段对数据进行分组 `Group(by=key, emit_fast=True)` 对数据分组，然后再往后传递
 2. 采样 `Sample(rate=0.01)` 
+3. 去重 `Distinct(field)`
 
+以下算子均需要搭配`Group`使用： 
+1. 聚合统计分析基类 `aggs.Reduce(func, source_key='values', target_key=None)`  根据提供的函数进行数据规约
+2. 自定义规约 `aggs.ReduceBy(init_func, add_func)` 提供一个初始函数和加法函数进行规约
+3. 统计函数算子，包括Count、Sum、Mean、Min、Max、Var、Std，这些算子构造方法除了Count无需参数以外，其他均需要一个字段名参数
+4. 分组整体处理算子，包括`Head(n)`、`Tail(n)`、`Sample(rate)`、`Distinct(field)`、`OrderBy(field, descend=False)`
 
 ### 缓冲处理基类
 1. 基本缓冲类 收集一批数据再集中往后传递 `Buffer(buffer_size=1000,mode='batch')`

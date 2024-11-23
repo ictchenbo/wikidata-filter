@@ -6,7 +6,7 @@ import os
 import re
 from typing import Any
 
-from wikidata_filter.iterator import Flat, Reduce
+from wikidata_filter.iterator import Flat, ReduceBase
 from wikidata_filter.util.dates import current_ts
 
 
@@ -326,6 +326,6 @@ class FromOpenAPI(Flat):
         return read(data)
 
 
-class ToOpenAPI(Reduce):
+class ToOpenAPI(ReduceBase):
     def on_data(self, data, *args):
         return write(data.get("values") or [])

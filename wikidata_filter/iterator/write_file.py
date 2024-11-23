@@ -1,6 +1,6 @@
 """输出到文件的算子"""
 import json
-from wikidata_filter.iterator.aggregate import BufferedWriter
+from wikidata_filter.iterator.aggregation import BufferedWriter
 
 
 class WriteText(BufferedWriter):

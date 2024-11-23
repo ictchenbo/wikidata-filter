@@ -25,4 +25,4 @@ nodes:
   n2: RenameFields(plaintext='text')
   n3: database.ESWriter(**es_config)
 
-processor: Chain(n2, n2, n3)
+processor: Chain(n1, n2, n3)
