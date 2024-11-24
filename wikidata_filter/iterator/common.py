@@ -45,14 +45,14 @@ class Count(JsonIterator):
         self.ticks = ticks
         self.label = label
 
-    def __process__(self, item, *args):
-        if item is None:
-            print(f'Counter[{self.label}] finish, total:', self.counter)
-        else:
-            self.counter += 1
-            if self.counter % self.ticks == 0:
-                print(f'Counter[{self.label}]:', self.counter)
+    def on_data(self, item, *args):
+        self.counter += 1
+        if self.counter % self.ticks == 0:
+            print(f'Counter[{self.label}]:', self.counter)
         return item
+
+    def on_complete(self):
+        print(f'Counter[{self.label}] finish, total:', self.counter)
 
     def __str__(self):
         return f"{self.name}(ticks={self.ticks},label='{self.label}')"

@@ -8,7 +8,7 @@ from wikidata_filter.flow_engine import ProcessFlow
 
 
 def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False):
-    print(f"Run flow: \nloader: {data_provider}\nprocessor: {iterator}\nfinish_signal: {finish_signal}")
+    print(f"Run flow: \nloader: {data_provider}\nprocessor: {iterator}")
     print("------------------------")
     iterator.on_start()
 
@@ -23,7 +23,7 @@ def run(data_provider: DataProvider, iterator: JsonIterator, finish_signal=False
         execute(item)
 
     data_provider.close()
-    # if finish_signal:
+
     execute(Message.end())
 
     iterator.on_complete()

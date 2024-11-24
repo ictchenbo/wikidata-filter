@@ -41,7 +41,13 @@ class JsonIterator:
         """内部调用的处理方法，先判断是否为None 否则调用on_data进行处理，普通节点的on_data方法不会接收到None"""
         # print(f'{self.name}.__process__', data)
         if data is not None:
-            return self.on_data(data)
+            if isinstance(data, Message):
+                if data.msg_type == 'end':
+                    print(f'{self.name} end')
+                else:
+                    self.on_data(data.data)
+            else:
+                return self.on_data(data)
 
     def on_complete(self):
         """结束处理。主要用于数据处理结束后的清理工作，不应该用于具体数据处理"""
@@ -52,7 +58,7 @@ class JsonIterator:
         return self.__class__.__name__
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
 class Multiple(JsonIterator):
@@ -71,7 +77,6 @@ class Multiple(JsonIterator):
         return self
 
     def on_start(self):
-        print(id(self), 'on_start')
         for it in self.nodes:
             it.on_start()
 
@@ -80,7 +85,7 @@ class Multiple(JsonIterator):
             it.on_complete()
 
     def __str__(self):
-        nodes = [it.__str__() for it in self.nodes]
+        nodes = [str(it) for it in self.nodes]
         return f'{self.name}[nodes={nodes}]'
 
 

@@ -3,7 +3,7 @@ import yaml
 
 from wikidata_filter.base import relative_path
 from wikidata_filter.components import components
-from wikidata_filter.util.mod_util import load_cls, parse_args
+from wikidata_filter.util.mod_util import load_cls
 
 
 base_pkg = 'wikidata_filter'
@@ -30,10 +30,11 @@ def fullname(cls_name: str, label: str = None):
             return f'{base_pkg}.{cls_name}'
         return f'{base_pkg}.{label}.{cls_name}'
     if '.' in cls_name:
-        # 查找wikidata_filter由没有其他任何的嵌入式？
+        # wikidata_filter下面的其他模块 如util
         path = relative_path(f'{base_pkg}/{cls_name.split(".")[0]}')
         if os.path.exists(path):
             return f'{base_pkg}.{cls_name}'
+    # 默认模块下 -> wikidata_filter/iterator/__init__
     return f'{base_pkg}.{default_mod}.{cls_name}'
 
 
@@ -55,13 +56,21 @@ class ComponentManager:
     def register_var(self, var_name, var):
         self.variables[var_name] = var
 
+    def is_reference_node(self, expr: str):
+        """简单判断策略 如果不包含点、全部为小写、在变量中则认为是"""
+        if expr in self.variables and '.' not in expr and expr.islower():
+            return True
+        return False
+
     def init_node(self, expr: str, label: str = None):
         if not expr:
             return None
+
         if expr.startswith('='):
             return eval(expr[1:], globals(), self.variables)
-        # 这里选择重用 方便在loader/processor定义中直接使用nodes名称
-        if expr in self.variables:
+
+        # 支持在loader/processor定义中直接引用nodes中定义的节点
+        if self.is_reference_node(expr):
             return self.variables[expr]
 
         # split expr into constructor and call_part
@@ -81,9 +90,9 @@ class ComponentManager:
         # find constructor object
         cls = find_cls(class_name_full)
         # register for later use
-        self.register_var(class_name, cls)
         # eval虽然简单，但是存在限制：由于Python语法限制，必须使用组件短名
-        # 因此流程中不同节点的短名不能冲突 TODO 使用ast解析？
+        # 不同构造器的短名如果相同 则会替换已有的构造器
+        self.register_var(class_name, cls)
         new_node = eval(f'{class_name}{call_part}', globals(), self.variables)
         return new_node
 
@@ -128,6 +137,7 @@ class ProcessFlow:
             self.comp_mgr.register_var(k, val)
 
     def init_nodes(self, nodes_def: dict):
+        """初始化节点 支持普通节点、loader节点和非流程节点"""
         for k, expr in nodes_def.items():
             expr = expr.strip()
 
@@ -138,3 +148,4 @@ class ProcessFlow:
 
             node = self.comp_mgr.init_node(expr, label=label)
             self.comp_mgr.register_var(k, node)
+            # print(k, expr, node, id(node))
