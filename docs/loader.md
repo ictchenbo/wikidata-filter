@@ -18,8 +18,12 @@
 4. JSON文件 `Json(input_file, encoding="utf8")` 整个文件为一个JSON对象传递给后续节点。
 5. JSON自由文件 `JsonFree(input_file, encoding="utf8")` 针对格式化json文件，自动检测JSON对象并传递给后续节点。
 6. CSV文件 `CSV(input_file, sep: str = ',', with_header: bool = False, encoding='utf8')` 按照CSV文件进行解析，如果带有表头，则以字典结构进行传递，否则以单元格列表进行传递。
-7. Excel文件流式 `ExcelStream(input_file, sheets, with_header)`
-8. Excel文件全量 `Excel(input_file, sheets, with_header)`
+7. Excel文件流式 `xls.ExcelStream(input_file, sheets, with_header)` 基于openpyxl流式解析Excel（适合大文件）
+8. Excel文件全量 `pandas.Excel(input_file, sheets, with_header)` 基于Pandas库解析Excel（全量加载，适合小文件）
+9. PDF文件加载器 `pdf.PDF(input_file, max_pages=0)` 基于`pdfminer.six`读取PDF文件，每页文本作为一条数据
+10. Word doc/docx文件加载器 `docx.Doc(input_file)` `docx.Docx(input_file)` 基于`python-docx`读取docx文件，doc则先通过`libreoffice`转换为docx，每个段落、表格作为一条数据
+11. Parquet文件加载器 `parquet.Parquet(input_file)` 基于`pyarrow`读取parquet文件，每行作为一条数据
+
 
 ### 文件夹加载
 通用文件夹加载 `Directory(folders, *suffix, recursive=False, type_mapping={}) `，参数说明：

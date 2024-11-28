@@ -21,17 +21,11 @@
 
 
 ## New！
-- 2024.11.24
-1. 新增`wikidata_filter.test`模块，作为框架扩展示例：通过在`wikidata_filter`中添加引用，可引入外部扩展模块，从而实现项目集成
-
-- 2024.11.23
-1. 新增`aggs`算子模块，提供基本的聚合统计功能，配合`Group`使用。包括`Reduce` `ReduceBy` `Count` `Sum` `Mean` `Min` `Max` `Std` `Var`
- 以及 `Head` `Tail` `Sample` `Distinct` `OrderBy`等
-2. 新增`sample.Distinct` 以支持去重，可重写其`exists(val)`方法实现更加高级的重复数据判别
-
-
-- 2024.11.21
-1. 新增采样算子`Sample(rate=0.01)` 对数据进行采样
+- 2024.11.28
+1. 新增PDF文件加载器 `pdf.PDF(input_file, max_pages=0)` 基于PDFMiner读取PDF文件，每页文本作为一条数据
+2. 新增Word doc/docx文件加载器 `docx.Doc(input_file)` `docx.Docx(input_file)` 基于python-docx读取docx文件，doc则先通过libreoffice转换为docx，每个段落、表格作为一条数据
+3. 新增Parquet文件加载器 `parquet.Parquet(input_file)` 基于pyarrow读取parquet文件，每行作为一条数据
+4. 对应增加三个示例流程：[pdf文件加载](flows/file_pdf.yaml) [docx文件加载](flows/file_docx.yaml) [parquet文件加载](flows/file_parquet.yaml)
 
 
 ## 项目特色
@@ -46,7 +40,9 @@
    - [预测市场数据](flows/futures.yaml)
    - [OpenSanctions全球制裁实体名单或涉政治、犯罪与经济重点人物、公司](flows/opensanctions_peps.yaml) [测试数据](test_data/opensanctions-entities.ftm.json)
    - [联合国教科文组织项目数据](flows/unesco-projects.yaml)
+   - [FourSqure全球POI数据](flows/file_parquet.yaml)
    - [新闻文本解析&向量化索引](flows/news_process.yaml)
+   - 文档文件读取 [pdf](flows/file_pdf.yaml) [docx](flows/file_docx.yaml)
    - [ReaderAPI](flows/test_readerapi.yaml)
    - [大模型处理](flows/llm_simple.yaml)
    - more...
@@ -182,6 +178,18 @@ YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
 ## 开发日志
+- 2024.11.24
+1. 新增`wikidata_filter.test`模块，作为框架扩展示例：通过在`wikidata_filter`中添加引用，可引入外部扩展模块，从而实现项目集成
+
+- 2024.11.23
+1. 新增`aggs`算子模块，提供基本的聚合统计功能，配合`Group`使用。包括`Reduce` `ReduceBy` `Count` `Sum` `Mean` `Min` `Max` `Std` `Var`
+ 以及 `Head` `Tail` `Sample` `Distinct` `OrderBy`等
+2. 新增`sample.Distinct` 以支持去重，可重写其`exists(val)`方法实现更加高级的重复数据判别
+
+
+- 2024.11.21
+1. 新增采样算子`Sample(rate=0.01)` 对数据进行采样
+
 - 2024.11.19
 1. 新增文件夹加载器`Directory(paths, *suffix, recursive=False, type_mapping=None, **kwargs)` 根据文件后缀名调用具体的加载器进行加载（.txt .json .jsonl .jsonf .jsona .xls）
 2. 新增[文件夹处理流程](flows/directory_loader.yaml)
