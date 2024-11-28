@@ -1,3 +1,4 @@
+import os
 import json
 
 from wikidata_filter.loader.base import DataProvider
@@ -8,25 +9,31 @@ class FileLoader(DataProvider):
     """
     文件加载器
     """
-    hold: bool = False
     instream = None
     filename: str = None
 
     def close(self):
-        if self.hold and self.instream:
+        if self.instream:
             self.instream.close()
+            self.instream = None
 
     def __str__(self):
         return f"{self.name}('{self.filename}')"
 
 
-class Text(FileLoader):
+class BinaryFile(FileLoader):
+    def __init__(self, input_file: str, auto_open=True, **kwargs):
+        assert os.path.exists(input_file) and os.path.isfile(input_file), f"文件不存在或不是文件: {input_file}"
+        if auto_open:
+            self.instream = open_file(input_file, "rb")
+        self.filename = input_file
+
+
+class Text(BinaryFile):
     """基于行的文本文件加载器"""
     def __init__(self, input_file: str, encoding='utf8'):
+        super().__init__(input_file)
         self.encoding = encoding
-        self.instream = open_file(input_file, "rb")
-        self.hold = True
-        self.filename = input_file
 
     def iter(self):
         for line in self.instream:

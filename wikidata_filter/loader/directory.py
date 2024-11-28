@@ -4,6 +4,7 @@ from typing import Iterable, Any
 from wikidata_filter.loader.base import DataProvider
 from .file import Text, CSV, Json, JsonLine, JsonArray, JsonFree
 from .xls import ExcelStream
+from .parquet import Parquet
 
 
 LOADERS = {
@@ -13,7 +14,8 @@ LOADERS = {
     '.json': Json,
     '.jsonl': JsonLine,
     '.jsona': JsonArray,
-    '.jsonf': JsonFree
+    '.jsonf': JsonFree,
+    '.parquet': Parquet
 }
 
 

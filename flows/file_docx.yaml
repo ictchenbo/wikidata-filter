@@ -1,0 +1,11 @@
+name: Doc/Docx File Loader
+description: 读取Doc(x)文件
+arguments: 0
+
+loader: docx.Docx('test_data/test.docx')
+
+nodes:
+  print: Print
+  count: Count
+
+processor: Chain(print, count)

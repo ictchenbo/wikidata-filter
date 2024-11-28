@@ -1,0 +1,11 @@
+name: Parquet File Loader
+description: 读取Parquet文件
+arguments: 0
+
+loader: parquet.Parquet('data/os-places/places-00000.snappy.parquet')
+
+nodes:
+  print: Print
+  count: Count
+
+processor: Chain(print, count)

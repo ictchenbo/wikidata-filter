@@ -23,4 +23,4 @@ nodes:
   g_total_budget: aggs.Sum('budget')
   g_total_cost: aggs.Sum('cumulative_cost')
 
-processor: Chain(rename1, group, g_total_cost, print)
+processor: Chain(rename1, group, g_count, print)
