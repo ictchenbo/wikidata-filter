@@ -2,9 +2,13 @@ import os
 from typing import Iterable, Any
 
 from wikidata_filter.loader.base import DataProvider
-from .file import Text, CSV, Json, JsonLine, JsonArray, JsonFree
+from .text import Text, CSV, Json, JsonLine, JsonArray, JsonFree
 from .xls import ExcelStream
 from .parquet import Parquet
+from .docx import Doc, Docx
+from .ppt import PPT, PPTX
+from .pdf import PDF
+from .html import HTML
 
 
 LOADERS = {
@@ -15,7 +19,13 @@ LOADERS = {
     '.jsonl': JsonLine,
     '.jsona': JsonArray,
     '.jsonf': JsonFree,
-    '.parquet': Parquet
+    '.parquet': Parquet,
+    '.doc': Doc,
+    '.docx': Docx,
+    '.pdf': PDF,
+    '.html': HTML,
+    '.ppt': PPT,
+    '.pptx': PPTX
 }
 
 

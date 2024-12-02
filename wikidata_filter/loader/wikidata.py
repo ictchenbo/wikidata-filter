@@ -1,6 +1,7 @@
 import json
 
-from wikidata_filter.loader.file import Text, FileLoader
+from wikidata_filter.loader.binary import FileLoader
+from wikidata_filter.loader.text import Text
 
 
 class WikidataJsonDump(Text):

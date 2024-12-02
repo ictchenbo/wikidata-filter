@@ -23,7 +23,8 @@
 9. PDF文件加载器 `pdf.PDF(input_file, max_pages=0)` 基于`pdfminer.six`读取PDF文件，每页文本作为一条数据
 10. Word doc/docx文件加载器 `docx.Doc(input_file)` `docx.Docx(input_file)` 基于`python-docx`读取docx文件，doc则先通过`libreoffice`转换为docx，每个段落、表格作为一条数据
 11. Parquet文件加载器 `parquet.Parquet(input_file)` 基于`pyarrow`读取parquet文件，每行作为一条数据
-
+12. EML文件加载器 `eml.EML(input_file, tmp_dir: str = None, save_attachment=True)` 每封邮件一条数据
+13. ppt/pptx文件加载器 `ppt.PPTX(input_file)` `ppt.PPTX(input_file)` 基于`python-pptx`读取pptx文件，ppt则先通过`libreoffice`转换为pptx，每个段落、表格作为一条数据
 
 ### 文件夹加载
 通用文件夹加载 `Directory(folders, *suffix, recursive=False, type_mapping={}) `，参数说明：
@@ -39,8 +40,13 @@
 - .jsona -> JsonArray
 - .jsonl -> JsonLine
 - .jsonf -> JsonFree
-- .xls -> ExcelStream
-- .xlsx -> ExcelStream
+- .xls -> xls.ExcelStream
+- .xlsx -> xls.ExcelStream
+- .doc -> docx.Doc
+- .docx -> docx.Docx
+- .eml -> eml.EML
+- .parquet -> parquet.Parquet
+- .pdf -> pdf.PDF
 
 ### wikidata文件
 提供两种wikidata文件格式加载器：

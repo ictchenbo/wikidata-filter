@@ -2,7 +2,7 @@ name: PDF File Loader
 description: 基于PDF(pdfminer)加载器读取PDF文件，解析出文字内容，每页一条
 arguments: 0
 
-loader: pdf.PDF('test_data/TrumpAgenda47.pdf', max_pages=5)
+loader: pdf.PDF('test_data/files/test.pdf', max_pages=5)
 
 nodes:
   print: Print

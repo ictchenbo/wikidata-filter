@@ -2,7 +2,6 @@ from typing import Any
 from types import GeneratorType
 from wikidata_filter.loader import DataProvider
 from wikidata_filter.loader.base import ArrayProvider, TextProvider
-from wikidata_filter.loader.wikidata import WikidataJsonDump
 from wikidata_filter.iterator.base import Message, JsonIterator
 from wikidata_filter.flow_engine import ProcessFlow
 
@@ -53,6 +52,7 @@ def process_wikidata(infile: str, iterator: JsonIterator, parallels: int = 1, pa
     :param parallels 并发数
     :param parallel_runner 并发方法  multi_thread/multi_process
     """
+    from wikidata_filter.loader.wikidata import WikidataJsonDump
 
     dump_loader = WikidataJsonDump(infile)
 

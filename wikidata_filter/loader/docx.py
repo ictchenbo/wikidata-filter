@@ -9,7 +9,7 @@
 import os
 from datetime import datetime
 from typing import Iterable, Any
-from wikidata_filter.loader.file import BinaryFile
+from wikidata_filter.loader.binary import BinaryFile
 
 try:
     from docx import Document
@@ -72,7 +72,6 @@ class Doc(Docx):
     """基于libreoffice6将doc转换为docx 进而基于docx进行解析"""
     def __init__(self, input_file, max_pages=0, **kwargs):
         super().__init__(input_file, max_pages=max_pages, auto_open=False, **kwargs)
-        self.max_pages = max_pages
         out_path = os.path.dirname(self.filename)
         try:
             self.doc2docx(self.filename, out_path)

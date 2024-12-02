@@ -1,0 +1,1870 @@
+Delivered-To: lovfrichen@gmail.com
+Received: by 2002:a98:b353:0:b0:20e:18b:2e7b with SMTP id h19csp142870eis;
+        Thu, 28 Nov 2024 15:20:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IG48DTGd0k1tQu4yfjPFBNOrRyM7NdEnMBo5GMfFQS2z8PjIG6p5SkWDNxPsANtiqnYUhvd
+X-Received: by 2002:a05:6a20:1593:b0:1db:df7b:471a with SMTP id adf61e73a8af0-1e0e0bf54d3mr13283144637.43.1732836000974;
+        Thu, 28 Nov 2024 15:20:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1732836000; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Bsd2di4qbuAhzY75eoJcBYB2pIBSwnLy75N70Ma9MFxgL+sdMdAw5LlS/v3WUg+oyP
+         s4dZT3RNY9+RXM3LAQGLg4hK6t6bL8huRm3ergGJz1dcg6SD5VzKa60TkSZFMa/tR7hU
+         PCU5OalcIYCp0Tf6NLD1HynFSayBUHLy7KqrvBf7hyfelOeu22vVW741CvbyerXNsHPr
+         ssxhWnzCKqDoVzGcWF8YUBvZXeTxHJKK+lcj9hW9YrfyakGietFceUmjRDAeMIFuu/Yt
+         Y684z9kE+5pJLOadSJbCWnGw9t17oPjI+0m+rKdLBFS/hLZgtwc//NLJ8qM4FKMdtxgs
+         Geag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:list-unsubscribe:list-unsubscribe-post:reply-to:subject
+         :message-id:mime-version:from:date:dkim-signature:dkim-signature;
+        bh=/KkDa+77/A1jm7E84dj4nlUMtSaT3SJOxCW9cNYOn80=;
+        fh=ofy5L3v9cG4FghVliBWBWcxW50vSDjcKrqz4yVTH+0Q=;
+        b=eHiz9LUiRVdpV2JnQr86sN/Ke9ovxFIQjgaecB17hiWQiiMqJ8hXLbnbzQYfiRK2sH
+         EDBJmpiHoVYKo25FVhd/xO/Yaxpi4HGIyKTIiWkaCnHT4nA8UcLaVaoRUHIjQ3nkbZdN
+         mI5xgxOqkySQuYv3o8KHgJFqITbg9FT5ITUTORK8voG5mHxKE4sAMQjpWDDuue7dkmmC
+         /YOrCaSsAL6KIQbu97oDLLg5Ev4LiE7eyeWAZDZ/5+6hzMy3dw5i1DO7rdx+lGzm5K9F
+         HIxqNhnVWi9ESiTZDwq4sTIM+A+rfWn8x/cR6I2hmZDx92GW9PzEv7lWJaItYFfALnLi
+         A4hA==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com;
+       dkim=pass header.i=@medium.com header.s=m1 header.b=gnm9hgtx;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=m9QfbxeR;
+       spf=pass (google.com: domain of bounces+1823144-2d30-lovfrichen=gmail.com@email.medium.com designates 149.72.133.59 as permitted sender) smtp.mailfrom="bounces+1823144-2d30-lovfrichen=gmail.com@email.medium.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
+Return-Path: <bounces+1823144-2d30-lovfrichen=gmail.com@email.medium.com>
+Received: from wrqvvrpb.outbound-mail.sendgrid.net (wrqvvrpb.outbound-mail.sendgrid.net. [149.72.133.59])
+        by mx.google.com with ESMTPS id 41be03b00d2f7-7fc9c259433si2886525a12.131.2024.11.28.15.20.00
+        for <lovfrichen@gmail.com>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 Nov 2024 15:20:00 -0800 (PST)
+Received-SPF: pass (google.com: domain of bounces+1823144-2d30-lovfrichen=gmail.com@email.medium.com designates 149.72.133.59 as permitted sender) client-ip=149.72.133.59;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@medium.com header.s=m1 header.b=gnm9hgtx;
+       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=m9QfbxeR;
+       spf=pass (google.com: domain of bounces+1823144-2d30-lovfrichen=gmail.com@email.medium.com designates 149.72.133.59 as permitted sender) smtp.mailfrom="bounces+1823144-2d30-lovfrichen=gmail.com@email.medium.com";
+       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=medium.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=medium.com;
+	h=content-type:from:mime-version:subject:reply-to:list-unsubscribe-post:
+	list-unsubscribe:x-feedback-id:to:cc:content-type:from:subject:to;
+	s=m1; bh=/KkDa+77/A1jm7E84dj4nlUMtSaT3SJOxCW9cNYOn80=;
+	b=gnm9hgtx4AdFlG4gim/dvLMIURVgSmGb+RFJMd/FRBxUQOipfEhYH6LWh7LLs/FxRBWp
+	wHZ/GpmmDFvDr8BlV28MUd8bM8ymgjC3OGsLywMkLnvgHoa+B6IY9eGBWlLzR2lMX0s6HP
+	dqPptW/bLNdycOmq65BSuEeAHIzHMOFyA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sendgrid.info;
+	h=content-type:from:mime-version:subject:reply-to:list-unsubscribe-post:
+	list-unsubscribe:x-feedback-id:to:cc:content-type:from:subject:to;
+	s=smtpapi; bh=/KkDa+77/A1jm7E84dj4nlUMtSaT3SJOxCW9cNYOn80=;
+	b=m9QfbxeRGOxLKYo9ceV+fh583FVH9tmTCtA4jmkc9arpBdLGEjrMoXOKpLJlfCgYE5z3
+	kPuGzr2YZkdySToG7tkZi6DmGoqPpNGdtC2KbDxbqy00Vh0t5PrW/d10Hb6ZWkJ7nVssMj
+	Szbkwl0XbN/SezwKkDeutHBAX43+BodVw=
+Received: by recvd-6d6d8c9b6-8j9fs with SMTP id recvd-6d6d8c9b6-8j9fs-1-6748B80E-E
+	2024-11-28 18:35:58.1847331 +0000 UTC m=+1199661.187690596
+Received: from MTgyMzE0NA (unknown)
+	by geopod-ismtpd-60 (SG) with HTTP
+	id xnNlorQpSB-gw83bR5zt1w
+	Thu, 28 Nov 2024 18:35:58.137 +0000 (UTC)
+Content-Type: multipart/alternative; boundary=1cc6ed4de83277394436206785ef7d4142c905ccf7432ee77b5ab7128f94
+Date: Thu, 28 Nov 2024 23:20:00 +0000 (UTC)
+From: Medium Daily Digest <noreply@medium.com>
+Mime-Version: 1.0
+Message-ID: <xnNlorQpSB-gw83bR5zt1w@geopod-ismtpd-60>
+Subject: SQL Queries to Transform Your Data into Insights | Nikita Prasad in
+ Learning Data
+Reply-To: noreply@medium.com
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+List-Unsubscribe: 
+ =?us-ascii?Q?=3Chttps=3A=2F=2Fmedium=2Ecom=2Fme=2Femail-settings=2F6421d40a8195=2Ffbe189ec059?=
+ =?us-ascii?Q?4=3Fsource=3Demail-6421d40a8195-17328189563?=
+ =?us-ascii?Q?98-digest=2Ereader-----------------------?=
+ =?us-ascii?Q?--0d1b6dcc=5Fa237=5F4f70=5Fa97c=5F3fa297f2aa20&?=
+ =?us-ascii?Q?type=3Dsocial=3E?=
+X-Feedback-ID: 1823144:SG
+X-SG-EID: 
+ =?us-ascii?Q?u001=2E55w7ZmMf2EEl2GsC3Do5zA1Ej3ejV3ChTXTOIWqmSmBVTBEjrEZn4xjdo?=
+ =?us-ascii?Q?MvTDDAKPzF+YHK3wh2frth2UarsPBbJniHO832W?=
+ =?us-ascii?Q?n4TG3J4EVh6Pl=2F6kTLli42u8bb5+7KEE7nZkvfk?=
+ =?us-ascii?Q?yk9bONH4mTgbJuMudWqVKpG3PCgddmSLUJCNs0m?=
+ =?us-ascii?Q?lLijUTTn1xX6p6u+0W4DWcus82R43Fyy2fQsGWv?=
+ =?us-ascii?Q?lFrtjShznmY6iubvnoiWVjWyuFTpfiwLxBxe96Q?= =?us-ascii?Q?7sCO?=
+X-SG-ID: 
+ =?us-ascii?Q?u001=2ESdBcvi+Evd=2FbQef8eZF3Bs5=2FCt2ZLZg5Yg2c2+7rwo=2Fo7H8u=2Fvc9m=2FEt+?=
+ =?us-ascii?Q?H6qFQ9LDT55I54kOqKTV=2FRgtp4zzIu4HLC1iRSe?=
+ =?us-ascii?Q?Z01N4rVO4KybzMwlFdMY5HBwL+bYWIIS8SXGFzr?=
+ =?us-ascii?Q?Njck5jOIiKpsY1YMfhz=2Fyggxwgqdu=2F13zvCHrYH?=
+ =?us-ascii?Q?cGoyWp1oz24Po=2FrTu+q6LjykBRWdVcEg=2FCTr+9z?=
+ =?us-ascii?Q?w=3D=3D?=
+To: lovfrichen@gmail.com
+X-Entity-ID: u001.+wIKCpDNBPYepmrdYmvJIQ==
+
+--1cc6ed4de83277394436206785ef7d4142c905ccf7432ee77b5ab7128f94
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
+
+Stories for Lovfrichen
+@lovfrichen (https://medium.com/@lovfrichen?source=3Demail-6421d40a8195-173=
+2818956398-digest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3f=
+a297f2aa20)
+=C2=B7Become a member (https://medium.com/plans?source=3Demail-6421d40a8195=
+-1732818956398-digest.reader-------------------------0d1b6dcc_a237_4f70_a97=
+c_3fa297f2aa20)
+
+Today's highlights
+
+Nikita Prasad (https://medium.com/@nikita-prasad-analyst?source=3Demail-642=
+1d40a8195-1732818956398-digest.reader-eec44e936bf1-74166df3e6dd----0-98----=
+--------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inLearning Data (https://medium.com/learning-data?source=3Demail-6421d40a81=
+95-1732818956398-digest.reader-eec44e936bf1-74166df3e6dd----0-98-----------=
+-------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+SQL Queries to Transform Your Data into Insights
+As a Data Enthusiast You Must Know These!
+
+9 min read
+755
+13
+
+Michael Wood (https://medium.com/@michaelwood33311?source=3Demail-6421d40a8=
+195-1732818956398-digest.reader-bc04061380d3-be73554490b2----1-109---------=
+---------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inCubed (we have moved to differ.blog/cubed) (https://medium.com/cub3d?sour=
+ce=3Demail-6421d40a8195-1732818956398-digest.reader-bc04061380d3-be73554490=
+b2----1-109------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+The Insanity of Relying on Vector Embeddings: Why RAG Fails
+In RAG, the goal is to locate the stored information=E2=80=A6
+
+11 min read
+633
+21
+
+Ignacio de Gregorio (https://medium.com/@ignacio.de.gregorio.noblejas?sourc=
+e=3Demail-6421d40a8195-1732818956398-digest.reader--0708f08ab17e----2-102--=
+----------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+AI Manhattan Project Proposed. The US' Suicide or Salvation?
+Is AI A Nuclear-level Threat?
+
+10 min read
+970
+24
+
+Guillaume Weingertner (https://medium.com/@guillaume-weingertner?source=3De=
+mail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-f735631272ad----=
+3-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inTowards Data Science (https://medium.com/towards-data-science?source=3Dem=
+ail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-f735631272ad----3=
+-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Running Local LLMs is More Useful and Easier Than You Think
+A step-by-step guide to run Llama3 locally with Python
+
+6 min read
+1.2K
+12
+
+Jose Crespo, PhD (https://medium.com/@pepitoscrespo?source=3Demail-6421d40a=
+8195-1732818956398-digest.reader-29038077e4c6-216c059e3e53----4-99---------=
+---------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inCodeX (https://medium.com/codex?source=3Demail-6421d40a8195-1732818956398=
+-digest.reader-29038077e4c6-216c059e3e53----4-99------------------0d1b6dcc_=
+a237_4f70_a97c_3fa297f2aa20-1)
+
+How Is It Possible That Elon Musk Did Not Know It?
+If only he had considered the power of graph theory=E2=80=A6
+
+6 min read
+722
+23
+
+Michael Whittle (https://medium.com/@whittle?source=3Demail-6421d40a8195-17=
+32818956398-digest.reader-5517fd7b58a6-c28d4532b05b----5-98----------------=
+--0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inLevel Up Coding (https://medium.com/gitconnected?source=3Demail-6421d40a8=
+195-1732818956398-digest.reader-5517fd7b58a6-c28d4532b05b----5-98----------=
+--------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Monte Carlo Simulation in Python: Advanced Investment Risk Analysis
+Unlocking strategies and risk management through=E2=80=A6
+
+12 min read
+653
+14
+
+Gencay I. (https://medium.com/@geencay?source=3Demail-6421d40a8195-17328189=
+56398-digest.reader-5517fd7b58a6-b46af9a5f133----6-99------------------0d1b=
+6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inLevel Up Coding (https://medium.com/gitconnected?source=3Demail-6421d40a8=
+195-1732818956398-digest.reader-5517fd7b58a6-b46af9a5f133----6-99----------=
+--------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Meet with Genie=E2=80=8A-=E2=80=8AUpcoming AI Engineer (Coding is Ending!)
+Should you learn how to code?
+
+4 min read
+620
+10
+
+Eyal Kazin (https://medium.com/@eyal-kazin?source=3Demail-6421d40a8195-1732=
+818956398-digest.reader-7f60cf5620c9-b7efc302eb72----7-102-----------------=
+-0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inTowards Data Science (https://medium.com/towards-data-science?source=3Dem=
+ail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-b7efc302eb72----7=
+-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+=F0=9F=A7=A0=F0=9F=A7=B9 Causality - Mental Hygiene for Data Science
+The Power of 'Why?': Enhancing Data Science with=E2=80=A6
+
+37 min read
+43
+
+Lu=C3=ADs Oliveira (https://medium.com/@lgsoliveira?source=3Demail-6421d40a=
+8195-1732818956398-digest.reader--e2455925e21d----8-99------------------0d1=
+b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Five Brutal Truths About Being a Data Engineer
+No one will tell you this in an interview process
+
+4 min read
+195
+3
+
+Farzad Nobar (https://medium.com/@fmnobar?source=3Demail-6421d40a8195-17328=
+18956398-digest.reader-7f60cf5620c9-7c7cb1aaebe5----9-102------------------=
+0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inTowards Data Science (https://medium.com/towards-data-science?source=3Dem=
+ail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-7c7cb1aaebe5----9=
+-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Mathematics I Look for in Data Scientist Interviews
+Let's rebuild our data science foundation.
+
+16 min read
+949
+13
+
+Samuele Mazzanti (https://medium.com/@mazzanti.sam?source=3Demail-6421d40a8=
+195-1732818956398-digest.reader-7f60cf5620c9-14379f7a41c3----10-102--------=
+----------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inTowards Data Science (https://medium.com/towards-data-science?source=3Dem=
+ail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-14379f7a41c3----1=
+0-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Hypothesis Testing Explained (How I Wish It Was Explained to Me)
+Most resources focus on things like Confidence and=E2=80=A6
+
+8 min read
+823
+7
+
+AI Papers Academy (https://medium.com/@aipapers?source=3Demail-6421d40a8195=
+-1732818956398-digest.reader--d55bb78dff9a----11-98------------------0d1b6d=
+cc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Tokenformer: The Next Generation of Transformers?
+Dive into Tokenformer, a novel architecture that=E2=80=A6
+
+5 min read
+232
+
+Mary Borysova (https://medium.com/@maria_borysova?source=3Demail-6421d40a81=
+95-1732818956398-digest.reader-138adf9c44c-2a1380971b88----12-98-----------=
+-------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inUX Collective (https://medium.com/user-experience-design-1?source=3Demail=
+-6421d40a8195-1732818956398-digest.reader-138adf9c44c-2a1380971b88----12-98=
+------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Whoop! or How to gamify training=E2=80=8A-=E2=80=8A$3.6 billion product pla=
+ybook
+Secrets how to make training feel like a fun game
+
+8 min read
+497
+14
+
+Zach Quinn (https://medium.com/@zachl-quinn?source=3Demail-6421d40a8195-173=
+2818956398-digest.reader-1c45ac921f25-cc27ac592c52----13-99----------------=
+--0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inPipeline: Your Data Engineering Resource (https://medium.com/pipeline-a-d=
+ata-engineering-resource?source=3Demail-6421d40a8195-1732818956398-digest.r=
+eader-1c45ac921f25-cc27ac592c52----13-99------------------0d1b6dcc_a237_4f7=
+0_a97c_3fa297f2aa20-1)
+
+Why New Data Engineers Need To Watch Their Mouths
+Why data engineers need to be precise with words=E2=80=A6
+
+5 min read
+169
+1
+
+Leonie Monigatti (https://medium.com/@iamleonie?source=3Demail-6421d40a8195=
+-1732818956398-digest.reader-7f60cf5620c9-2eefba9a692e----14-102-----------=
+-------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+inTowards Data Science (https://medium.com/towards-data-science?source=3Dem=
+ail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-2eefba9a692e----1=
+4-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1)
+
+Building a Recommender System using Machine Learning
+"Candidate rerank" approach with co-visitation matrix=E2=80=A6
+
+6 min read
+780
+9
+
+See more of what you like and less of what you don't.
+Control your recommendations (https://medium.com/me/missioncontrol?source=
+=3Demail-6421d40a8195-1732818956398-digest.reader-------------------------0=
+d1b6dcc_a237_4f70_a97c_3fa297f2aa20)
+
+Read from anywhere.
+
+Sent by Medium (https://medium.com/?source=3Demail-6421d40a8195-17328189563=
+98-digest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa=
+20)
+=C2=B7Medium, 548 Market St, PMB 42061, San=C2=A0Francisco,=C2=A0CA=C2=A094=
+104
+Unsubscribe (https://medium.com/me/email-settings/6421d40a8195/fbe189ec0594=
+?type=3Dsocial&source=3Demail-6421d40a8195-1732818956398-digest.reader-----=
+--------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20)
+ from this type of email=C2=B7Switch to the Weekly Digest (https://medium.c=
+om/me/email-settings/6421d40a8195/fbe189ec0594?type=3Dsocial&preference=3D2=
+&source=3Demail-6421d40a8195-1732818956398-digest.reader-------------------=
+------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20)
+=C2=B7Careers (https://medium.com/jobs-at-medium/work-at-medium-959d1a85284=
+e?source=3Demail-6421d40a8195-1732818956398-digest.reader------------------=
+-------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20)
+=C2=B7Help Center (https://help.medium.com/hc/en-us?source=3Demail-6421d40a=
+8195-1732818956398-digest.reader-------------------------0d1b6dcc_a237_4f70=
+_a97c_3fa297f2aa20)
+=C2=B7Privacy Policy (https://policy.medium.com/medium-privacy-policy-f03bf=
+92035c9?source=3Demail-6421d40a8195-1732818956398-digest.reader------------=
+-------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20)
+=C2=B7Terms of service (https://policy.medium.com/medium-terms-of-service-9=
+db0094a1e0f?source=3Demail-6421d40a8195-1732818956398-digest.reader--------=
+-----------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20)
+--1cc6ed4de83277394436206785ef7d4142c905ccf7432ee77b5ab7128f94
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=utf-8
+Mime-Version: 1.0
+
+<html lang=3D"en" style=3D"box-sizing: border-box;"><head><meta http-equiv=
+=3D"Content-Type" content=3D"text/html; charset=3Dutf-8"><meta name=3D"view=
+port" content=3D"width=3Ddevice-width, initial-scale=3D1, maximum-scale=3D5=
+"><meta name=3D"robots" content=3D"none"><style>
+.hljs-link,
+.hljs-regexp {
+  color: #0e0eff;
+}
+</style><style>
+.ff:hover {
+  background: rgba(15, 115, 12, 1) !important;
+}
+.fg:hover {
+  border-color: rgba(15, 115, 12, 1) !important;
+}
+</style><style>
+@media all and (min-width: 728px) and (max-width: 903.98px) {
+  .d {
+    background-color: rgba(242, 242, 242, 1) !important;
+  }
+
+  .e {
+    padding: 6px 0 40px 0;
+  }
+
+  .o {
+    border: 1px solid rgba(230, 230, 230, 1);
+  }
+
+  .p {
+    border-radius: 4px;
+  }
+
+  .v {
+    padding: 28px 40px 0 40px !important;
+  }
+
+  .an {
+    font-size: 13px;
+  }
+
+  .ao {
+    line-height: 18px;
+  }
+
+  .az {
+    margin-bottom: 5px !important;
+  }
+
+  .ba {
+    margin-top: 25px !important;
+  }
+
+  .bi {
+    padding: 0 40px !important;
+  }
+
+  .br {
+    font-size: 16px !important;
+  }
+
+  .bs {
+    line-height: 24px !important;
+  }
+
+  .dm {
+    font-size: 24px;
+  }
+
+  .dn {
+    line-height: 30px;
+  }
+
+  .ee {
+    padding: 20px 40px 40px !important;
+  }
+
+  .ej {
+    padding: 0px 40px 60px !important;
+  }
+
+  .er {
+    line-height: 28px;
+  }
+
+  .fm {
+    padding: 40px !important;
+  }
+
+  .fq {
+    padding-bottom: 0 !important;
+  }
+
+  .fr {
+    padding-top: 10px;
+  }
+
+  .fw {
+    display: inline-block !important;
+  }
+
+  .fx {
+    float: right !important;
+  }
+
+  .ge {
+    padding-top: 34px;
+  }
+}
+</style><style>
+@media all and (min-width: 904px) and (max-width: 1079.98px) {
+  .f {
+    background-color: rgba(242, 242, 242, 1) !important;
+  }
+
+  .g {
+    padding: 6px 0 40px 0;
+  }
+
+  .q {
+    border: 1px solid rgba(230, 230, 230, 1);
+  }
+
+  .r {
+    border-radius: 4px;
+  }
+
+  .w {
+    padding: 28px 40px 0 40px !important;
+  }
+
+  .ap {
+    font-size: 13px;
+  }
+
+  .aq {
+    line-height: 18px;
+  }
+
+  .bb {
+    margin-bottom: 5px !important;
+  }
+
+  .bc {
+    margin-top: 25px !important;
+  }
+
+  .bj {
+    padding: 0 40px !important;
+  }
+
+  .bt {
+    font-size: 16px !important;
+  }
+
+  .bu {
+    line-height: 24px !important;
+  }
+
+  .do {
+    font-size: 24px;
+  }
+
+  .dp {
+    line-height: 30px;
+  }
+
+  .ef {
+    padding: 20px 40px 40px !important;
+  }
+
+  .ek {
+    padding: 0px 40px 60px !important;
+  }
+
+  .es {
+    line-height: 28px;
+  }
+
+  .fn {
+    padding: 40px !important;
+  }
+
+  .fs {
+    padding-bottom: 0 !important;
+  }
+
+  .ft {
+    padding-top: 10px;
+  }
+
+  .fy {
+    display: inline-block !important;
+  }
+
+  .fz {
+    float: right !important;
+  }
+
+  .gf {
+    padding-top: 34px;
+  }
+}
+</style><style>
+@media all and (min-width: 1080px) {
+  .h {
+    background-color: rgba(242, 242, 242, 1) !important;
+  }
+
+  .i {
+    padding: 6px 0 40px 0;
+  }
+
+  .s {
+    border: 1px solid rgba(230, 230, 230, 1);
+  }
+
+  .t {
+    border-radius: 4px;
+  }
+
+  .x {
+    padding: 28px 40px 0 40px !important;
+  }
+
+  .ar {
+    font-size: 13px;
+  }
+
+  .as {
+    line-height: 18px;
+  }
+
+  .bd {
+    margin-bottom: 5px !important;
+  }
+
+  .be {
+    margin-top: 25px !important;
+  }
+
+  .bk {
+    padding: 0 40px !important;
+  }
+
+  .bv {
+    font-size: 16px !important;
+  }
+
+  .bw {
+    line-height: 24px !important;
+  }
+
+  .dq {
+    font-size: 24px;
+  }
+
+  .dr {
+    line-height: 30px;
+  }
+
+  .eg {
+    padding: 20px 40px 40px !important;
+  }
+
+  .el {
+    padding: 0px 40px 60px !important;
+  }
+
+  .et {
+    line-height: 28px;
+  }
+
+  .fo {
+    padding: 40px !important;
+  }
+
+  .fu {
+    padding-bottom: 0 !important;
+  }
+
+  .fv {
+    padding-top: 10px;
+  }
+
+  .ga {
+    display: inline-block !important;
+  }
+
+  .gb {
+    float: right !important;
+  }
+
+  .gg {
+    padding-top: 34px;
+  }
+}
+</style><style>
+@media all and (max-width: 551.98px) {
+  .aj {
+    font-size: 11px;
+  }
+
+  .ak {
+    line-height: 14px;
+  }
+
+  .cb {
+    margin-bottom: 24px !important;
+  }
+
+  .cc {
+    margin-top: 24px !important;
+  }
+
+  .cv {
+    margin-left: 24px !important;
+  }
+
+  .cw {
+    height: 53px !important;
+  }
+
+  .cx {
+    width: 80px !important;
+  }
+
+  .dg {
+    width: calc(100% - 104px) !important;
+  }
+
+  .di {
+    font-size: 20px;
+  }
+
+  .dj {
+    line-height: 24px;
+  }
+
+  .ea {
+    margin-top: 56px !important;
+  }
+
+  .en {
+    font-size: 18px;
+  }
+
+  .eo {
+    line-height: 21px;
+  }
+}
+</style><style>
+@media all and (min-width: 552px) and (max-width: 727.98px) {
+  .al {
+    font-size: 11px;
+  }
+
+  .am {
+    line-height: 14px;
+  }
+
+  .cd {
+    margin-bottom: 24px !important;
+  }
+
+  .ce {
+    margin-top: 24px !important;
+  }
+
+  .cy {
+    margin-left: 24px !important;
+  }
+
+  .cz {
+    height: 53px !important;
+  }
+
+  .da {
+    width: 80px !important;
+  }
+
+  .dh {
+    width: calc(100% - 104px) !important;
+  }
+
+  .dk {
+    font-size: 20px;
+  }
+
+  .dl {
+    line-height: 24px;
+  }
+
+  .eb {
+    margin-top: 56px !important;
+  }
+
+  .ep {
+    font-size: 18px;
+  }
+
+  .eq {
+    line-height: 21px;
+  }
+}
+</style><link id=3D"glyph_preload_link" rel=3D"preload" as=3D"style" type=
+=3D"text/css" href=3D"https://glyph.medium.com/css/unbound.css"><link id=3D=
+"glyph_link" rel=3D"stylesheet" type=3D"text/css" href=3D"https://glyph.med=
+ium.com/css/unbound.css"></head><body style=3D"margin: 0; padding: 0;"><div=
+ class=3D"c d e f g h i" style=3D"background-color: rgba(255, 255, 255, 1);=
+"><table class=3D"j k l m" role=3D"presentation" cellpadding=3D"0" cellspac=
+ing=3D"0" style=3D"margin-left: auto; margin-right: auto; width: 100%; max-=
+width: 680px;" width=3D"100%"><tbody><tr><td class=3D"l n" style=3D"width: =
+100%; min-width: 100%;" width=3D"100%"><img src=3D"https://medium.com/_/sta=
+t?event=3Demail.opened&amp;emailId=3D0d1b6dcc-a237-4f70-a97c-3fa297f2aa20&a=
+mp;source=3Demail-6421d40a8195-1732818956398-digest.reader-----------------=
+--------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" width=3D"1" height=3D"1" alt>=
+<div class=3D"a b" style=3D"font-family: sohne, 'Helvetica Neue', Helvetica=
+, Arial, sans-serif; color: rgba(25, 25, 25, 1);"><div class=3D"c o p q r s=
+ t" style=3D"background-color: rgba(255, 255, 255, 1);"><div class=3D"u v w=
+ x" style=3D"padding: 12px 16px 0 16px;"><div class=3D"y" style=3D"text-ali=
+gn: left;"><div class><div class=3D"z ab" style=3D"display: inline-block; v=
+ertical-align: middle;"><a href=3D"https://medium.com/@lovfrichen?source=3D=
+email-6421d40a8195-1732818956398-digest.reader-------------------------0d1b=
+6dcc_a237_4f70_a97c_3fa297f2aa20" style=3D"color: inherit; text-decoration:=
+ none;"><img alt=3D"Lovfrichen" class=3D"ac ae af ag" src=3D"https://miro.m=
+edium.com/fit/c/64/64/0*9nDChB2xCJMmp_k8" width=3D"32" height=3D"32" style=
+=3D"display: block; border-radius: 50%; height: 32px; width: 32px;"></a></d=
+iv><div class=3D"z ah ab" style=3D"display: inline-block; vertical-align: m=
+iddle; padding-left: 9px;"><div class=3D"ai aj ak al am an ao ap aq ar as a=
+t" style=3D"font-weight: 400; color: rgba(41, 41, 41, 1);"><a href=3D"https=
+://medium.com/@lovfrichen?source=3Demail-6421d40a8195-1732818956398-digest.=
+reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" style=
+=3D"color: inherit; text-decoration: none;">Stories for <span style=3D"font=
+-weight:700">Lovfrichen</span></a></div><div class=3D"ai aj ak al am an ao =
+ap aq ar as at" style=3D"font-weight: 400; color: rgba(41, 41, 41, 1);"><sp=
+an class=3D"ai aj ak al am an ao ap aq ar as au" style=3D"font-weight: 400;=
+ color: rgba(117, 117, 117, 1);"><a href=3D"https://medium.com/@lovfrichen?=
+source=3Demail-6421d40a8195-1732818956398-digest.reader--------------------=
+-----0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" style=3D"color: inherit; text-de=
+coration: none;">@lovfrichen</a></span><span class=3D"ai aj ak al am an ao =
+ap aq ar as av" style=3D"font-weight: 400; color: rgba(26, 137, 23, 1);"><s=
+pan class=3D"aw ax" style=3D"padding-left: 4px; padding-right: 4px;">=C2=B7=
+</span><a href=3D"https://medium.com/plans?source=3Demail-6421d40a8195-1732=
+818956398-digest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa=
+297f2aa20" style=3D"color: inherit; text-decoration: none;">Become a member=
+</a></span></div></div></div></div><div class=3D"ay az ba bb bc bd be bf bg=
+" style=3D"margin-bottom: 8px; margin-top: 22px; text-align: center;"><a hr=
+ef=3D"https://medium.com/?source=3Demail-6421d40a8195-1732818956398-digest.=
+reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" aria-l=
+abel=3D"Medium homepage link" style=3D"color: inherit; text-decoration: non=
+e;"><img alt=3D"Medium daily digest" class=3D"l" src=3D"https://miro.medium=
+.com/max/1200/4*pUIfRlZh07mLXKHFllcZSw.png" width=3D"600" style=3D"width: 1=
+00%;"></a></div></div><div class=3D"bh bi bj bk" style=3D"padding: 0 16px;"=
+><div class=3D"bl bm l" style=3D"width: 100%; border-bottom: 1px solid rgba=
+(117, 117, 117, 1); height: 0px;"></div><div class=3D"bn bo" style=3D"margi=
+n-bottom: 11px; margin-top: 11px;"><p class=3D"bp bq br bs bt bu bv bw bx a=
+t by" style=3D"margin: 0; color: rgba(41, 41, 41, 1); font-weight: 700; fon=
+t-size: 18px; line-height: 24px; text-transform: uppercase;">Today&#x27;s h=
+ighlights</p></div><div class=3D"bz bm l" style=3D"width: 100%; height: 0px=
+; border-bottom: 1px solid rgba(230, 230, 230, 1);"></div><div><div class=
+=3D"ca cb cc cd ce cf" style=3D"margin-bottom: 32px; margin-top: 24px;"><di=
+v class=3D"cg ch l" style=3D"width: 100%; display: table; table-layout: fix=
+ed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; overflow: hid=
+den; text-overflow: ellipsis; white-space: nowrap;"><div class=3D"z ab" sty=
+le=3D"display: inline-block; vertical-align: middle;"><a href=3D"https://me=
+dium.com/@nikita-prasad-analyst?source=3Demail-6421d40a8195-1732818956398-d=
+igest.reader-eec44e936bf1-74166df3e6dd----0-98------------------0d1b6dcc_a2=
+37_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none=
+;"><img alt=3D"Nikita Prasad" class=3D"ac ae cm cn" src=3D"https://miro.med=
+ium.com/fit/c/40/40/1*BPeQ1wbkJEk1acKWlNdmrw.jpeg" width=3D"20" height=3D"2=
+0" style=3D"display: block; border-radius: 50%; height: 20px; width: 20px;"=
+></a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-align: middl=
+e; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-heig=
+ht: 20px; margin-left: 8px;"><a href=3D"https://medium.com/@nikita-prasad-a=
+nalyst?source=3Demail-6421d40a8195-1732818956398-digest.reader-eec44e936bf1=
+-74166df3e6dd----0-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20=
+-1" style=3D"color: inherit; text-decoration: none;">Nikita Prasad</a></spa=
+n><span class=3D"ai co cp au cr ab" style=3D"vertical-align: middle; font-w=
+eight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20=
+px; margin-left: 4px;">in</span><span class=3D"ai co cp at cr ab" style=3D"=
+vertical-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-=
+size: 13px; line-height: 20px; margin-left: 4px;"><a href=3D"https://medium=
+.com/learning-data?source=3Demail-6421d40a8195-1732818956398-digest.reader-=
+eec44e936bf1-74166df3e6dd----0-98------------------0d1b6dcc_a237_4f70_a97c_=
+3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">Learning D=
+ata</a></span></div></div><div class=3D"cs" style=3D"margin-top: 16px;"><di=
+v class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inline-block;=
+ float: right; margin-left: 56px; height: 107px; width: 160px;"><a href=3D"=
+https://medium.com/@nikita-prasad-analyst/sql-queries-to-transforms-data-in=
+to-insights-74166df3e6dd?source=3Demail-6421d40a8195-1732818956398-digest.r=
+eader-eec44e936bf1-74166df3e6dd----0-98------------------0d1b6dcc_a237_4f70=
+_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><img=
+ alt=3D"SQL Queries to Transform Your Data into Insights" class=3D"dd l de"=
+ src=3D"https://miro.medium.com/fit/c/320/214/1*XcnlMk37l3r6cwHCr4Hb8w.png"=
+ width=3D"160" height=3D"107" style=3D"width: 100%; border-radius: 2px; hei=
+ght: 100%;"></a></div><div class=3D"df dg dh" style=3D"width: calc(100% - 2=
+16px);"><a class=3D"ac" href=3D"https://medium.com/@nikita-prasad-analyst/s=
+ql-queries-to-transforms-data-into-insights-74166df3e6dd?source=3Demail-642=
+1d40a8195-1732818956398-digest.reader-eec44e936bf1-74166df3e6dd----0-98----=
+--------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inher=
+it; text-decoration: none; display: block;"><h2 class=3D"bp di dj dk dl dm =
+dn do dp dq dr at" style=3D"margin: 0; color: rgba(41, 41, 41, 1); font-wei=
+ght: 700;">SQL Queries to Transform Your Data into Insights</h2><div class=
+=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=3D"margi=
+n: 0; font-weight: 400; color: rgba(117, 117, 117, 1); line-height: 20px; f=
+ont-size: 16px;">As a Data Enthusiast You Must Know These!</h3></div><div c=
+lass=3D"cf" style=3D"margin-top: 24px;"><div class=3D"z ab" style=3D"displa=
+y: inline-block; vertical-align: middle;"><span class=3D"ai co cp au" style=
+=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-=
+height: 20px;">9 min read</span></div><img alt=3D"Claps" class=3D"ab du dv"=
+ src=3D"https://miro.medium.com/fit/c/32/32/15179c17ea56cc631c7aa437c6f487f=
+42797bb0a1053ee7f7cc7fca905445942" width=3D"16" height=3D"16" style=3D"vert=
+ical-align: middle; margin-left: 16px; margin-right: 4px;"><div class=3D"z =
+ab" style=3D"display: inline-block; vertical-align: middle;"><span class=3D=
+"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); fon=
+t-size: 13px; line-height: 20px;">755</span></div><img alt=3D"Responses" cl=
+ass=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/7e20b295db3744e=
+82c784a6bfc830a875110046ab5850df5a1d872355af7d787" width=3D"16" height=3D"1=
+6" style=3D"vertical-align: middle; margin-left: 16px; margin-right: 4px;">=
+<div class=3D"z ab" style=3D"display: inline-block; vertical-align: middle;=
+"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 1=
+17, 117, 1); font-size: 13px; line-height: 20px;">13</span></div></div></a>=
+</div></div></div><div class=3D"dw bm l" style=3D"width: 100%; height: 0px;=
+ border-bottom: 1px solid #F2F2F2;"></div></div><div><div class=3D"ca cb cc=
+ cd ce dx" style=3D"margin-bottom: 32px; margin-top: 32px;"><div class=3D"c=
+g ch l" style=3D"width: 100%; display: table; table-layout: fixed;"><div cl=
+ass=3D"ci cj ck cl" style=3D"display: table-cell; overflow: hidden; text-ov=
+erflow: ellipsis; white-space: nowrap;"><div class=3D"z ab" style=3D"displa=
+y: inline-block; vertical-align: middle;"><a href=3D"https://medium.com/@mi=
+chaelwood33311?source=3Demail-6421d40a8195-1732818956398-digest.reader-bc04=
+061380d3-be73554490b2----1-109------------------0d1b6dcc_a237_4f70_a97c_3fa=
+297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><img alt=3D"M=
+ichael Wood" class=3D"ac ae cm cn" src=3D"https://miro.medium.com/fit/c/40/=
+40/1*dwow5r-EgnoEjC-OPmaaDg.png" width=3D"20" height=3D"20" style=3D"displa=
+y: block; border-radius: 50%; height: 20px; width: 20px;"></a></div><span c=
+lass=3D"ai co cp at cq ab" style=3D"vertical-align: middle; font-weight: 40=
+0; color: rgba(41, 41, 41, 1); font-size: 13px; line-height: 20px; margin-l=
+eft: 8px;"><a href=3D"https://medium.com/@michaelwood33311?source=3Demail-6=
+421d40a8195-1732818956398-digest.reader-bc04061380d3-be73554490b2----1-109-=
+-----------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: in=
+herit; text-decoration: none;">Michael Wood</a></span><span class=3D"ai co =
+cp au cr ab" style=3D"vertical-align: middle; font-weight: 400; color: rgba=
+(117, 117, 117, 1); font-size: 13px; line-height: 20px; margin-left: 4px;">=
+in</span><span class=3D"ai co cp at cr ab" style=3D"vertical-align: middle;=
+ font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-height=
+: 20px; margin-left: 4px;"><a href=3D"https://medium.com/cub3d?source=3Dema=
+il-6421d40a8195-1732818956398-digest.reader-bc04061380d3-be73554490b2----1-=
+109------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color=
+: inherit; text-decoration: none;">Cubed (we have moved to differ.blog/cube=
+d)</a></span></div></div><div class=3D"cs" style=3D"margin-top: 16px;"><div=
+ class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inline-block; =
+float: right; margin-left: 56px; height: 107px; width: 160px;"><a href=3D"h=
+ttps://medium.com/@michaelwood33311/the-insanity-of-relying-on-vector-embed=
+dings-why-rag-fails-be73554490b2?source=3Demail-6421d40a8195-1732818956398-=
+digest.reader-bc04061380d3-be73554490b2----1-109------------------0d1b6dcc_=
+a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: no=
+ne;"><img alt=3D"The Insanity of Relying on Vector Embeddings: Why RAG Fail=
+s" class=3D"dd l de" src=3D"https://miro.medium.com/fit/c/320/214/1*xWx6mCc=
+I3zNIyzrmRZkbKw.png" width=3D"160" height=3D"107" style=3D"width: 100%; bor=
+der-radius: 2px; height: 100%;"></a></div><div class=3D"df dg dh" style=3D"=
+width: calc(100% - 216px);"><a class=3D"ac" href=3D"https://medium.com/@mic=
+haelwood33311/the-insanity-of-relying-on-vector-embeddings-why-rag-fails-be=
+73554490b2?source=3Demail-6421d40a8195-1732818956398-digest.reader-bc040613=
+80d3-be73554490b2----1-109------------------0d1b6dcc_a237_4f70_a97c_3fa297f=
+2aa20-1" style=3D"color: inherit; text-decoration: none; display: block;"><=
+h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0; color:=
+ rgba(41, 41, 41, 1); font-weight: 700;">The Insanity of Relying on Vector =
+Embeddings: Why RAG Fails</h2><div class=3D"ds" style=3D"margin-top: 8px;">=
+<h3 class=3D"ai dt cp au" style=3D"margin: 0; font-weight: 400; color: rgba=
+(117, 117, 117, 1); line-height: 20px; font-size: 16px;">In RAG, the goal i=
+s to locate the stored information=E2=80=A6</h3></div><div class=3D"cf" sty=
+le=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inline-block=
+; margin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=3D=
+"https://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=
+=3D"15" height=3D"15" style=3D"vertical-align: middle;"></div><div class=3D=
+"z ab" style=3D"display: inline-block; vertical-align: middle;"><span class=
+=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); =
+font-size: 13px; line-height: 20px;">11 min read</span></div><img alt=3D"Cl=
+aps" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17=
+ea56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" heig=
+ht=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-right:=
+ 4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-align: =
+middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba=
+(117, 117, 117, 1); font-size: 13px; line-height: 20px;">633</span></div><i=
+mg alt=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/=
+c/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" w=
+idth=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left: 16p=
+x; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; =
+vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight: =
+400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">21=
+</span></div></div></a></div></div></div><div class=3D"dw bm l" style=3D"wi=
+dth: 100%; height: 0px; border-bottom: 1px solid #F2F2F2;"></div></div><div=
+><div class=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margin-top:=
+ 32px;"><div class=3D"cg ch l" style=3D"width: 100%; display: table; table-=
+layout: fixed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; ov=
+erflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><div class=
+=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><a href=
+=3D"https://medium.com/@ignacio.de.gregorio.noblejas?source=3Demail-6421d40=
+a8195-1732818956398-digest.reader--0708f08ab17e----2-102------------------0=
+d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decora=
+tion: none;"><img alt=3D"Ignacio de Gregorio" class=3D"ac ae cm cn" src=3D"=
+https://miro.medium.com/fit/c/40/40/1*p6kCCpNZARkVEYv4OCH7GQ@2x.jpeg" width=
+=3D"20" height=3D"20" style=3D"display: block; border-radius: 50%; height: =
+20px; width: 20px;"></a></div><span class=3D"ai co cp at cq ab" style=3D"ve=
+rtical-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-si=
+ze: 13px; line-height: 20px; margin-left: 8px;"><a href=3D"https://medium.c=
+om/@ignacio.de.gregorio.noblejas?source=3Demail-6421d40a8195-1732818956398-=
+digest.reader--0708f08ab17e----2-102------------------0d1b6dcc_a237_4f70_a9=
+7c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">Ignacio=
+ de Gregorio</a></span></div></div><div class=3D"cs" style=3D"margin-top: 1=
+6px;"><div class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inli=
+ne-block; float: right; margin-left: 56px; height: 107px; width: 160px;"><a=
+ href=3D"https://medium.com/@ignacio.de.gregorio.noblejas/ai-manhattan-proj=
+ect-proposed-the-us-suicide-or-salvation-0708f08ab17e?source=3Demail-6421d4=
+0a8195-1732818956398-digest.reader--0708f08ab17e----2-102------------------=
+0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decor=
+ation: none;"><img alt=3D"AI Manhattan Project Proposed. The US=E2=80=99 Su=
+icide or Salvation?" class=3D"dd l de" src=3D"https://miro.medium.com/fit/c=
+/320/214/1*XFJ81Uq5ik5N04lw00pGrA.png" width=3D"160" height=3D"107" style=
+=3D"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=3D=
+"df dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"htt=
+ps://medium.com/@ignacio.de.gregorio.noblejas/ai-manhattan-project-proposed=
+-the-us-suicide-or-salvation-0708f08ab17e?source=3Demail-6421d40a8195-17328=
+18956398-digest.reader--0708f08ab17e----2-102------------------0d1b6dcc_a23=
+7_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;=
+ display: block;"><h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=
+=3D"margin: 0; color: rgba(41, 41, 41, 1); font-weight: 700;">AI Manhattan =
+Project Proposed. The US=E2=80=99 Suicide or Salvation?</h2><div class=3D"d=
+s" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=3D"margin: 0;=
+ font-weight: 400; color: rgba(117, 117, 117, 1); line-height: 20px; font-s=
+ize: 16px;">Is AI A Nuclear-level Threat?</h3></div><div class=3D"cf" style=
+=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inline-block; =
+margin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=3D"h=
+ttps://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=
+=3D"15" height=3D"15" style=3D"vertical-align: middle;"></div><div class=3D=
+"z ab" style=3D"display: inline-block; vertical-align: middle;"><span class=
+=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); =
+font-size: 13px; line-height: 20px;">10 min read</span></div><img alt=3D"Cl=
+aps" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17=
+ea56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" heig=
+ht=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-right:=
+ 4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-align: =
+middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba=
+(117, 117, 117, 1); font-size: 13px; line-height: 20px;">970</span></div><i=
+mg alt=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/=
+c/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" w=
+idth=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left: 16p=
+x; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; =
+vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight: =
+400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">24=
+</span></div></div></a></div></div></div><div class=3D"dw bm l" style=3D"wi=
+dth: 100%; height: 0px; border-bottom: 1px solid #F2F2F2;"></div></div><div=
+><div class=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margin-top:=
+ 32px;"><div class=3D"cg ch l" style=3D"width: 100%; display: table; table-=
+layout: fixed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; ov=
+erflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><div class=
+=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><a href=
+=3D"https://medium.com/@guillaume-weingertner?source=3Demail-6421d40a8195-1=
+732818956398-digest.reader-7f60cf5620c9-f735631272ad----3-98---------------=
+---0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-de=
+coration: none;"><img alt=3D"Guillaume Weingertner" class=3D"ac ae cm cn" s=
+rc=3D"https://miro.medium.com/fit/c/40/40/1*TiTpU5mnTJcsnFadyuJUrA.jpeg" wi=
+dth=3D"20" height=3D"20" style=3D"display: block; border-radius: 50%; heigh=
+t: 20px; width: 20px;"></a></div><span class=3D"ai co cp at cq ab" style=3D=
+"vertical-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font=
+-size: 13px; line-height: 20px; margin-left: 8px;"><a href=3D"https://mediu=
+m.com/@guillaume-weingertner?source=3Demail-6421d40a8195-1732818956398-dige=
+st.reader-7f60cf5620c9-f735631272ad----3-98------------------0d1b6dcc_a237_=
+4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">=
+Guillaume Weingertner</a></span><span class=3D"ai co cp au cr ab" style=3D"=
+vertical-align: middle; font-weight: 400; color: rgba(117, 117, 117, 1); fo=
+nt-size: 13px; line-height: 20px; margin-left: 4px;">in</span><span class=
+=3D"ai co cp at cr ab" style=3D"vertical-align: middle; font-weight: 400; c=
+olor: rgba(41, 41, 41, 1); font-size: 13px; line-height: 20px; margin-left:=
+ 4px;"><a href=3D"https://medium.com/towards-data-science?source=3Demail-64=
+21d40a8195-1732818956398-digest.reader-7f60cf5620c9-f735631272ad----3-98---=
+---------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inhe=
+rit; text-decoration: none;">Towards Data Science</a></span></div></div><di=
+v class=3D"cs" style=3D"margin-top: 16px;"><div class=3D"z ct cu cv cw cx c=
+y cz da db dc" style=3D"display: inline-block; float: right; margin-left: 5=
+6px; height: 107px; width: 160px;"><a href=3D"https://medium.com/@guillaume=
+-weingertner/running-local-llms-is-more-useful-and-easier-than-you-think-f7=
+35631272ad?source=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf56=
+20c9-f735631272ad----3-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2=
+aa20-1" style=3D"color: inherit; text-decoration: none;"><img alt=3D"Runnin=
+g Local LLMs is More Useful and Easier Than You Think" class=3D"dd l de" sr=
+c=3D"https://miro.medium.com/fit/c/320/214/1*BW43Vse5fInnd9rI-5zz4Q.jpeg" w=
+idth=3D"160" height=3D"107" style=3D"width: 100%; border-radius: 2px; heigh=
+t: 100%;"></a></div><div class=3D"df dg dh" style=3D"width: calc(100% - 216=
+px);"><a class=3D"ac" href=3D"https://medium.com/@guillaume-weingertner/run=
+ning-local-llms-is-more-useful-and-easier-than-you-think-f735631272ad?sourc=
+e=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-f735631272a=
+d----3-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D=
+"color: inherit; text-decoration: none; display: block;"><h2 class=3D"bp di=
+ dj dk dl dm dn do dp dq dr at" style=3D"margin: 0; color: rgba(41, 41, 41,=
+ 1); font-weight: 700;">Running Local LLMs is More Useful and Easier Than Y=
+ou Think</h2><div class=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai d=
+t cp au" style=3D"margin: 0; font-weight: 400; color: rgba(117, 117, 117, 1=
+); line-height: 20px; font-size: 16px;">A step-by-step guide to run Llama3 =
+locally with Python</h3></div><div class=3D"cf" style=3D"margin-top: 24px;"=
+><div class=3D"z dy" style=3D"display: inline-block; margin-right: 16px;"><=
+img alt=3D"Member-only content" class=3D"ab" src=3D"https://miro.medium.com=
+/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=3D"15" height=3D"15" st=
+yle=3D"vertical-align: middle;"></div><div class=3D"z ab" style=3D"display:=
+ inline-block; vertical-align: middle;"><span class=3D"ai co cp au" style=
+=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-=
+height: 20px;">6 min read</span></div><img alt=3D"Claps" class=3D"ab du dv"=
+ src=3D"https://miro.medium.com/fit/c/32/32/15179c17ea56cc631c7aa437c6f487f=
+42797bb0a1053ee7f7cc7fca905445942" width=3D"16" height=3D"16" style=3D"vert=
+ical-align: middle; margin-left: 16px; margin-right: 4px;"><div class=3D"z =
+ab" style=3D"display: inline-block; vertical-align: middle;"><span class=3D=
+"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); fon=
+t-size: 13px; line-height: 20px;">1.2K</span></div><img alt=3D"Responses" c=
+lass=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/7e20b295db3744=
+e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" width=3D"16" height=3D"=
+16" style=3D"vertical-align: middle; margin-left: 16px; margin-right: 4px;"=
+><div class=3D"z ab" style=3D"display: inline-block; vertical-align: middle=
+;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, =
+117, 117, 1); font-size: 13px; line-height: 20px;">12</span></div></div></a=
+></div></div></div><div class=3D"dw bm l" style=3D"width: 100%; height: 0px=
+; border-bottom: 1px solid #F2F2F2;"></div></div><div><div class=3D"ca cb c=
+c cd ce dx" style=3D"margin-bottom: 32px; margin-top: 32px;"><div class=3D"=
+cg ch l" style=3D"width: 100%; display: table; table-layout: fixed;"><div c=
+lass=3D"ci cj ck cl" style=3D"display: table-cell; overflow: hidden; text-o=
+verflow: ellipsis; white-space: nowrap;"><div class=3D"z ab" style=3D"displ=
+ay: inline-block; vertical-align: middle;"><a href=3D"https://medium.com/@p=
+epitoscrespo?source=3Demail-6421d40a8195-1732818956398-digest.reader-290380=
+77e4c6-216c059e3e53----4-99------------------0d1b6dcc_a237_4f70_a97c_3fa297=
+f2aa20-1" style=3D"color: inherit; text-decoration: none;"><img alt=3D"Jose=
+ Crespo, PhD" class=3D"ac ae cm cn" src=3D"https://miro.medium.com/fit/c/40=
+/40/1*z3o2esgMqvqxac_D0tjEsg.jpeg" width=3D"20" height=3D"20" style=3D"disp=
+lay: block; border-radius: 50%; height: 20px; width: 20px;"></a></div><span=
+ class=3D"ai co cp at cq ab" style=3D"vertical-align: middle; font-weight: =
+400; color: rgba(41, 41, 41, 1); font-size: 13px; line-height: 20px; margin=
+-left: 8px;"><a href=3D"https://medium.com/@pepitoscrespo?source=3Demail-64=
+21d40a8195-1732818956398-digest.reader-29038077e4c6-216c059e3e53----4-99---=
+---------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inhe=
+rit; text-decoration: none;">Jose Crespo, PhD</a></span><span class=3D"ai c=
+o cp au cr ab" style=3D"vertical-align: middle; font-weight: 400; color: rg=
+ba(117, 117, 117, 1); font-size: 13px; line-height: 20px; margin-left: 4px;=
+">in</span><span class=3D"ai co cp at cr ab" style=3D"vertical-align: middl=
+e; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-heig=
+ht: 20px; margin-left: 4px;"><a href=3D"https://medium.com/codex?source=3De=
+mail-6421d40a8195-1732818956398-digest.reader-29038077e4c6-216c059e3e53----=
+4-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"colo=
+r: inherit; text-decoration: none;">CodeX</a></span></div></div><div class=
+=3D"cs" style=3D"margin-top: 16px;"><div class=3D"z ct cu cv cw cx cy cz da=
+ db dc" style=3D"display: inline-block; float: right; margin-left: 56px; he=
+ight: 107px; width: 160px;"><a href=3D"https://medium.com/@pepitoscrespo/ho=
+w-is-it-possible-that-elon-musk-did-not-know-it-216c059e3e53?source=3Demail=
+-6421d40a8195-1732818956398-digest.reader-29038077e4c6-216c059e3e53----4-99=
+------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: i=
+nherit; text-decoration: none;"><img alt=3D"How Is It Possible That Elon Mu=
+sk Did Not Know It?" class=3D"dd l de" src=3D"https://miro.medium.com/fit/c=
+/320/214/1*r643nIWjyGGzpB8I7D0Vfw.jpeg" width=3D"160" height=3D"107" style=
+=3D"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=3D=
+"df dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"htt=
+ps://medium.com/@pepitoscrespo/how-is-it-possible-that-elon-musk-did-not-kn=
+ow-it-216c059e3e53?source=3Demail-6421d40a8195-1732818956398-digest.reader-=
+29038077e4c6-216c059e3e53----4-99------------------0d1b6dcc_a237_4f70_a97c_=
+3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none; display: bl=
+ock;"><h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0;=
+ color: rgba(41, 41, 41, 1); font-weight: 700;">How Is It Possible That Elo=
+n Musk Did Not Know It?</h2><div class=3D"ds" style=3D"margin-top: 8px;"><h=
+3 class=3D"ai dt cp au" style=3D"margin: 0; font-weight: 400; color: rgba(1=
+17, 117, 117, 1); line-height: 20px; font-size: 16px;">If only he had consi=
+dered the power of graph theory=E2=80=A6</h3></div><div class=3D"cf" style=
+=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inline-block; =
+margin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=3D"h=
+ttps://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=
+=3D"15" height=3D"15" style=3D"vertical-align: middle;"></div><div class=3D=
+"z ab" style=3D"display: inline-block; vertical-align: middle;"><span class=
+=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); =
+font-size: 13px; line-height: 20px;">6 min read</span></div><img alt=3D"Cla=
+ps" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17e=
+a56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" heigh=
+t=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-right: =
+4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-align: m=
+iddle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(=
+117, 117, 117, 1); font-size: 13px; line-height: 20px;">722</span></div><im=
+g alt=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c=
+/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" wi=
+dth=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left: 16px=
+; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; v=
+ertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight: 4=
+00; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">23<=
+/span></div></div></a></div></div></div><div class=3D"dw bm l" style=3D"wid=
+th: 100%; height: 0px; border-bottom: 1px solid #F2F2F2;"></div></div><div>=
+<div class=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margin-top: =
+32px;"><div class=3D"cg ch l" style=3D"width: 100%; display: table; table-l=
+ayout: fixed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; ove=
+rflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><div class=3D=
+"z ab" style=3D"display: inline-block; vertical-align: middle;"><a href=3D"=
+https://medium.com/@whittle?source=3Demail-6421d40a8195-1732818956398-diges=
+t.reader-5517fd7b58a6-c28d4532b05b----5-98------------------0d1b6dcc_a237_4=
+f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><=
+img alt=3D"Michael Whittle" class=3D"ac ae cm cn" src=3D"https://miro.mediu=
+m.com/fit/c/40/40/1*06XVCC-0CRUN1xDDCYdzUw.png" width=3D"20" height=3D"20" =
+style=3D"display: block; border-radius: 50%; height: 20px; width: 20px;"></=
+a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-align: middle; =
+font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-height:=
+ 20px; margin-left: 8px;"><a href=3D"https://medium.com/@whittle?source=3De=
+mail-6421d40a8195-1732818956398-digest.reader-5517fd7b58a6-c28d4532b05b----=
+5-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"colo=
+r: inherit; text-decoration: none;">Michael Whittle</a></span><span class=
+=3D"ai co cp au cr ab" style=3D"vertical-align: middle; font-weight: 400; c=
+olor: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px; margin-le=
+ft: 4px;">in</span><span class=3D"ai co cp at cr ab" style=3D"vertical-alig=
+n: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; l=
+ine-height: 20px; margin-left: 4px;"><a href=3D"https://medium.com/gitconne=
+cted?source=3Demail-6421d40a8195-1732818956398-digest.reader-5517fd7b58a6-c=
+28d4532b05b----5-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1=
+" style=3D"color: inherit; text-decoration: none;">Level Up Coding</a></spa=
+n></div></div><div class=3D"cs" style=3D"margin-top: 16px;"><div class=3D"z=
+ ct cu cv cw cx cy cz da db dc" style=3D"display: inline-block; float: righ=
+t; margin-left: 56px; height: 107px; width: 160px;"><a href=3D"https://medi=
+um.com/@whittle/monte-carlo-simulation-in-python-advanced-investment-risk-a=
+nalysis-c28d4532b05b?source=3Demail-6421d40a8195-1732818956398-digest.reade=
+r-5517fd7b58a6-c28d4532b05b----5-98------------------0d1b6dcc_a237_4f70_a97=
+c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><img alt=
+=3D"Monte Carlo Simulation in Python: Advanced Investment Risk Analysis" cl=
+ass=3D"dd l de" src=3D"https://miro.medium.com/fit/c/320/214/1*dArrx3Xs5mF4=
+iFwrCNGuFg.jpeg" width=3D"160" height=3D"107" style=3D"width: 100%; border-=
+radius: 2px; height: 100%;"></a></div><div class=3D"df dg dh" style=3D"widt=
+h: calc(100% - 216px);"><a class=3D"ac" href=3D"https://medium.com/@whittle=
+/monte-carlo-simulation-in-python-advanced-investment-risk-analysis-c28d453=
+2b05b?source=3Demail-6421d40a8195-1732818956398-digest.reader-5517fd7b58a6-=
+c28d4532b05b----5-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-=
+1" style=3D"color: inherit; text-decoration: none; display: block;"><h2 cla=
+ss=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0; color: rgba(=
+41, 41, 41, 1); font-weight: 700;">Monte Carlo Simulation in Python: Advanc=
+ed Investment Risk Analysis</h2><div class=3D"ds" style=3D"margin-top: 8px;=
+"><h3 class=3D"ai dt cp au" style=3D"margin: 0; font-weight: 400; color: rg=
+ba(117, 117, 117, 1); line-height: 20px; font-size: 16px;">Unlocking strate=
+gies and risk management through=E2=80=A6</h3></div><div class=3D"cf" style=
+=3D"margin-top: 24px;"><div class=3D"z ab" style=3D"display: inline-block; =
+vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight: =
+400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">12=
+ min read</span></div><img alt=3D"Claps" class=3D"ab du dv" src=3D"https://=
+miro.medium.com/fit/c/32/32/15179c17ea56cc631c7aa437c6f487f42797bb0a1053ee7=
+f7cc7fca905445942" width=3D"16" height=3D"16" style=3D"vertical-align: midd=
+le; margin-left: 16px; margin-right: 4px;"><div class=3D"z ab" style=3D"dis=
+play: inline-block; vertical-align: middle;"><span class=3D"ai co cp au" st=
+yle=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; li=
+ne-height: 20px;">653</span></div><img alt=3D"Responses" class=3D"ab du dv"=
+ src=3D"https://miro.medium.com/fit/c/32/32/7e20b295db3744e82c784a6bfc830a8=
+75110046ab5850df5a1d872355af7d787" width=3D"16" height=3D"16" style=3D"vert=
+ical-align: middle; margin-left: 16px; margin-right: 4px;"><div class=3D"z =
+ab" style=3D"display: inline-block; vertical-align: middle;"><span class=3D=
+"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); fon=
+t-size: 13px; line-height: 20px;">14</span></div></div></a></div></div></di=
+v><div class=3D"dw bm l" style=3D"width: 100%; height: 0px; border-bottom: =
+1px solid #F2F2F2;"></div></div><div><div class=3D"ca cb cc cd ce dx" style=
+=3D"margin-bottom: 32px; margin-top: 32px;"><div class=3D"cg ch l" style=3D=
+"width: 100%; display: table; table-layout: fixed;"><div class=3D"ci cj ck =
+cl" style=3D"display: table-cell; overflow: hidden; text-overflow: ellipsis=
+; white-space: nowrap;"><div class=3D"z ab" style=3D"display: inline-block;=
+ vertical-align: middle;"><a href=3D"https://medium.com/@geencay?source=3De=
+mail-6421d40a8195-1732818956398-digest.reader-5517fd7b58a6-b46af9a5f133----=
+6-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"colo=
+r: inherit; text-decoration: none;"><img alt=3D"Gencay I." class=3D"ac ae c=
+m cn" src=3D"https://miro.medium.com/fit/c/40/40/1*8Pp_2mcA6dYCJocxb82gSQ.j=
+peg" width=3D"20" height=3D"20" style=3D"display: block; border-radius: 50%=
+; height: 20px; width: 20px;"></a></div><span class=3D"ai co cp at cq ab" s=
+tyle=3D"vertical-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1=
+); font-size: 13px; line-height: 20px; margin-left: 8px;"><a href=3D"https:=
+//medium.com/@geencay?source=3Demail-6421d40a8195-1732818956398-digest.read=
+er-5517fd7b58a6-b46af9a5f133----6-99------------------0d1b6dcc_a237_4f70_a9=
+7c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">Gencay =
+I.</a></span><span class=3D"ai co cp au cr ab" style=3D"vertical-align: mid=
+dle; font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line=
+-height: 20px; margin-left: 4px;">in</span><span class=3D"ai co cp at cr ab=
+" style=3D"vertical-align: middle; font-weight: 400; color: rgba(41, 41, 41=
+, 1); font-size: 13px; line-height: 20px; margin-left: 4px;"><a href=3D"htt=
+ps://medium.com/gitconnected?source=3Demail-6421d40a8195-1732818956398-dige=
+st.reader-5517fd7b58a6-b46af9a5f133----6-99------------------0d1b6dcc_a237_=
+4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">=
+Level Up Coding</a></span></div></div><div class=3D"cs" style=3D"margin-top=
+: 16px;"><div class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: i=
+nline-block; float: right; margin-left: 56px; height: 107px; width: 160px;"=
+><a href=3D"https://medium.com/@geencay/meet-with-genie-upcoming-ai-enginee=
+r-coding-is-ending-b46af9a5f133?source=3Demail-6421d40a8195-1732818956398-d=
+igest.reader-5517fd7b58a6-b46af9a5f133----6-99------------------0d1b6dcc_a2=
+37_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none=
+;"><img alt=3D"Meet with Genie=E2=80=8A=E2=80=94=E2=80=8AUpcoming AI Engine=
+er (Coding is Ending!)" class=3D"dd l de" src=3D"https://miro.medium.com/fi=
+t/c/320/214/1*HLefVFKzILRLMszPxCgwwQ.png" width=3D"160" height=3D"107" styl=
+e=3D"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=
+=3D"df dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"=
+https://medium.com/@geencay/meet-with-genie-upcoming-ai-engineer-coding-is-=
+ending-b46af9a5f133?source=3Demail-6421d40a8195-1732818956398-digest.reader=
+-5517fd7b58a6-b46af9a5f133----6-99------------------0d1b6dcc_a237_4f70_a97c=
+_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none; display: b=
+lock;"><h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0=
+; color: rgba(41, 41, 41, 1); font-weight: 700;">Meet with Genie=E2=80=8A=
+=E2=80=94=E2=80=8AUpcoming AI Engineer (Coding is Ending!)</h2><div class=
+=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=3D"margi=
+n: 0; font-weight: 400; color: rgba(117, 117, 117, 1); line-height: 20px; f=
+ont-size: 16px;">Should you learn how to code?</h3></div><div class=3D"cf" =
+style=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inline-bl=
+ock; margin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=
+=3D"https://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" wi=
+dth=3D"15" height=3D"15" style=3D"vertical-align: middle;"></div><div class=
+=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><span cl=
+ass=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1=
+); font-size: 13px; line-height: 20px;">4 min read</span></div><img alt=3D"=
+Claps" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c=
+17ea56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" he=
+ight=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-righ=
+t: 4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-align=
+: middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rg=
+ba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">620</span></div>=
+<img alt=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fi=
+t/c/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787"=
+ width=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left: 1=
+6px; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-block=
+; vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight=
+: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">=
+10</span></div></div></a></div></div></div><div class=3D"dw bm l" style=3D"=
+width: 100%; height: 0px; border-bottom: 1px solid #F2F2F2;"></div></div><d=
+iv><div class=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margin-to=
+p: 32px;"><div class=3D"cg ch l" style=3D"width: 100%; display: table; tabl=
+e-layout: fixed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; =
+overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><div class=
+=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><a href=
+=3D"https://medium.com/@eyal-kazin?source=3Demail-6421d40a8195-173281895639=
+8-digest.reader-7f60cf5620c9-b7efc302eb72----7-102------------------0d1b6dc=
+c_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: =
+none;"><img alt=3D"Eyal Kazin" class=3D"ac ae cm cn" src=3D"https://miro.me=
+dium.com/fit/c/40/40/1*aPgwP5N_SJBOfQjVVxA35g.jpeg" width=3D"20" height=3D"=
+20" style=3D"display: block; border-radius: 50%; height: 20px; width: 20px;=
+"></a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-align: midd=
+le; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-hei=
+ght: 20px; margin-left: 8px;"><a href=3D"https://medium.com/@eyal-kazin?sou=
+rce=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-b7efc302e=
+b72----7-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=
+=3D"color: inherit; text-decoration: none;">Eyal Kazin</a></span><span clas=
+s=3D"ai co cp au cr ab" style=3D"vertical-align: middle; font-weight: 400; =
+color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px; margin-l=
+eft: 4px;">in</span><span class=3D"ai co cp at cr ab" style=3D"vertical-ali=
+gn: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; =
+line-height: 20px; margin-left: 4px;"><a href=3D"https://medium.com/towards=
+-data-science?source=3Demail-6421d40a8195-1732818956398-digest.reader-7f60c=
+f5620c9-b7efc302eb72----7-102------------------0d1b6dcc_a237_4f70_a97c_3fa2=
+97f2aa20-1" style=3D"color: inherit; text-decoration: none;">Towards Data S=
+cience</a></span></div></div><div class=3D"cs" style=3D"margin-top: 16px;">=
+<div class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inline-blo=
+ck; float: right; margin-left: 56px; height: 107px; width: 160px;"><a href=
+=3D"https://medium.com/@eyal-kazin/causality-mental-hygiene-for-data-scienc=
+e-b7efc302eb72?source=3Demail-6421d40a8195-1732818956398-digest.reader-7f60=
+cf5620c9-b7efc302eb72----7-102------------------0d1b6dcc_a237_4f70_a97c_3fa=
+297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><img alt=3D"=
+=F0=9F=A7=A0=F0=9F=A7=B9 Causality - Mental Hygiene for Data Science" class=
+=3D"dd l de" src=3D"https://miro.medium.com/fit/c/320/214/0*7yMkhrYob39yOLG=
+w" width=3D"160" height=3D"107" style=3D"width: 100%; border-radius: 2px; h=
+eight: 100%;"></a></div><div class=3D"df dg dh" style=3D"width: calc(100% -=
+ 216px);"><a class=3D"ac" href=3D"https://medium.com/@eyal-kazin/causality-=
+mental-hygiene-for-data-science-b7efc302eb72?source=3Demail-6421d40a8195-17=
+32818956398-digest.reader-7f60cf5620c9-b7efc302eb72----7-102---------------=
+---0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-de=
+coration: none; display: block;"><h2 class=3D"bp di dj dk dl dm dn do dp dq=
+ dr at" style=3D"margin: 0; color: rgba(41, 41, 41, 1); font-weight: 700;">=
+=F0=9F=A7=A0=F0=9F=A7=B9 Causality - Mental Hygiene for Data Science</h2><d=
+iv class=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=
+=3D"margin: 0; font-weight: 400; color: rgba(117, 117, 117, 1); line-height=
+: 20px; font-size: 16px;">The Power of =E2=80=98Why?=E2=80=99: Enhancing Da=
+ta Science with=E2=80=A6</h3></div><div class=3D"cf" style=3D"margin-top: 2=
+4px;"><div class=3D"z dy" style=3D"display: inline-block; margin-right: 16p=
+x;"><img alt=3D"Member-only content" class=3D"ab" src=3D"https://miro.mediu=
+m.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=3D"15" height=3D"1=
+5" style=3D"vertical-align: middle;"></div><div class=3D"z ab" style=3D"dis=
+play: inline-block; vertical-align: middle;"><span class=3D"ai co cp au" st=
+yle=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; li=
+ne-height: 20px;">37 min read</span></div><img alt=3D"Claps" class=3D"ab du=
+ dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17ea56cc631c7aa437c6f=
+487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" height=3D"16" style=3D"=
+vertical-align: middle; margin-left: 16px; margin-right: 4px;"><div class=
+=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><span cl=
+ass=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1=
+); font-size: 13px; line-height: 20px;">43</span></div></div></a></div></di=
+v></div><div class=3D"dw bm l" style=3D"width: 100%; height: 0px; border-bo=
+ttom: 1px solid #F2F2F2;"></div></div><div><div class=3D"ca cb cc cd ce dx"=
+ style=3D"margin-bottom: 32px; margin-top: 32px;"><div class=3D"cg ch l" st=
+yle=3D"width: 100%; display: table; table-layout: fixed;"><div class=3D"ci =
+cj ck cl" style=3D"display: table-cell; overflow: hidden; text-overflow: el=
+lipsis; white-space: nowrap;"><div class=3D"z ab" style=3D"display: inline-=
+block; vertical-align: middle;"><a href=3D"https://medium.com/@lgsoliveira?=
+source=3Demail-6421d40a8195-1732818956398-digest.reader--e2455925e21d----8-=
+99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color:=
+ inherit; text-decoration: none;"><img alt=3D"Lu=C3=ADs Oliveira" class=3D"=
+ac ae cm cn" src=3D"https://miro.medium.com/fit/c/40/40/0*-f-X1sN53PwVgIDI"=
+ width=3D"20" height=3D"20" style=3D"display: block; border-radius: 50%; he=
+ight: 20px; width: 20px;"></a></div><span class=3D"ai co cp at cq ab" style=
+=3D"vertical-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); f=
+ont-size: 13px; line-height: 20px; margin-left: 8px;"><a href=3D"https://me=
+dium.com/@lgsoliveira?source=3Demail-6421d40a8195-1732818956398-digest.read=
+er--e2455925e21d----8-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2a=
+a20-1" style=3D"color: inherit; text-decoration: none;">Lu=C3=ADs Oliveira<=
+/a></span></div></div><div class=3D"cs" style=3D"margin-top: 16px;"><div cl=
+ass=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inline-block; flo=
+at: right; margin-left: 56px; height: 107px; width: 160px;"><a href=3D"http=
+s://medium.com/@lgsoliveira/five-brutal-truths-about-being-a-data-engineer-=
+e2455925e21d?source=3Demail-6421d40a8195-1732818956398-digest.reader--e2455=
+925e21d----8-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" st=
+yle=3D"color: inherit; text-decoration: none;"><img alt=3D"Five Brutal Trut=
+hs About Being a Data Engineer" class=3D"dd l de" src=3D"https://miro.mediu=
+m.com/fit/c/320/214/0*vxp9NqM2c_kWGlf4" width=3D"160" height=3D"107" style=
+=3D"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=3D=
+"df dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"htt=
+ps://medium.com/@lgsoliveira/five-brutal-truths-about-being-a-data-engineer=
+-e2455925e21d?source=3Demail-6421d40a8195-1732818956398-digest.reader--e245=
+5925e21d----8-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" s=
+tyle=3D"color: inherit; text-decoration: none; display: block;"><h2 class=
+=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0; color: rgba(41=
+, 41, 41, 1); font-weight: 700;">Five Brutal Truths About Being a Data Engi=
+neer</h2><div class=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp=
+ au" style=3D"margin: 0; font-weight: 400; color: rgba(117, 117, 117, 1); l=
+ine-height: 20px; font-size: 16px;">No one will tell you this in an intervi=
+ew process</h3></div><div class=3D"cf" style=3D"margin-top: 24px;"><div cla=
+ss=3D"z dy" style=3D"display: inline-block; margin-right: 16px;"><img alt=
+=3D"Member-only content" class=3D"ab" src=3D"https://miro.medium.com/fit/c/=
+30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=3D"15" height=3D"15" style=3D"=
+vertical-align: middle;"></div><div class=3D"z ab" style=3D"display: inline=
+-block; vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-=
+weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 2=
+0px;">4 min read</span></div><img alt=3D"Claps" class=3D"ab du dv" src=3D"h=
+ttps://miro.medium.com/fit/c/32/32/15179c17ea56cc631c7aa437c6f487f42797bb0a=
+1053ee7f7cc7fca905445942" width=3D"16" height=3D"16" style=3D"vertical-alig=
+n: middle; margin-left: 16px; margin-right: 4px;"><div class=3D"z ab" style=
+=3D"display: inline-block; vertical-align: middle;"><span class=3D"ai co cp=
+ au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 1=
+3px; line-height: 20px;">195</span></div><img alt=3D"Responses" class=3D"ab=
+ du dv" src=3D"https://miro.medium.com/fit/c/32/32/7e20b295db3744e82c784a6b=
+fc830a875110046ab5850df5a1d872355af7d787" width=3D"16" height=3D"16" style=
+=3D"vertical-align: middle; margin-left: 16px; margin-right: 4px;"><div cla=
+ss=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><span =
+class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117,=
+ 1); font-size: 13px; line-height: 20px;">3</span></div></div></a></div></d=
+iv></div><div class=3D"dw bm l" style=3D"width: 100%; height: 0px; border-b=
+ottom: 1px solid #F2F2F2;"></div></div><div><div class=3D"ca cb cc cd ce dx=
+" style=3D"margin-bottom: 32px; margin-top: 32px;"><div class=3D"cg ch l" s=
+tyle=3D"width: 100%; display: table; table-layout: fixed;"><div class=3D"ci=
+ cj ck cl" style=3D"display: table-cell; overflow: hidden; text-overflow: e=
+llipsis; white-space: nowrap;"><div class=3D"z ab" style=3D"display: inline=
+-block; vertical-align: middle;"><a href=3D"https://medium.com/@fmnobar?sou=
+rce=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-7c7cb1aae=
+be5----9-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=
+=3D"color: inherit; text-decoration: none;"><img alt=3D"Farzad Nobar" class=
+=3D"ac ae cm cn" src=3D"https://miro.medium.com/fit/c/40/40/1*BmNi08W8-v5VV=
+NqVJRDSZg@2x.jpeg" width=3D"20" height=3D"20" style=3D"display: block; bord=
+er-radius: 50%; height: 20px; width: 20px;"></a></div><span class=3D"ai co =
+cp at cq ab" style=3D"vertical-align: middle; font-weight: 400; color: rgba=
+(41, 41, 41, 1); font-size: 13px; line-height: 20px; margin-left: 8px;"><a =
+href=3D"https://medium.com/@fmnobar?source=3Demail-6421d40a8195-17328189563=
+98-digest.reader-7f60cf5620c9-7c7cb1aaebe5----9-102------------------0d1b6d=
+cc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration:=
+ none;">Farzad Nobar</a></span><span class=3D"ai co cp au cr ab" style=3D"v=
+ertical-align: middle; font-weight: 400; color: rgba(117, 117, 117, 1); fon=
+t-size: 13px; line-height: 20px; margin-left: 4px;">in</span><span class=3D=
+"ai co cp at cr ab" style=3D"vertical-align: middle; font-weight: 400; colo=
+r: rgba(41, 41, 41, 1); font-size: 13px; line-height: 20px; margin-left: 4p=
+x;"><a href=3D"https://medium.com/towards-data-science?source=3Demail-6421d=
+40a8195-1732818956398-digest.reader-7f60cf5620c9-7c7cb1aaebe5----9-102-----=
+-------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inheri=
+t; text-decoration: none;">Towards Data Science</a></span></div></div><div =
+class=3D"cs" style=3D"margin-top: 16px;"><div class=3D"z ct cu cv cw cx cy =
+cz da db dc" style=3D"display: inline-block; float: right; margin-left: 56p=
+x; height: 107px; width: 160px;"><a href=3D"https://medium.com/@fmnobar/mat=
+hematics-i-look-for-in-data-scientist-interviews-7c7cb1aaebe5?source=3Demai=
+l-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-7c7cb1aaebe5----9-1=
+02------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color:=
+ inherit; text-decoration: none;"><img alt=3D"Mathematics I Look for in Dat=
+a Scientist Interviews" class=3D"dd l de" src=3D"https://miro.medium.com/fi=
+t/c/320/214/1*1aV77W-8nhMMz1ImNPeVfg.jpeg" width=3D"160" height=3D"107" sty=
+le=3D"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=
+=3D"df dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"=
+https://medium.com/@fmnobar/mathematics-i-look-for-in-data-scientist-interv=
+iews-7c7cb1aaebe5?source=3Demail-6421d40a8195-1732818956398-digest.reader-7=
+f60cf5620c9-7c7cb1aaebe5----9-102------------------0d1b6dcc_a237_4f70_a97c_=
+3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none; display: bl=
+ock;"><h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0;=
+ color: rgba(41, 41, 41, 1); font-weight: 700;">Mathematics I Look for in D=
+ata Scientist Interviews</h2><div class=3D"ds" style=3D"margin-top: 8px;"><=
+h3 class=3D"ai dt cp au" style=3D"margin: 0; font-weight: 400; color: rgba(=
+117, 117, 117, 1); line-height: 20px; font-size: 16px;">Let=E2=80=99s rebui=
+ld our data science foundation.</h3></div><div class=3D"cf" style=3D"margin=
+-top: 24px;"><div class=3D"z dy" style=3D"display: inline-block; margin-rig=
+ht: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=3D"https://mir=
+o.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=3D"15" heig=
+ht=3D"15" style=3D"vertical-align: middle;"></div><div class=3D"z ab" style=
+=3D"display: inline-block; vertical-align: middle;"><span class=3D"ai co cp=
+ au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 1=
+3px; line-height: 20px;">16 min read</span></div><img alt=3D"Claps" class=
+=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17ea56cc631c=
+7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" height=3D"16" =
+style=3D"vertical-align: middle; margin-left: 16px; margin-right: 4px;"><di=
+v class=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><=
+span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117,=
+ 117, 1); font-size: 13px; line-height: 20px;">949</span></div><img alt=3D"=
+Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/7e=
+20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" width=3D"16=
+" height=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-=
+right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-a=
+lign: middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color=
+: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">13</span></d=
+iv></div></a></div></div></div><div class=3D"dw bm l" style=3D"width: 100%;=
+ height: 0px; border-bottom: 1px solid #F2F2F2;"></div></div><div><div clas=
+s=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margin-top: 32px;"><d=
+iv class=3D"cg ch l" style=3D"width: 100%; display: table; table-layout: fi=
+xed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; overflow: hi=
+dden; text-overflow: ellipsis; white-space: nowrap;"><div class=3D"z ab" st=
+yle=3D"display: inline-block; vertical-align: middle;"><a href=3D"https://m=
+edium.com/@mazzanti.sam?source=3Demail-6421d40a8195-1732818956398-digest.re=
+ader-7f60cf5620c9-14379f7a41c3----10-102------------------0d1b6dcc_a237_4f7=
+0_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><im=
+g alt=3D"Samuele Mazzanti" class=3D"ac ae cm cn" src=3D"https://miro.medium=
+.com/fit/c/40/40/1*8V0bZuiC1G-3WBzgDfLz5w.jpeg" width=3D"20" height=3D"20" =
+style=3D"display: block; border-radius: 50%; height: 20px; width: 20px;"></=
+a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-align: middle; =
+font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-height:=
+ 20px; margin-left: 8px;"><a href=3D"https://medium.com/@mazzanti.sam?sourc=
+e=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-14379f7a41c=
+3----10-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=
+=3D"color: inherit; text-decoration: none;">Samuele Mazzanti</a></span><spa=
+n class=3D"ai co cp au cr ab" style=3D"vertical-align: middle; font-weight:=
+ 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px; ma=
+rgin-left: 4px;">in</span><span class=3D"ai co cp at cr ab" style=3D"vertic=
+al-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: =
+13px; line-height: 20px; margin-left: 4px;"><a href=3D"https://medium.com/t=
+owards-data-science?source=3Demail-6421d40a8195-1732818956398-digest.reader=
+-7f60cf5620c9-14379f7a41c3----10-102------------------0d1b6dcc_a237_4f70_a9=
+7c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">Towards=
+ Data Science</a></span></div></div><div class=3D"cs" style=3D"margin-top: =
+16px;"><div class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inl=
+ine-block; float: right; margin-left: 56px; height: 107px; width: 160px;"><=
+a href=3D"https://medium.com/@mazzanti.sam/hypothesis-testing-explained-how=
+-i-wish-it-was-explained-to-me-14379f7a41c3?source=3Demail-6421d40a8195-173=
+2818956398-digest.reader-7f60cf5620c9-14379f7a41c3----10-102---------------=
+---0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-de=
+coration: none;"><img alt=3D"Hypothesis Testing Explained (How I Wish It Wa=
+s Explained to Me)" class=3D"dd l de" src=3D"https://miro.medium.com/fit/c/=
+320/214/1*tuM6w3p9gIGcRbJ_F-ToEQ.png" width=3D"160" height=3D"107" style=3D=
+"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=3D"df=
+ dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"https:=
+//medium.com/@mazzanti.sam/hypothesis-testing-explained-how-i-wish-it-was-e=
+xplained-to-me-14379f7a41c3?source=3Demail-6421d40a8195-1732818956398-diges=
+t.reader-7f60cf5620c9-14379f7a41c3----10-102------------------0d1b6dcc_a237=
+_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none; =
+display: block;"><h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D=
+"margin: 0; color: rgba(41, 41, 41, 1); font-weight: 700;">Hypothesis Testi=
+ng Explained (How I Wish It Was Explained to Me)</h2><div class=3D"ds" styl=
+e=3D"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=3D"margin: 0; font-w=
+eight: 400; color: rgba(117, 117, 117, 1); line-height: 20px; font-size: 16=
+px;">Most resources focus on things like Confidence and=E2=80=A6</h3></div>=
+<div class=3D"cf" style=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"=
+display: inline-block; margin-right: 16px;"><img alt=3D"Member-only content=
+" class=3D"ab" src=3D"https://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy=
+1cxU7iw@2x.png" width=3D"15" height=3D"15" style=3D"vertical-align: middle;=
+"></div><div class=3D"z ab" style=3D"display: inline-block; vertical-align:=
+ middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgb=
+a(117, 117, 117, 1); font-size: 13px; line-height: 20px;">8 min read</span>=
+</div><img alt=3D"Claps" class=3D"ab du dv" src=3D"https://miro.medium.com/=
+fit/c/32/32/15179c17ea56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca90544594=
+2" width=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left:=
+ 16px; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-blo=
+ck; vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weig=
+ht: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;=
+">823</span></div><img alt=3D"Responses" class=3D"ab du dv" src=3D"https://=
+miro.medium.com/fit/c/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df=
+5a1d872355af7d787" width=3D"16" height=3D"16" style=3D"vertical-align: midd=
+le; margin-left: 16px; margin-right: 4px;"><div class=3D"z ab" style=3D"dis=
+play: inline-block; vertical-align: middle;"><span class=3D"ai co cp au" st=
+yle=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; li=
+ne-height: 20px;">7</span></div></div></a></div></div></div><div class=3D"d=
+w bm l" style=3D"width: 100%; height: 0px; border-bottom: 1px solid #F2F2F2=
+;"></div></div><div><div class=3D"ca cb cc cd ce dx" style=3D"margin-bottom=
+: 32px; margin-top: 32px;"><div class=3D"cg ch l" style=3D"width: 100%; dis=
+play: table; table-layout: fixed;"><div class=3D"ci cj ck cl" style=3D"disp=
+lay: table-cell; overflow: hidden; text-overflow: ellipsis; white-space: no=
+wrap;"><div class=3D"z ab" style=3D"display: inline-block; vertical-align: =
+middle;"><a href=3D"https://medium.com/@aipapers?source=3Demail-6421d40a819=
+5-1732818956398-digest.reader--d55bb78dff9a----11-98------------------0d1b6=
+dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration=
+: none;"><img alt=3D"AI Papers Academy" class=3D"ac ae cm cn" src=3D"https:=
+//miro.medium.com/fit/c/40/40/1*m7utUf8nDo6Gb3pExBpFOQ.png" width=3D"20" he=
+ight=3D"20" style=3D"display: block; border-radius: 50%; height: 20px; widt=
+h: 20px;"></a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-ali=
+gn: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; =
+line-height: 20px; margin-left: 8px;"><a href=3D"https://medium.com/@aipape=
+rs?source=3Demail-6421d40a8195-1732818956398-digest.reader--d55bb78dff9a---=
+-11-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"co=
+lor: inherit; text-decoration: none;">AI Papers Academy</a></span></div></d=
+iv><div class=3D"cs" style=3D"margin-top: 16px;"><div class=3D"z ct cu cv c=
+w cx cy cz da db dc" style=3D"display: inline-block; float: right; margin-l=
+eft: 56px; height: 107px; width: 160px;"><a href=3D"https://medium.com/@aip=
+apers/tokenformer-the-next-generation-of-transformers-d55bb78dff9a?source=
+=3Demail-6421d40a8195-1732818956398-digest.reader--d55bb78dff9a----11-98---=
+---------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inhe=
+rit; text-decoration: none;"><img alt=3D"Tokenformer: The Next Generation o=
+f Transformers?" class=3D"dd l de" src=3D"https://miro.medium.com/fit/c/320=
+/214/0*tmI97iJk_bQWZuIN.png" width=3D"160" height=3D"107" style=3D"width: 1=
+00%; border-radius: 2px; height: 100%;"></a></div><div class=3D"df dg dh" s=
+tyle=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"https://medium.=
+com/@aipapers/tokenformer-the-next-generation-of-transformers-d55bb78dff9a?=
+source=3Demail-6421d40a8195-1732818956398-digest.reader--d55bb78dff9a----11=
+-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color=
+: inherit; text-decoration: none; display: block;"><h2 class=3D"bp di dj dk=
+ dl dm dn do dp dq dr at" style=3D"margin: 0; color: rgba(41, 41, 41, 1); f=
+ont-weight: 700;">Tokenformer: The Next Generation of Transformers?</h2><di=
+v class=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=
+=3D"margin: 0; font-weight: 400; color: rgba(117, 117, 117, 1); line-height=
+: 20px; font-size: 16px;">Dive into Tokenformer, a novel architecture that=
+=E2=80=A6</h3></div><div class=3D"cf" style=3D"margin-top: 24px;"><div clas=
+s=3D"z dy" style=3D"display: inline-block; margin-right: 16px;"><img alt=3D=
+"Member-only content" class=3D"ab" src=3D"https://miro.medium.com/fit/c/30/=
+30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=3D"15" height=3D"15" style=3D"ver=
+tical-align: middle;"></div><div class=3D"z ab" style=3D"display: inline-bl=
+ock; vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-wei=
+ght: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px=
+;">5 min read</span></div><img alt=3D"Claps" class=3D"ab du dv" src=3D"http=
+s://miro.medium.com/fit/c/32/32/15179c17ea56cc631c7aa437c6f487f42797bb0a105=
+3ee7f7cc7fca905445942" width=3D"16" height=3D"16" style=3D"vertical-align: =
+middle; margin-left: 16px; margin-right: 4px;"><div class=3D"z ab" style=3D=
+"display: inline-block; vertical-align: middle;"><span class=3D"ai co cp au=
+" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-size: 13px=
+; line-height: 20px;">232</span></div></div></a></div></div></div><div clas=
+s=3D"dw bm l" style=3D"width: 100%; height: 0px; border-bottom: 1px solid #=
+F2F2F2;"></div></div><div><div class=3D"ca cb cc cd ce dx" style=3D"margin-=
+bottom: 32px; margin-top: 32px;"><div class=3D"cg ch l" style=3D"width: 100=
+%; display: table; table-layout: fixed;"><div class=3D"ci cj ck cl" style=
+=3D"display: table-cell; overflow: hidden; text-overflow: ellipsis; white-s=
+pace: nowrap;"><div class=3D"z ab" style=3D"display: inline-block; vertical=
+-align: middle;"><a href=3D"https://medium.com/@maria_borysova?source=3Dema=
+il-6421d40a8195-1732818956398-digest.reader-138adf9c44c-2a1380971b88----12-=
+98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color:=
+ inherit; text-decoration: none;"><img alt=3D"Mary Borysova" class=3D"ac ae=
+ cm cn" src=3D"https://miro.medium.com/fit/c/40/40/2*RqmvdkmfTaNjs_62nWqDaw=
+.png" width=3D"20" height=3D"20" style=3D"display: block; border-radius: 50=
+%; height: 20px; width: 20px;"></a></div><span class=3D"ai co cp at cq ab" =
+style=3D"vertical-align: middle; font-weight: 400; color: rgba(41, 41, 41, =
+1); font-size: 13px; line-height: 20px; margin-left: 8px;"><a href=3D"https=
+://medium.com/@maria_borysova?source=3Demail-6421d40a8195-1732818956398-dig=
+est.reader-138adf9c44c-2a1380971b88----12-98------------------0d1b6dcc_a237=
+_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;"=
+>Mary Borysova</a></span><span class=3D"ai co cp au cr ab" style=3D"vertica=
+l-align: middle; font-weight: 400; color: rgba(117, 117, 117, 1); font-size=
+: 13px; line-height: 20px; margin-left: 4px;">in</span><span class=3D"ai co=
+ cp at cr ab" style=3D"vertical-align: middle; font-weight: 400; color: rgb=
+a(41, 41, 41, 1); font-size: 13px; line-height: 20px; margin-left: 4px;"><a=
+ href=3D"https://medium.com/user-experience-design-1?source=3Demail-6421d40=
+a8195-1732818956398-digest.reader-138adf9c44c-2a1380971b88----12-98--------=
+----------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; =
+text-decoration: none;">UX Collective</a></span></div></div><div class=3D"c=
+s" style=3D"margin-top: 16px;"><div class=3D"z ct cu cv cw cx cy cz da db d=
+c" style=3D"display: inline-block; float: right; margin-left: 56px; height:=
+ 107px; width: 160px;"><a href=3D"https://medium.com/@maria_borysova/whoop-=
+or-how-to-gamify-training-3-6-billion-product-playbook-2a1380971b88?source=
+=3Demail-6421d40a8195-1732818956398-digest.reader-138adf9c44c-2a1380971b88-=
+---12-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"=
+color: inherit; text-decoration: none;"><img alt=3D"Whoop! or How to gamify=
+ training=E2=80=8A=E2=80=94=E2=80=8A$3.6 billion product playbook" class=3D=
+"dd l de" src=3D"https://miro.medium.com/fit/c/320/214/1*aMm8T2hbhaXdrO1u16=
+k-5A.jpeg" width=3D"160" height=3D"107" style=3D"width: 100%; border-radius=
+: 2px; height: 100%;"></a></div><div class=3D"df dg dh" style=3D"width: cal=
+c(100% - 216px);"><a class=3D"ac" href=3D"https://medium.com/@maria_borysov=
+a/whoop-or-how-to-gamify-training-3-6-billion-product-playbook-2a1380971b88=
+?source=3Demail-6421d40a8195-1732818956398-digest.reader-138adf9c44c-2a1380=
+971b88----12-98------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" st=
+yle=3D"color: inherit; text-decoration: none; display: block;"><h2 class=3D=
+"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0; color: rgba(41, 4=
+1, 41, 1); font-weight: 700;">Whoop! or How to gamify training=E2=80=8A=E2=
+=80=94=E2=80=8A$3.6 billion product playbook</h2><div class=3D"ds" style=3D=
+"margin-top: 8px;"><h3 class=3D"ai dt cp au" style=3D"margin: 0; font-weigh=
+t: 400; color: rgba(117, 117, 117, 1); line-height: 20px; font-size: 16px;"=
+>Secrets how to make training feel like a fun game</h3></div><div class=3D"=
+cf" style=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inlin=
+e-block; margin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab"=
+ src=3D"https://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png=
+" width=3D"15" height=3D"15" style=3D"vertical-align: middle;"></div><div c=
+lass=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><spa=
+n class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 11=
+7, 1); font-size: 13px; line-height: 20px;">8 min read</span></div><img alt=
+=3D"Claps" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15=
+179c17ea56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16=
+" height=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-=
+right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-a=
+lign: middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color=
+: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">497</span></=
+div><img alt=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.co=
+m/fit/c/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d=
+787" width=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-lef=
+t: 16px; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-b=
+lock; vertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-we=
+ight: 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20p=
+x;">14</span></div></div></a></div></div></div><div class=3D"dw bm l" style=
+=3D"width: 100%; height: 0px; border-bottom: 1px solid #F2F2F2;"></div></di=
+v><div><div class=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margi=
+n-top: 32px;"><div class=3D"cg ch l" style=3D"width: 100%; display: table; =
+table-layout: fixed;"><div class=3D"ci cj ck cl" style=3D"display: table-ce=
+ll; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><div c=
+lass=3D"z ab" style=3D"display: inline-block; vertical-align: middle;"><a h=
+ref=3D"https://medium.com/@zachl-quinn?source=3Demail-6421d40a8195-17328189=
+56398-digest.reader-1c45ac921f25-cc27ac592c52----13-99------------------0d1=
+b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decorati=
+on: none;"><img alt=3D"Zach Quinn" class=3D"ac ae cm cn" src=3D"https://mir=
+o.medium.com/fit/c/40/40/1*qAiJOnPDlGIOQOSHj0J53Q.jpeg" width=3D"20" height=
+=3D"20" style=3D"display: block; border-radius: 50%; height: 20px; width: 2=
+0px;"></a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-align: =
+middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line=
+-height: 20px; margin-left: 8px;"><a href=3D"https://medium.com/@zachl-quin=
+n?source=3Demail-6421d40a8195-1732818956398-digest.reader-1c45ac921f25-cc27=
+ac592c52----13-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" =
+style=3D"color: inherit; text-decoration: none;">Zach Quinn</a></span><span=
+ class=3D"ai co cp au cr ab" style=3D"vertical-align: middle; font-weight: =
+400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px; mar=
+gin-left: 4px;">in</span><span class=3D"ai co cp at cr ab" style=3D"vertica=
+l-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 1=
+3px; line-height: 20px; margin-left: 4px;"><a href=3D"https://medium.com/pi=
+peline-a-data-engineering-resource?source=3Demail-6421d40a8195-173281895639=
+8-digest.reader-1c45ac921f25-cc27ac592c52----13-99------------------0d1b6dc=
+c_a237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: =
+none;">Pipeline: Your Data Engineering Resource</a></span></div></div><div =
+class=3D"cs" style=3D"margin-top: 16px;"><div class=3D"z ct cu cv cw cx cy =
+cz da db dc" style=3D"display: inline-block; float: right; margin-left: 56p=
+x; height: 107px; width: 160px;"><a href=3D"https://medium.com/@zachl-quinn=
+/why-new-data-engineers-need-to-watch-their-mouths-cc27ac592c52?source=3Dem=
+ail-6421d40a8195-1732818956398-digest.reader-1c45ac921f25-cc27ac592c52----1=
+3-99------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=3D"colo=
+r: inherit; text-decoration: none;"><img alt=3D"Why New Data Engineers Need=
+ To Watch Their Mouths" class=3D"dd l de" src=3D"https://miro.medium.com/fi=
+t/c/320/214/1*554oy3uZCq7h0l_6HNdyKw.jpeg" width=3D"160" height=3D"107" sty=
+le=3D"width: 100%; border-radius: 2px; height: 100%;"></a></div><div class=
+=3D"df dg dh" style=3D"width: calc(100% - 216px);"><a class=3D"ac" href=3D"=
+https://medium.com/@zachl-quinn/why-new-data-engineers-need-to-watch-their-=
+mouths-cc27ac592c52?source=3Demail-6421d40a8195-1732818956398-digest.reader=
+-1c45ac921f25-cc27ac592c52----13-99------------------0d1b6dcc_a237_4f70_a97=
+c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none; display: =
+block;"><h2 class=3D"bp di dj dk dl dm dn do dp dq dr at" style=3D"margin: =
+0; color: rgba(41, 41, 41, 1); font-weight: 700;">Why New Data Engineers Ne=
+ed To Watch Their Mouths</h2><div class=3D"ds" style=3D"margin-top: 8px;"><=
+h3 class=3D"ai dt cp au" style=3D"margin: 0; font-weight: 400; color: rgba(=
+117, 117, 117, 1); line-height: 20px; font-size: 16px;">Why data engineers =
+need to be precise with words=E2=80=A6</h3></div><div class=3D"cf" style=3D=
+"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inline-block; mar=
+gin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=3D"http=
+s://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=3D"1=
+5" height=3D"15" style=3D"vertical-align: middle;"></div><div class=3D"z ab=
+" style=3D"display: inline-block; vertical-align: middle;"><span class=3D"a=
+i co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); font-=
+size: 13px; line-height: 20px;">5 min read</span></div><img alt=3D"Claps" c=
+lass=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17ea56cc=
+631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" height=3D"=
+16" style=3D"vertical-align: middle; margin-left: 16px; margin-right: 4px;"=
+><div class=3D"z ab" style=3D"display: inline-block; vertical-align: middle=
+;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, =
+117, 117, 1); font-size: 13px; line-height: 20px;">169</span></div><img alt=
+=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/3=
+2/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" width=
+=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left: 16px; m=
+argin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; vert=
+ical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight: 400;=
+ color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">1</spa=
+n></div></div></a></div></div></div><div class=3D"dw bm l" style=3D"width: =
+100%; height: 0px; border-bottom: 1px solid #F2F2F2;"></div></div><div><div=
+ class=3D"ca cb cc cd ce dx" style=3D"margin-bottom: 32px; margin-top: 32px=
+;"><div class=3D"cg ch l" style=3D"width: 100%; display: table; table-layou=
+t: fixed;"><div class=3D"ci cj ck cl" style=3D"display: table-cell; overflo=
+w: hidden; text-overflow: ellipsis; white-space: nowrap;"><div class=3D"z a=
+b" style=3D"display: inline-block; vertical-align: middle;"><a href=3D"http=
+s://medium.com/@iamleonie?source=3Demail-6421d40a8195-1732818956398-digest.=
+reader-7f60cf5620c9-2eefba9a692e----14-102------------------0d1b6dcc_a237_4=
+f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;"><=
+img alt=3D"Leonie Monigatti" class=3D"ac ae cm cn" src=3D"https://miro.medi=
+um.com/fit/c/40/40/1*TTIl4oynrJyfIkLbC6fumA.png" width=3D"20" height=3D"20"=
+ style=3D"display: block; border-radius: 50%; height: 20px; width: 20px;"><=
+/a></div><span class=3D"ai co cp at cq ab" style=3D"vertical-align: middle;=
+ font-weight: 400; color: rgba(41, 41, 41, 1); font-size: 13px; line-height=
+: 20px; margin-left: 8px;"><a href=3D"https://medium.com/@iamleonie?source=
+=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-2eefba9a692e=
+----14-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=
+=3D"color: inherit; text-decoration: none;">Leonie Monigatti</a></span><spa=
+n class=3D"ai co cp au cr ab" style=3D"vertical-align: middle; font-weight:=
+ 400; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px; ma=
+rgin-left: 4px;">in</span><span class=3D"ai co cp at cr ab" style=3D"vertic=
+al-align: middle; font-weight: 400; color: rgba(41, 41, 41, 1); font-size: =
+13px; line-height: 20px; margin-left: 4px;"><a href=3D"https://medium.com/t=
+owards-data-science?source=3Demail-6421d40a8195-1732818956398-digest.reader=
+-7f60cf5620c9-2eefba9a692e----14-102------------------0d1b6dcc_a237_4f70_a9=
+7c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: none;">Towards=
+ Data Science</a></span></div></div><div class=3D"cs" style=3D"margin-top: =
+16px;"><div class=3D"z ct cu cv cw cx cy cz da db dc" style=3D"display: inl=
+ine-block; float: right; margin-left: 56px; height: 107px; width: 160px;"><=
+a href=3D"https://medium.com/@iamleonie/building-a-recommender-system-using=
+-machine-learning-2eefba9a692e?source=3Demail-6421d40a8195-1732818956398-di=
+gest.reader-7f60cf5620c9-2eefba9a692e----14-102------------------0d1b6dcc_a=
+237_4f70_a97c_3fa297f2aa20-1" style=3D"color: inherit; text-decoration: non=
+e;"><img alt=3D"Building a Recommender System using Machine Learning" class=
+=3D"dd l de" src=3D"https://miro.medium.com/fit/c/320/214/1*nbp622za8aWkv9X=
+b5AHc6A@2x.jpeg" width=3D"160" height=3D"107" style=3D"width: 100%; border-=
+radius: 2px; height: 100%;"></a></div><div class=3D"df dg dh" style=3D"widt=
+h: calc(100% - 216px);"><a class=3D"ac" href=3D"https://medium.com/@iamleon=
+ie/building-a-recommender-system-using-machine-learning-2eefba9a692e?source=
+=3Demail-6421d40a8195-1732818956398-digest.reader-7f60cf5620c9-2eefba9a692e=
+----14-102------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20-1" style=
+=3D"color: inherit; text-decoration: none; display: block;"><h2 class=3D"bp=
+ di dj dk dl dm dn do dp dq dr at" style=3D"margin: 0; color: rgba(41, 41, =
+41, 1); font-weight: 700;">Building a Recommender System using Machine Lear=
+ning</h2><div class=3D"ds" style=3D"margin-top: 8px;"><h3 class=3D"ai dt cp=
+ au" style=3D"margin: 0; font-weight: 400; color: rgba(117, 117, 117, 1); l=
+ine-height: 20px; font-size: 16px;">=E2=80=9CCandidate rerank=E2=80=9D appr=
+oach with co-visitation matrix=E2=80=A6</h3></div><div class=3D"cf" style=
+=3D"margin-top: 24px;"><div class=3D"z dy" style=3D"display: inline-block; =
+margin-right: 16px;"><img alt=3D"Member-only content" class=3D"ab" src=3D"h=
+ttps://miro.medium.com/fit/c/30/30/1*Zz6z7U4dGjkNKQy1cxU7iw@2x.png" width=
+=3D"15" height=3D"15" style=3D"vertical-align: middle;"></div><div class=3D=
+"z ab" style=3D"display: inline-block; vertical-align: middle;"><span class=
+=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(117, 117, 117, 1); =
+font-size: 13px; line-height: 20px;">6 min read</span></div><img alt=3D"Cla=
+ps" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c/32/32/15179c17e=
+a56cc631c7aa437c6f487f42797bb0a1053ee7f7cc7fca905445942" width=3D"16" heigh=
+t=3D"16" style=3D"vertical-align: middle; margin-left: 16px; margin-right: =
+4px;"><div class=3D"z ab" style=3D"display: inline-block; vertical-align: m=
+iddle;"><span class=3D"ai co cp au" style=3D"font-weight: 400; color: rgba(=
+117, 117, 117, 1); font-size: 13px; line-height: 20px;">780</span></div><im=
+g alt=3D"Responses" class=3D"ab du dv" src=3D"https://miro.medium.com/fit/c=
+/32/32/7e20b295db3744e82c784a6bfc830a875110046ab5850df5a1d872355af7d787" wi=
+dth=3D"16" height=3D"16" style=3D"vertical-align: middle; margin-left: 16px=
+; margin-right: 4px;"><div class=3D"z ab" style=3D"display: inline-block; v=
+ertical-align: middle;"><span class=3D"ai co cp au" style=3D"font-weight: 4=
+00; color: rgba(117, 117, 117, 1); font-size: 13px; line-height: 20px;">9</=
+span></div></div></a></div></div></div></div></div><div class=3D"dz ea eb" =
+style=3D"margin-top: 48px;"><div class=3D"bz bm l" style=3D"width: 100%; he=
+ight: 0px; border-bottom: 1px solid rgba(230, 230, 230, 1);"></div></div><d=
+iv class=3D"ec ed ee ef eg" style=3D"background-color: #FAFAFA; padding: 20=
+px 16px 40px;"><div class=3D"eh bm l" style=3D"width: 100%; height: 0px; bo=
+rder-bottom: 1px solid #E5E5E5;"></div></div><div class=3D"ec ei ej ek el b=
+g" style=3D"text-align: center; background-color: #FAFAFA; padding: 0px 27p=
+x 54px;"><h2 class=3D"ai em en eo ep eq dm er do es dq et eu" style=3D"marg=
+in: 0; font-weight: 400; font-family: Georgia, serif; color: rgba(8, 8, 8, =
+1);">See more of what you like and less of what you don=E2=80=99t.</h2><div=
+ class=3D"ev" style=3D"padding-top: 16px;"><a class=3D"ew ex ey z ez bg fa =
+fb fc fd fe ff fg fh ai dt bx" href=3D"https://medium.com/me/missioncontrol=
+?source=3Demail-6421d40a8195-1732818956398-digest.reader-------------------=
+------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" style=3D"display: inline-block;=
+ font-weight: 400; text-align: center; line-height: 24px; font-size: 16px; =
+border-width: 1px; border-style: solid; box-sizing: border-box; text-decora=
+tion: none; padding: 9px 20px; background: rgba(26, 137, 23, 1); border-col=
+or: rgba(26, 137, 23, 1); color: rgba(255, 255, 255, 1); fill: rgba(255, 25=
+5, 255, 1); border-radius: 99em;">Control your recommendations</a></div></d=
+iv><div class=3D"fj fk fl fm fn fo" style=3D"background-color: rgba(0, 0, 0=
+, 1); border-radius: 0 0 4px 4px; padding: 32px 16px;"><div class=3D"z fp f=
+q fr fs ft fu fv" style=3D"display: inline-block; padding-bottom: 12px;"><h=
+2 class=3D"bp dt cp fd" style=3D"margin: 0; font-weight: 700; line-height: =
+20px; font-size: 16px; color: rgba(255, 255, 255, 1);">Read from anywhere.<=
+/h2></div><div class=3D"ac fw fx fy fz ga gb gc" style=3D"display: block; f=
+loat: none;"><div class=3D"z gd" style=3D"display: inline-block; padding-ri=
+ght: 12px;"><a class=3D"z" href=3D"https://itunes.apple.com/app/medium-ever=
+yones-stories/id828256236?pt=3D698524&amp;mt=3D8&amp;source=3Demail-6421d40=
+a8195-1732818956398-digest.reader-------------------------0d1b6dcc_a237_4f7=
+0_a97c_3fa297f2aa20" style=3D"color: inherit; text-decoration: none; displa=
+y: inline-block;"><img alt=3D"Get Medium on the App Store" class src=3D"htt=
+ps://miro.medium.com/proxy/1*CXKdDEfFShoF6Azy5V8ZKQ@2x.png" width=3D"120" h=
+eight=3D"40"></a></div><a class=3D"z" href=3D"https://play.google.com/store=
+/apps/details?id=3Dcom.medium.reader&amp;source=3Demail-6421d40a8195-173281=
+8956398-digest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa29=
+7f2aa20" style=3D"color: inherit; text-decoration: none; display: inline-bl=
+ock;"><img alt=3D"Get Medium on Google Play" class src=3D"https://miro.medi=
+um.com/proxy/1*D-oULOaPtKR8A1jatsII4w@2x.png" width=3D"134.17" height=3D"40=
+"></a></div><div class=3D"ge gf gg gh" style=3D"padding: 20px 0px;"><div cl=
+ass=3D"bl bm l" style=3D"width: 100%; border-bottom: 1px solid rgba(117, 11=
+7, 117, 1); height: 0px;"></div></div><div class=3D"fi" style=3D"clear: bot=
+h;"><div class=3D"y" style=3D"text-align: left;"><div class=3D"ai co cp fd"=
+ style=3D"font-weight: 400; font-size: 13px; line-height: 20px; color: rgba=
+(255, 255, 255, 1);"><div class>Sent by <a href=3D"https://medium.com/?sour=
+ce=3Demail-6421d40a8195-1732818956398-digest.reader------------------------=
+-0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" style=3D"color: inherit; text-decora=
+tion: none;">Medium</a><span class=3D"aw ax" style=3D"padding-left: 4px; pa=
+dding-right: 4px;">=C2=B7</span>Medium, 548 Market St, PMB 42061, San=C2=A0=
+Francisco,=C2=A0CA=C2=A094104</div><a class=3D"gi" href=3D"https://medium.c=
+om/me/email-settings/6421d40a8195/fbe189ec0594?type=3Dsocial&amp;source=3De=
+mail-6421d40a8195-1732818956398-digest.reader-------------------------0d1b6=
+dcc_a237_4f70_a97c_3fa297f2aa20" style=3D"color: inherit; text-decoration: =
+underline;">Unsubscribe</a> from this type of email<span class=3D"aw ax" st=
+yle=3D"padding-left: 4px; padding-right: 4px;">=C2=B7</span><a class=3D"gi"=
+ href=3D"https://medium.com/me/email-settings/6421d40a8195/fbe189ec0594?typ=
+e=3Dsocial&amp;preference=3D2&amp;source=3Demail-6421d40a8195-1732818956398=
+-digest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20=
+" style=3D"color: inherit; text-decoration: underline;">Switch to the Weekl=
+y Digest</a><span class=3D"aw ax" style=3D"padding-left: 4px; padding-right=
+: 4px;">=C2=B7</span><a class=3D"gi" href=3D"https://medium.com/jobs-at-med=
+ium/work-at-medium-959d1a85284e?source=3Demail-6421d40a8195-1732818956398-d=
+igest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" =
+style=3D"color: inherit; text-decoration: underline;">Careers</a><span clas=
+s=3D"aw ax" style=3D"padding-left: 4px; padding-right: 4px;">=C2=B7</span><=
+a class=3D"gi" href=3D"https://help.medium.com/hc/en-us?source=3Demail-6421=
+d40a8195-1732818956398-digest.reader-------------------------0d1b6dcc_a237_=
+4f70_a97c_3fa297f2aa20" style=3D"color: inherit; text-decoration: underline=
+;">Help Center</a><span class=3D"aw ax" style=3D"padding-left: 4px; padding=
+-right: 4px;">=C2=B7</span><a class=3D"gi" href=3D"https://policy.medium.co=
+m/medium-privacy-policy-f03bf92035c9?source=3Demail-6421d40a8195-1732818956=
+398-digest.reader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2a=
+a20" style=3D"color: inherit; text-decoration: underline;">Privacy Policy</=
+a><span class=3D"aw ax" style=3D"padding-left: 4px; padding-right: 4px;">=
+=C2=B7</span><a class=3D"gi" href=3D"https://policy.medium.com/medium-terms=
+-of-service-9db0094a1e0f?source=3Demail-6421d40a8195-1732818956398-digest.r=
+eader-------------------------0d1b6dcc_a237_4f70_a97c_3fa297f2aa20" style=
+=3D"color: inherit; text-decoration: underline;">Terms of service</a></div>=
+</div></div></div></div></div></td></tr></tbody></table></div><img src=3D"h=
+ttps://u1823144.ct.sendgrid.net/wf/open?upn=3Du001.coU4IrMYOsDMSBtIRo11jSIQ=
+-2FaAZyaG7KJ9b0hh-2BmWbSlOWybEix9iRk2sYAscZp6KXML-2FfUGkUATeAEJyoHwl-2Bh3BX=
+xLILEb-2BNILqxZlyLVxgeTTSJfLEASlwU-2FZTmVUcsf1m1ObZbMmbandrFVn0fQwN1vatbEDK=
+E8126Z04uRmDHdqUVYVU9UWiOJ7R5c6oGyyT2pXPr3CvpO7JNyEHjjz-2FOnTeerFG-2FSRwg4Q=
+v0s0pZBVooUyFhGbfY2jSrRvnPoa8D5rJCmbX7gESIJ4rZmKjNAa9Y542boBXNiMHiBxS13o653=
+9ZPa50zzEBsTL9E-2BdoZSF1i-2BD7cHdFTOxJ2WCxtH4I1MBug4wHiwBfa0-2B8cwBHyBnZ-2F=
+3xwG2C30-2Ft9STI7vV3ROM01Fe2hbMdg-3D-3D" alt=3D"" width=3D"1" height=3D"1" =
+border=3D"0" style=3D"height:1px !important;width:1px !important;border-wid=
+th:0 !important;margin-top:0 !important;margin-bottom:0 !important;margin-r=
+ight:0 !important;margin-left:0 !important;padding-top:0 !important;padding=
+-bottom:0 !important;padding-right:0 !important;padding-left:0 !important;"=
+/></body></html>
+--1cc6ed4de83277394436206785ef7d4142c905ccf7432ee77b5ab7128f94--

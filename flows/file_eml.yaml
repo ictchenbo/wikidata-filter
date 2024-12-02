@@ -1,0 +1,12 @@
+name: EML File Loader
+description: 读取.eml文件，解析出内容，一条数据
+arguments: 1
+
+loader: eml.EML(arg1)
+
+nodes:
+  print: Print
+  count: Count
+  writer: WriteJson('data/test2.json')
+
+processor: Chain(count, writer)

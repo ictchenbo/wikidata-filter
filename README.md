@@ -21,6 +21,10 @@
 
 
 ## New！
+- 2024.11.30
+1. 新增EML文件加载器 `eml.EML(input_file, tmp_dir=None, save_attachment=True)`提取邮件主题、发家人、收件人、抄送、密送、时间、其他邮件头、正文、附件
+2. 新增pptx文件加载器 `ppt.PPTX(input_file, max_pages=0)` 基于python-pptx读取pptx文件，ppt则先通过libreoffice转换为pptx，每个段落（文本框）作为一条数据
+
 - 2024.11.28
 1. 新增PDF文件加载器 `pdf.PDF(input_file, max_pages=0)` 基于PDFMiner读取PDF文件，每页文本作为一条数据
 2. 新增Word doc/docx文件加载器 `docx.Doc(input_file)` `docx.Docx(input_file)` 基于python-docx读取docx文件，doc则先通过libreoffice转换为docx，每个段落、表格作为一条数据
@@ -42,7 +46,7 @@
    - [联合国教科文组织项目数据](flows/unesco-projects.yaml)
    - [FourSqure全球POI数据](flows/file_parquet.yaml)
    - [新闻文本解析&向量化索引](flows/news_process.yaml)
-   - 文档文件读取 [pdf](flows/file_pdf.yaml) [docx](flows/file_docx.yaml)
+   - 文档文件读取 [pdf](flows/file_pdf.yaml) [docx](flows/file_docx.yaml) [eml](flows/file_eml.yaml)
    - [ReaderAPI](flows/test_readerapi.yaml)
    - [大模型处理](flows/llm_simple.yaml)
    - more...

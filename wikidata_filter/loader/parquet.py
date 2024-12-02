@@ -5,7 +5,7 @@
 """
 from typing import Iterable, Any
 
-from wikidata_filter.loader.file import BinaryFile
+from wikidata_filter.loader.binary import BinaryFile
 
 try:
     import pyarrow.parquet as pq
