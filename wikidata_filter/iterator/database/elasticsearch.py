@@ -2,6 +2,8 @@ import json
 import requests
 from wikidata_filter.iterator.aggregation import BufferedWriter
 
+id_keys = ["_id", "id", "mongo_id"]
+
 
 class ESWriter(BufferedWriter):
     """
@@ -15,7 +17,6 @@ class ESWriter(BufferedWriter):
         else:
             self.auth = None
         self.index_name = index
-        self.id_keys = ["_id", "id", "mongo_id"]
 
     def write_batch(self, rows: list):
         header = {
@@ -24,7 +25,7 @@ class ESWriter(BufferedWriter):
         lines = []
         for row in rows:
             action_row = {}
-            for key in self.id_keys:
+            for key in id_keys:
                 if key in row:
                     action_row["_id"] = row.pop(key)
                     break

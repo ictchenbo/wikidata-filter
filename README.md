@@ -21,8 +21,16 @@
 
 
 ## New！
+- 2024.12.19
+1. 新增多个有用的转换算子 `MapMulti` `MapUtil` `MapFill`，均继承自`Map`
+2. `WriteText` `WriteJson`支持gzip压缩，减小文件大小、提高写文件效率
+3. 框架监听SIGINT信号，在完成一条数据的完整处理后再结束程序
+4. 新增获取数据库表信息的Loader `database.meta.DBTables(loader)` 基于已有的数据库Loader（如`database.mysql.MySQL`）获取表信息
+5. 修改`database.mysql.MySQL`支持游标读取，从而支持大规模数据库表的数据读取
+6. 修改`database.rdb_base.RDBBase`，对于不带limit的查询，使用游标方式读取数据，以支持超大规模数据表读取（对于小表，使用`fetchall`方式，其效率待测试对比）
+
 - 2024.11.30
-1. 新增EML文件加载器 `eml.EML(input_file, tmp_dir=None, save_attachment=True)`提取邮件主题、发家人、收件人、抄送、密送、时间、其他邮件头、正文、附件
+1. 新增EML文件加载器 `eml.EML(input_file, tmp_dir=None, save_attachment=True)`提取邮件主题、发件人、收件人、抄送、密送、时间、其他邮件头、正文、附件
 2. 新增pptx文件加载器 `ppt.PPTX(input_file, max_pages=0)` 基于python-pptx读取pptx文件，ppt则先通过libreoffice转换为pptx，每个段落（文本框）作为一条数据
 
 - 2024.11.28

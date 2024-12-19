@@ -60,6 +60,24 @@ class JsonIterator:
     def __str__(self):
         return f"{self.name}"
 
+    def val(self, data, key=None):
+        if key is None:
+            return data
+        if key not in data:
+            print(f"Warning: `{key}` not exists")
+            return None
+        return data[key]
+
+
+class DictProcessorBase(JsonIterator):
+    """针对dict类型数据处理的基类 如果传入的非字典将不做任何处理"""
+    def __process__(self, data: Any, *args):
+        if data is not None:
+            if isinstance(data, dict):
+                return self.on_data(data)
+            print('Warning: data is not a dict')
+            return data
+
 
 class Multiple(JsonIterator):
     """多个节点组合"""
@@ -86,7 +104,7 @@ class Multiple(JsonIterator):
 
     def __str__(self):
         nodes = [str(it) for it in self.nodes]
-        return f'{self.name}[nodes={nodes}]'
+        return f'{self.name}(nodes={nodes})'
 
 
 class Fork(Multiple):
@@ -147,7 +165,7 @@ class Chain(Multiple):
         # 特殊消息处理
         if isinstance(data, Message):
             if data.msg_type == 'end':
-                print(f'{self.name}: END/Flush signal received.')
+                # print(f'{self.name}: END/Flush signal received.')
                 queue = self.walk(data.data, break_when_empty=False, end_msg=True)
                 if queue:
                     for one in queue:

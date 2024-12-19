@@ -1,10 +1,10 @@
 import json
-from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.base import JsonIterator, DictProcessorBase
 from wikidata_filter.iterator.edit import Map
 from wikidata_filter.util.jsons import extract, fill
 
 
-class Select(JsonIterator):
+class Select(DictProcessorBase):
     """
     Select操作 key支持嵌套，如`user.name`表示user字段下面的name字段 并将name作为结果字段名
     """
@@ -29,7 +29,7 @@ class Select(JsonIterator):
         return f"{self.name}(keys={self.keys}, short_key={self.short_key})"
 
 
-class SelectVal(JsonIterator):
+class SelectVal(DictProcessorBase):
     """
     字段值选择操作 指定字段key的值作为新的数据返回
     """
@@ -38,9 +38,6 @@ class SelectVal(JsonIterator):
         self.inherit_props = inherit_props
 
     def on_data(self, data: dict, *args):
-        if not isinstance(data, dict):
-            print("SelectVal Warning: data must be dict")
-            return data
         keyval = data.get(self.key)
         if self.inherit_props:
             if isinstance(keyval, dict):
@@ -55,7 +52,7 @@ class SelectVal(JsonIterator):
         return f"{self.name}('{self.key}', inherit_props={self.inherit_props})"
 
 
-class RemoveFields(JsonIterator):
+class RemoveFields(DictProcessorBase):
     """
     移除部分字段
     """
@@ -74,7 +71,25 @@ class RemoveFields(JsonIterator):
         return f"{self.name}(keys={self.keys})"
 
 
-class DictEditBase(JsonIterator):
+def is_empty_or_null(v):
+    if isinstance(v, int) or isinstance(v, float):
+        return v
+    return not v
+
+
+class RemoveEmptyOrNullFields(JsonIterator):
+    """移除空的字段或元素 对于dict/list/tuple数据有效 其他类型原样返回"""
+    def on_data(self, data, *args):
+        if isinstance(data, dict):
+            return {k: v for k, v in data.items() if not is_empty_or_null(v)}
+        if isinstance(data, list):
+            return [v for v in data if not is_empty_or_null(v)]
+        if isinstance(data, tuple):
+            return tuple([v for v in data if not is_empty_or_null()])
+        return data
+
+
+class DictEditBase(DictProcessorBase):
     templates: dict = {}
 
     def __init__(self, tmp: dict):
@@ -130,14 +145,16 @@ class CopyFields(DictEditBase):
         return data
 
 
-class InjectField(JsonIterator):
+class InjectField(DictProcessorBase):
     """
     基于给定的KV缓存对当前数据进行填充
     """
-    def __init__(self, kv: dict, inject_path: str or list, reference_path: str):
+    def __init__(self, kv: dict, inject_path: str or list, reference_path: str = None):
+        assert kv, "kv should not be empty"
+        assert inject_path, "inject_path should not be empty"
         self.kv = kv
         self.inject_path = inject_path
-        self.reference_path = reference_path
+        self.reference_path = reference_path or inject_path
 
     def on_data(self, item: dict, *args):
         match_val = extract(item, self.reference_path)
@@ -147,7 +164,7 @@ class InjectField(JsonIterator):
         return item
 
 
-class ConcatFields(JsonIterator):
+class ConcatFields(DictProcessorBase):
     """连接数个已有的字段值，形成行的字段。如果目标字段名存在 则覆盖；如果只有一个来源字段，与CopyFields效果相同"""
     def __init__(self, target_key: str, *source_keys, sep: str = '_'):
         super().__init__()

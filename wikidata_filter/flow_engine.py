@@ -100,8 +100,22 @@ class ComponentManager:
 class ProcessFlow:
     comp_mgr = ComponentManager()
 
-    def __init__(self, flow_file: str, *args, **kwargs):
+    @staticmethod
+    def from_file(flow_file: str, *args, **kwargs):
         flow = yaml.load(open(flow_file, encoding='utf8'), Loader=yaml.FullLoader)
+        return ProcessFlow(flow, *args, **kwargs)
+
+    @staticmethod
+    def from_cmd(name, *args, **kwargs):
+        flow = {
+            "name": f"cli flow {name}",
+            "arguments": len(args),
+            "loader": kwargs.pop("loader"),
+            "processor": kwargs.pop("processor")
+        }
+        return ProcessFlow(flow, *args, **kwargs)
+
+    def __init__(self, flow: dict, *args, **kwargs):
         self.name = flow.get('name')
         args_num = int(flow.get('arguments', '0'))
 

@@ -1,0 +1,34 @@
+name: list database tables in MySQL, transform columns info, add metadata
+arguments: 0
+consts:
+  mysql1:
+    host: localhost
+    user: test
+    password: test
+    database: test
+  dtypes:
+    varchar: String
+
+nodes:
+  loader_mysql: database.mysql.MySQL(**mysql1)
+
+  head: TakeN(1)
+  print: Print
+  counter: Count(label='table')
+
+  rename: RenameFields(name='table_name')
+  flat_cols: Flat(key='columns', inherit_props=True)
+  rename1: RenameFields(Field='name', Type='dtype', Null='nullable', Default='default', Key='constraints')
+  map_type: MapUtil('wikidata_filter.util.db_util.dtype_mysql', key='dtype')
+  map_nullable: MapUtil('wikidata_filter.util.db_util.dtype_bool', key='nullable')
+  group_by_table: Group(by='table_name', emit_fast=True)
+  rename2: RenameFields(key='name', values='columns')
+  add_fields: AddFields(version='1.0', tags=['technology'], owner='system', source='test', comment='')
+  ts1: AddTS('created_time')
+  ts2: AddTS('modified_time')
+  add_id: PrefixID('ld_mysql_', 'name')
+
+  writer: WriteJson('data/mysql.tables.jsonl')
+
+loader: database.meta.DBTables(loader_mysql)
+processor: Chain(rename, flat_cols, rename1, map_type, map_nullable, group_by_table, rename2, add_fields, ts1, ts2, add_id, writer, counter)

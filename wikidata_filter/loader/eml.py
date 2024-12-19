@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime
 import re
 import traceback
 import uuid
@@ -23,7 +24,19 @@ def change(raw_subject):
 
 def to_timestamp(date_time_str):
     """解析邮件头的日期"""
-    dt = email.utils.parsedate_to_datetime(date_time_str)
+    try:
+        dt = email.utils.parsedate_to_datetime(date_time_str)
+    except TypeError:
+        # 存在"22/12/2006 4:19:08 PM"的时间格式，需要单独处理下
+        try:
+            date_format = "%d/%m/%Y %I:%M:%S %p"
+            dt = datetime.strptime(date_time_str, date_format)
+        except Exception:
+            return None
+    except ValueError:
+        # 非标准日期格式，无法识别转换
+        return None
+
     timestamp_seconds = int(time.mktime(dt.timetuple()))
     timestamp_milliseconds = timestamp_seconds * 1000
     return timestamp_milliseconds
@@ -170,6 +183,37 @@ def parse_header(path: str):
         row['ext_headers'] = ext
 
         return row
+
+
+def __parse_header__(path):
+    headers = {
+        "From": None,
+        "To": [],
+        "Cc": [],
+        "Bcc": [],
+        "Date": None,
+        "Subject": None,
+        "Message-ID": None
+    }
+
+    with open(path, 'r', encoding="utf-8", errors="ignore") as file:
+        for line in file:
+            if line.startswith("From") and not headers["From"]:
+                headers["From"] = line.split(":")[1].strip() if len(line.split(":")) > 1 else ""
+            elif line.startswith("To") and not headers["To"]:
+                to_emails = line.split(":")[1].strip() if len(line.split(":")) > 1 else ""
+                headers["To"].append(to_emails.strip())
+            elif line.startswith("Date") and not headers["Date"]:
+                headers["Date"] = line.split(":")[1].strip() if len(line.split(":")) > 1 else 0
+            elif line.startswith("Subject") and not headers["Subject"]:
+                headers["Subject"] = line.split(":")[1].strip() if len(line.split(":")) > 1 else ""
+            elif line.startswith("Message-ID") and not headers["Message-ID"]:
+                headers["Message-ID"] = line.split(":")[1].strip() if len(line.split(":")) > 1 else ""
+    for field in ("To", "Cc", "Bcc"):
+        # todo: 目前先抽取一个
+        if headers[field]:
+            headers[field] = headers[field][0]
+    return headers
 
 
 class EML(BinaryFile):

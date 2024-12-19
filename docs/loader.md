@@ -76,7 +76,7 @@ GTD文件为Excel，通过`ExcelStream` 进行加载，可参考`flows/gtd_test.
 
 ### 数据库加载器
 提供常用数据库的数据查询式读取：
-1. ClickHouse `database.CKLoader` 实例化参数：
+1. ClickHouse `database.CK` 实例化参数：
 - host 服务器主机名 默认`"localhost"`
 - tcp_port 服务器端口号 默认 `9000`
 - username 用户名 默认`"default"`
@@ -88,8 +88,10 @@ GTD文件为Excel，通过`ExcelStream` 进行加载，可参考`flows/gtd_test.
 - limit 限制条件 默认`None` 示例`10,20`（即跳过10条返回20条）
 
 示例配置：
+
 ```python
-database.CKLoader(host='10.208.57.5', port=59000, database='goin_kjqb_230202_v_3_0', table='entity_share_data_shard', select='mongo_id, name')
+database.CK(host='10.208.57.5', port=59000, database='goin_kjqb_230202_v_3_0', table='entity_share_data_shard',
+            select='mongo_id, name')
 ```
 
 2. ElasticSearch `database.ESLoader` 实例化参数：
@@ -105,8 +107,9 @@ database.CKLoader(host='10.208.57.5', port=59000, database='goin_kjqb_230202_v_3
 **注意**：由于ES常规检索方式限制最多返回10000条数据，因此limit>10000时采用scroll API。请参考：
 
 示例配置：
+
 ```python
-database.ESLoader(host='10.208.57.13', table='docs')
+database.ES(host='10.208.57.13', table='docs')
 ```
 
 3. MongoDB `MongoLoader` 实例化参数：
@@ -122,13 +125,14 @@ database.ESLoader(host='10.208.57.13', table='docs')
 - limit 限制数量（整数）
 
 示例配置：
+
 ```python
-database.MongoLoader(host='10.208.57.13', table='nodes')
+database.Mongo(host='10.208.57.13', table='nodes')
 ```
 
-4. MySQL `MySQLLoader` 参数同ClickHouse
-5. PostgresSQL `PostgresSQLLoader` 参数同ClickHouse
-
+4. MySQL `database.mysql.MySQL` 参数同ClickHouse
+5. PostgresSQL `database.postgres.PG` 参数同ClickHouse
+6. DBTables `database.meta.DBTables(loader)` 基于已有的数据库loader读取当前可用的表格 表格返回名字和列的列表
 
 ### 其他加载器
 

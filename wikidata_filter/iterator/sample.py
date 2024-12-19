@@ -43,3 +43,14 @@ class DistinctRedis(Distinct):
     def exists(self, val):
         pass
 
+
+class TakeN(Filter):
+    """取前n条数据"""
+    def __init__(self, n: int = 10):
+        super().__init__(self)
+        self.n = n
+        self.i = -1
+
+    def __call__(self, *args, **kwargs):
+        self.i += 1
+        return self.i < self.n

@@ -2,6 +2,7 @@ from importlib import import_module
 
 
 def load_cls(full_name):
+    # print('load_cls:', full_name)
     pkg = full_name[:full_name.rfind('.')]
     class_name_only = full_name[full_name.rfind('.') + 1:]
     try:

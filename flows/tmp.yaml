@@ -1,0 +1,32 @@
+name: p1_wikidata_graph
+description: transform wikidata dump to graph, including item/property/item_property/property_property
+arguments: 1
+
+loader: wikidata.WikidataJsonDump(arg1)
+processor: Fork(chain_entity, chain_property)
+nodes:
+  writer1: WriteJson('test_data/item.json')
+  writer2: WriteJson('test_data/property.json')
+  writer3: WriteJson('test_data/item_property.json')
+  writer4: WriteJson('test_data/property_property.json')
+
+  rm_type: RemoveFields('_type')
+
+  entity: wikidata_graph.Entity
+  filter_item: "Filter(lambda p: p['_type']=='item')"
+  filter_property: "Filter(lambda p: p['_type']=='property')"
+  chain1: Chain(filter_item, rm_type, writer1)
+  chain2: Chain(filter_property, rm_type, writer2)
+  group1: Fork(chain1, chain2)
+
+  property: wikidata_graph.ItemProperty
+  filter_item_property: "Filter(lambda p: p['_type']=='item_property')"
+  filter_property_property: "Filter(lambda p: p['_type']=='property_property')"
+  chain3: Chain(filter_item_property, rm_type, writer3)
+  chain4: Chain(filter_property_property, rm_type, writer4)
+  group2: Fork(chain3, chain4)
+
+  chain_entity: Chain(entity, group1)
+  chain_property: Chain(property, group2)
+
+

@@ -1,7 +1,7 @@
 from wikidata_filter.loader.base import DataProvider
 
 
-class MongoLoader(DataProvider):
+class Mongo(DataProvider):
     def __init__(self,
                  host='localhost',
                  port=27017,

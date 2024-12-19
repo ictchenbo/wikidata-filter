@@ -60,7 +60,9 @@ class JsonIterator:
 13. 复制字段 `CopyFields(*keys)` 复制已有的字段 如果目标字段名存在 则覆盖
 14. 拼接字段 `ConcatFields(target_key,*source_keys, sep='_')` 将source_keys拼接作为target_key字段
 15. 属性扁平化 `FlatProperty(*keys, inherit_props=False)` 提取指定属性进行返回
-
+16. 多字段转换 `MapMulti(mapper, *keys, **kwargs)` 同时对多个字段的值应用mapper函数，通过*keys指定源-目标相同的字段，通过**kwargs指定源-目标不同的字段
+17. 字段填充 `MapFill(cache, target_key, source_key=None)` 与`InjectField`效果相同，基于source_key的值在cache中查找，结果作为target_key字段。source_key为None，则使用target_key
+18. 函数转换 `MapUtil(mod_name: str, *args, **kwargs)` 基于给定的函数对象完整限定名（如`wikidata_filter.util.db_util.dtype_mysql`，要求为一元函数，但可以接收其他预定义的值）加载函数对象作为`Map`的转换函数，可实现非常比较灵活的数据转换，可调用任意工具类函数
 
 ### 统计分析类
 1. 按照某个字段对数据进行分组 `Group(by=key, emit_fast=True)` 对数据分组，然后再往后传递
@@ -70,7 +72,7 @@ class JsonIterator:
 以下算子均需要搭配`Group`使用： 
 1. 聚合统计分析基类 `aggs.Reduce(func, source_key='values', target_key=None)`  根据提供的函数进行数据规约
 2. 自定义规约 `aggs.ReduceBy(init_func, add_func)` 提供一个初始函数和加法函数进行规约
-3. 统计函数算子，包括Count、Sum、Mean、Min、Max、Var、Std，这些算子构造方法除了Count无需参数以外，其他均需要一个字段名参数
+3. 统计函数算子，包括`Count`、`Sum`、`Mean`、`Min`、`Max`、`Var`、`Std`，这些算子构造方法除了Count无需参数以外，其他均需要一个字段名参数
 4. 分组整体处理算子，包括`Head(n)`、`Tail(n)`、`Sample(rate)`、`Distinct(field)`、`OrderBy(field, descend=False)`
 
 ### 缓冲处理基类

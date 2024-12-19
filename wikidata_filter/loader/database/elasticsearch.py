@@ -2,7 +2,7 @@ from wikidata_filter.loader.base import DataProvider
 import requests
 
 
-class ESLoader(DataProvider):
+class ES(DataProvider):
     """
     读取ES指定索引全部数据，支持提供查询条件
     """

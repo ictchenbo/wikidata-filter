@@ -23,7 +23,7 @@ class Buffer(ReduceBase):
     def __process__(self, item: dict or None, *args):
         if item is None:
             # 数据结束或需要刷新缓存
-            print(f'{self.name}: END/Flush signal received.')
+            # print(f'{self.name}: END/Flush signal received.')
             if self.buffer:
                 self.commit()
             if self.mode == "batch":
@@ -58,6 +58,11 @@ class Buffer(ReduceBase):
         """提交当前缓冲数据 比如写入数据库或文件"""
         print("buffer data commited, num of rows:", len(self.buffer))
 
+    def on_complete(self):
+        if self.buffer:
+            self.commit()
+            self.buffer.clear()
+
     def __str__(self):
         return f"{self.name}(buffer_size={self.buffer_size}, mode='{self.mode}')"
 
@@ -91,7 +96,7 @@ class Group(ReduceBase):
     def __process__(self, data: dict or None, *args):
         # print('Group.__process__', data)
         if data is None:
-            print(f'{self.name}: END/Flush signal received.')
+            # print(f'{self.name}: END/Flush signal received.')
             for key, values in self.groups.items():
                 print('grouping key:', key)
                 yield dict(key=key, values=values)

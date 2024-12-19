@@ -1,5 +1,6 @@
 import re
 import time
+from datetime import datetime
 
 
 ONE_DAY = 86400
@@ -11,11 +12,19 @@ YEAR_DAYS = [365, 366]
 
 
 def date(dt: str, fmt='%Y-%m-%d') -> int:
-    return int(time.mktime(time.strptime(dt, fmt)))
+    time1 = datetime.strptime(dt, fmt)
+    time2 = datetime.strptime("1970-01-01 00:00:00", fmt)
+
+    diff = time1 - time2
+    return diff.days * 24 * 3600 + diff.seconds  # 换算成秒数
 
 
 def date_ts(dt: str, fmt='%Y-%m-%d') -> int:
-    return int(time.mktime(time.strptime(dt, fmt))*1000)
+    time1 = datetime.strptime(dt, fmt)
+    time2 = datetime.strptime("1970-01-01 00:00:00", fmt)
+
+    diff = time1 - time2
+    return diff.days * 24 * 3600000 + diff.seconds*1000 + diff.microseconds
 
 
 def ts2date(ts, fmt='%Y-%m-%d') -> str:
@@ -80,3 +89,19 @@ def fill_date(dt: str or list):
             return expand_date_range(dt[0])
         else:
             return expand_date_range(dt[0])[0], expand_date_range(dt[1])[1]
+
+
+def datetime_obj2ts(d: datetime, fmt='%Y-%m-%d %H:%M:%S'):
+    dt_str = d.strftime(fmt)
+    return date(dt_str, fmt)
+
+
+def datetime_obj2ts_millis(d: datetime, fmt='%Y-%m-%d %H:%M:%S'):
+    dt_str = d.strftime(fmt)
+    return date_ts(dt_str, fmt)
+
+
+if __name__ == "__main__":
+    # dt = datetime.now(cst_tz)
+    dt = datetime(1960, 1, 1, 0, 0, 0, 0)
+    print(datetime_obj2ts(dt))

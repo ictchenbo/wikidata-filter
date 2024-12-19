@@ -25,13 +25,19 @@ class Filter(JsonIterator):
     过滤节点（1->?)
     根据提供的匹配函数判断是否继续往后面传递数据
     """
-    def __init__(self, matcher):
+    def __init__(self, matcher, key: str = None):
         super().__init__()
         assert matcher is not None, "matcher should not be None"
         self.matcher = matcher
+        self.key = key
 
     def on_data(self, data, *args):
-        if self.matcher(data):
+        if self.key and self.key not in data:
+            print(f"Warning: `{self.key}` not exists")
+        val = data
+        if self.key:
+            val = data[self.key]
+        if self.matcher(val):
             return data
 
 
@@ -56,3 +62,23 @@ class Count(JsonIterator):
 
     def __str__(self):
         return f"{self.name}(ticks={self.ticks},label='{self.label}')"
+
+
+class BlackList(Filter):
+    """黑名单过滤 匹配黑名单的被过滤掉"""
+    def __init__(self, cache: dict or set, key: str):
+        super().__init__(self, key)
+        self.cache = cache
+
+    def __call__(self, val, *args, **kwargs):
+        return val not in self.cache
+
+
+class WhiteList(Filter):
+    """白名单过滤 匹配白名单的才保留"""
+    def __init__(self, cache: dict or set, key: str):
+        super().__init__(self, key)
+        self.cache = cache
+
+    def __call__(self, val, *args, **kwargs):
+        return val in self.cache

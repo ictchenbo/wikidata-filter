@@ -1,8 +1,11 @@
-from wikidata_filter.iterator.base import JsonIterator
-from wikidata_filter.util.dates import current_ts
+from typing import Any
+
+from wikidata_filter.iterator.base import JsonIterator, DictProcessorBase
+from wikidata_filter.util.dates import current, current_ts
+import uuid
 
 
-class ReverseKV(JsonIterator):
+class ReverseKV(DictProcessorBase):
     """
     对调字典的字段名和字段值
     """
@@ -38,7 +41,7 @@ def parse_rules(rules):
     return rule_map
 
 
-class RuleBasedTransform(JsonIterator):
+class RuleBasedTransform(DictProcessorBase):
     """
     基于规则的数据转换 规则定义：
         - "f1:123,f2:@t1,..."
@@ -65,10 +68,35 @@ class RuleBasedTransform(JsonIterator):
         return ret
 
 
-class AddTS(JsonIterator):
-    def __init__(self, key: str):
+class AddTS(DictProcessorBase):
+    """添加时间戳"""
+    def __init__(self, key: str, millis=True):
         self.key = key
+        self.millis = millis
 
     def on_data(self, data: dict, *args):
-        data[self.key] = current_ts()
+        data[self.key] = current_ts() if self.millis else current()
+        return data
+
+
+class PrefixID(DictProcessorBase):
+    """基于已有字段生成带前缀的ID"""
+    def __init__(self, prefix: str, *keys, target_key='_id'):
+        self.target_key = target_key
+        self.prefix = prefix
+        self.keys = keys
+
+    def on_data(self, data: dict, *args):
+        parts = [str(data.get(key)) for key in self.keys]
+        data[self.target_key] = self.prefix + '_'.join(parts)
+        return data
+
+
+class UUID(DictProcessorBase):
+    """"基于UUID生成ID"""
+    def __init__(self, target_key='_id'):
+        self.target_key = target_key
+
+    def on_data(self, data: dict, *args):
+        data[self.target_key] = str(uuid.uuid4())
         return data
