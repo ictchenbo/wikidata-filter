@@ -1,44 +1,24 @@
-# wikidata-filter
+![logo](docs/logo.png)
+
 一个简单实用、灵活可配、开箱即用的Python数据处理（ETL）框架，提供**Wikidata** / **Wikipedia** / **GDELT**等多种开源情报数据的处理流程；
-支持**大模型**、**API**、常见文件、数据库等多种输入输出及转换处理，支撑各类数据接入、大数据处理、AI智能分析任务。
+支持**大模型**、**API**、常见文件、数据库等多种输入输出及转换处理，支撑各类数据集成接入、大数据处理、离线分析计算、AI智能分析、知识图谱构建等任务。
 
 项目持续丰富中，欢迎反馈各类数据处理需求，持续丰富Data Intelligence
 
 ![系统使用](docs/img.png)
 
-关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
-
-
-**项目扩展模式**： 
-1. 基于源码的扩展： 
-- 直接在本项目中修改已有实现或更加更多实现，可在`wikidata_filter`模块下进行 
-- 在本项目顶层（与`wikidata_filter`模块并行）添加更多模块 
-- 新建项目引用当前项目进行组件开发，并在`wikidata_filter`模块下添加引用（比如添加`wikidata_filter.addon`引入相关组件）。需要注意避免组件的循环引用。 
-
-2. 【计划中】基于组件的方式
-新建项目引用当前项目进行组件开发，在新项目中启动，需要在框架中注册组件
-【计划中】下一步实现项目打包、安装包上传仓库。
-
-
-## New！
-- 2024.12.19
-1. 新增多个有用的转换算子 `MapMulti` `MapUtil` `MapFill`，均继承自`Map`
-2. `WriteText` `WriteJson`支持gzip压缩，减小文件大小、提高写文件效率
-3. 框架监听SIGINT信号，在完成一条数据的完整处理后再结束程序
-4. 新增获取数据库表信息的Loader `database.meta.DBTables(loader)` 基于已有的数据库Loader（如`database.mysql.MySQL`）获取表信息
-5. 修改`database.mysql.MySQL`支持游标读取，从而支持大规模数据库表的数据读取
-6. 修改`database.rdb_base.RDBBase`，对于不带limit的查询，使用游标方式读取数据，以支持超大规模数据表读取（对于小表，使用`fetchall`方式，其效率待测试对比）
-
-- 2024.11.30
-1. 新增EML文件加载器 `eml.EML(input_file, tmp_dir=None, save_attachment=True)`提取邮件主题、发件人、收件人、抄送、密送、时间、其他邮件头、正文、附件
-2. 新增pptx文件加载器 `ppt.PPTX(input_file, max_pages=0)` 基于python-pptx读取pptx文件，ppt则先通过libreoffice转换为pptx，每个段落（文本框）作为一条数据
-
-- 2024.11.28
-1. 新增PDF文件加载器 `pdf.PDF(input_file, max_pages=0)` 基于PDFMiner读取PDF文件，每页文本作为一条数据
-2. 新增Word doc/docx文件加载器 `docx.Doc(input_file)` `docx.Docx(input_file)` 基于python-docx读取docx文件，doc则先通过libreoffice转换为docx，每个段落、表格作为一条数据
-3. 新增Parquet文件加载器 `parquet.Parquet(input_file)` 基于pyarrow读取parquet文件，每行作为一条数据
-4. 对应增加三个示例流程：[pdf文件加载](flows/file_pdf.yaml) [docx文件加载](flows/file_docx.yaml) [parquet文件加载](flows/file_parquet.yaml)
-
+## 应用场景
+本项目具有众多数据处理分析应用场景：
+- 数据结构转换
+- 数据库备份、同步
+- 数据采集（如GDELT数据）
+- 数据解析与NLP处理
+- 索引构建，包括全文索引、向量索引
+- 知识图谱构建
+- Web API功能/数据集成
+- 服务监测
+- 离线数据分析
+- ...
 
 ## 项目特色
 1. 通过**yaml**格式定义流程，上手容易
@@ -57,7 +37,31 @@
    - 文档文件读取 [pdf](flows/file_pdf.yaml) [docx](flows/file_docx.yaml) [eml](flows/file_eml.yaml)
    - [ReaderAPI](flows/test_readerapi.yaml)
    - [大模型处理](flows/llm_simple.yaml)
+   - [科情-技术评估预测](flows/technology_score.yaml)
    - more...
+
+## New！
+- 2024.12.19
+1. 新增多个有用的转换算子 `MapMulti` `MapUtil` `MapFill`，均继承自`Map`
+2. `WriteText` `WriteJson`支持gzip压缩，减小文件大小、提高写文件效率
+3. 框架监听SIGINT信号，在完成一条数据的完整处理后再结束程序
+4. 新增获取数据库表信息的Loader `database.meta.DBTables(loader)` 基于已有的数据库Loader（如`database.mysql.MySQL`）获取表信息
+5. 修改`database.mysql.MySQL`支持游标读取，从而支持大规模数据库表的数据读取
+6. 修改`database.rdb_base.RDBBase`，对于不带limit的查询，使用游标方式读取数据，以支持超大规模数据表读取（对于小表，使用`fetchall`方式，其效率待测试对比）
+
+- 2024.12.18
+1. 面向LD项目新增算子及流程，[查看](flows/technology_score.yaml) 
+2. 通过`landinn.node.Nodes`自定义加载模块加载器，实现数据灵活转换
+
+- 2024.11.30
+1. 新增EML文件加载器 `eml.EML(input_file, tmp_dir=None, save_attachment=True)`提取邮件主题、发件人、收件人、抄送、密送、时间、其他邮件头、正文、附件
+2. 新增pptx文件加载器 `ppt.PPTX(input_file, max_pages=0)` 基于python-pptx读取pptx文件，ppt则先通过libreoffice转换为pptx，每个段落（文本框）作为一条数据
+
+- 2024.11.28
+1. 新增PDF文件加载器 `pdf.PDF(input_file, max_pages=0)` 基于PDFMiner读取PDF文件，每页文本作为一条数据
+2. 新增Word doc/docx文件加载器 `docx.Doc(input_file)` `docx.Docx(input_file)` 基于python-docx读取docx文件，doc则先通过libreoffice转换为docx，每个段落、表格作为一条数据
+3. 新增Parquet文件加载器 `parquet.Parquet(input_file)` 基于pyarrow读取parquet文件，每行作为一条数据
+4. 对应增加三个示例流程：[pdf文件加载](flows/file_pdf.yaml) [docx文件加载](flows/file_docx.yaml) [parquet文件加载](flows/file_parquet.yaml)
 
 
 ## 核心概念
@@ -156,22 +160,22 @@ processor: Fork(chain_entity, chain_property)
  python main_flow.py <flow-file-path>
 ```
 
-## 应用场景
-本项目具有众多数据处理分析应用场景：
-- 数据结构转换
-- 数据库备份、同步
-- 数据采集（如GDELT数据）
-- 数据解析与NLP处理
-- 索引构建，包括全文索引、向量索引
-- 知识图谱构建
-- Web API功能/数据集成
-- 服务监测
-- 离线数据分析
-- ...
-
 可以在[这里](flows)找到很多开箱即用的流程。
 
+关于wikidata知识图谱的介绍，可以参考作者的一篇博客文章 https://blog.csdn.net/weixin_40338859/article/details/120571090
 
+
+**项目扩展模式**： 
+1. 基于源码的扩展： 
+- 直接在本项目中修改已有实现或更加更多实现，可在`wikidata_filter`模块下进行 
+- 在本项目顶层（与`wikidata_filter`模块并行）添加更多模块 
+- 新建项目引用当前项目进行组件开发，并在`wikidata_filter`模块下添加引用（比如添加`wikidata_filter.addon`引入相关组件）。需要注意避免组件的循环引用。 
+
+2. 【计划中】基于组件的方式
+新建项目引用当前项目进行组件开发，在新项目中启动，需要在框架中注册组件
+【计划中】下一步实现项目打包、安装包上传仓库。
+
+   
 ## 使用者文档 User Guide
 
 YAML Flow [Flow 格式说明](docs/yaml-flow.md)

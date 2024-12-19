@@ -1,0 +1,47 @@
+name: LD项目技术评估，包括颠覆性指数、热度指数、新兴指数，对技术进行预测分析
+description: 从MySQL中读取词，进行4个指数计算
+arguments: 0
+consts:
+  mysql:
+    host: rds-inner.mysql.zhangbei.rds.aliyuncs.com
+    user: xxxxxx
+    password: xxxxxx
+    database: landinn_technology_prejudge
+  table: lanting_words_20241023
+  select: golaxy_vocab_id, golaxy_node_id, name_zh, name_en, tech_domain
+  where: "created_time > '2024-12-16'"
+  result_table1: technology_predict_20241023
+  result_table2: disruptive_score_word_new_20241022
+  result_table3: technology_hot_degree_20241023
+  result_table4: technology_emerging_degree_20241023
+
+loader: database.mysql.MySQL(**mysql, table=table, select=select, where=where)
+
+nodes:
+  print: Print
+  count: Count
+  buffer: Buffer(buffer_size=1000)
+  flat: Flat
+
+  rm: RemoveFields('golaxy_node_id', 'tech_domain')
+  rename: RenameFields(golaxy_vocab_id='tech_id', name_zh='tech_name_ch', name_en='tech_name_en')
+
+#  tech_predict: landinn.node.Node('tech_prediction', target_key='predict')
+#  select1: Select('golaxy_vocab_id', 'name_zh', 'name_en', 'predict.year', 'predict.historical_value', 'predict.predicted_value', 'predict.current_trends', 'predict.predicted_trends', 'predict.flag', short_key=True)
+#  rename1: RenameFields(golaxy_vocab_id='tech_id', name_zh='tech_name_ch', name_en='tech_name_en')
+#  write1: database.mysql.MySQL(**mysql, table=result_table1)
+#  chain: Chain(tech_predict, select1, rename1, print, write1, count)
+
+#  disruptive_score: landinn.node.Node('disruptive_score', target_key='node_score')
+#  write2: database.mysql.MySQL(**mysql, table=result_table2)
+#  chain: Chain(disruptive_score, write2, count)
+
+#  hot_score: landinn.node.Nodes('hot_score', target_key='hot_degree')
+#  write3: database.mysql.MySQL(**mysql, table=result_table3, mode='replace')
+#  chain: Chain(buffer, hot_score, flat, rm, rename, write3, count)
+
+  emerging_score: landinn.node.Nodes('emerging_score', target_key='emerging_degree')
+  write4: database.mysql.MySQL(**mysql, table=result_table4, mode='replace')
+  chain: Chain(buffer, emerging_score, flat, rm, rename, write4, count)
+
+processor: chain
