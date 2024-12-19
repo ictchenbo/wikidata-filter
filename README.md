@@ -1,11 +1,11 @@
 ![logo](docs/logo.png)
 
-一个简单实用、灵活可配、开箱即用的Python数据处理（ETL）框架，提供**Wikidata** / **Wikipedia** / **GDELT**等多种开源情报数据的处理流程；
+SmartETL：一个简单实用、灵活可配、开箱即用的Python数据处理（ETL）框架，提供**Wikidata** / **Wikipedia** / **GDELT**等多种开源情报数据的处理流程；
 支持**大模型**、**API**、常见文件、数据库等多种输入输出及转换处理，支撑各类数据集成接入、大数据处理、离线分析计算、AI智能分析、知识图谱构建等任务。
 
 项目持续丰富中，欢迎反馈各类数据处理需求，持续丰富Data Intelligence
 
-![系统使用](docs/img.png)
+![系统使用](docs/main.png)
 
 ## 应用场景
 本项目具有众多数据处理分析应用场景：
