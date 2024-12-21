@@ -29,5 +29,7 @@ nodes:
 ```
 这里定义了两个节点：id_set和matcher，其中id_set为基于文件构造的集合，matcher定义为一个lamda函数
 
+支持`nodes`中定义加载器组件，但是规定组件名字必须以“loader”开头，比如“loader1”
+
 ### 运行参数
 通过`arguments` 指定流程需要几个运行参数，在组件中分别用 `arg1` `arg2` ... 引用

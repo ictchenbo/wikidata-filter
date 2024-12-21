@@ -3,7 +3,7 @@
 SmartETL：一个简单实用、灵活可配、开箱即用的Python数据处理（ETL）框架，提供**Wikidata** / **Wikipedia** / **GDELT**等多种开源情报数据的处理流程；
 支持**大模型**、**API**、常见文件、数据库等多种输入输出及转换处理，支撑各类数据集成接入、大数据处理、离线分析计算、AI智能分析、知识图谱构建等任务。
 
-项目内置150+常用ETL算子，覆盖常见数据处理需求，快来尝试一下吧~~~
+项目内置40+常用流程、150+常用ETL算子、10+领域特色数据处理流程，覆盖常见数据处理需求，快来尝试一下吧~~~
 
 ![系统使用](docs/main.png)
 
@@ -21,24 +21,46 @@ SmartETL：一个简单实用、灵活可配、开箱即用的Python数据处理
 - ...
 
 ## 项目特色
-1. 通过**yaml**格式定义流程，上手容易
+1. 通过**yaml**配置文件定义流程，可快速使用，无须代码调试； 支持基于Python进行自定义函数
 2. 内置150+常用ETL算子，配置简单，包括大模型处理、数据库读写、API访问、文件读写等多种类型
-3. 内置特色数据资源处理流程，开箱即用：
-   - [wikipedia 维基百科页面处理](wikipedia_page.py) [建立索引](flows/index_wikipedia.yaml) [ES索引配置](config/es-mappings/enwiki.json)
+3. 内置40+各类数据处理任务，开箱即用，具体在[这里](flows)查看
+4. 内置10+特色数据资源集成处理，所见即所得：
+   - [wikipedia 维基百科页面处理](main_wikipedia.py) [建立索引](flows/index_wikipedia.yaml) [ES索引配置](config/es-mappings/enwiki.json)
    - [wikidata 维基数据](flows/p1_wikidata_graph.yaml)
    - [GDELT 谷歌全球社会事件数据库 （流式，直接下载）](flows/gdelt.yaml)
    - [GTD 全球恐怖主义事件库](flows/gtd_local.yaml)
    - [民调数据（经济学人美国大选专题）](flows/polls.yaml)
    - [预测市场数据](flows/futures.yaml)
-   - [OpenSanctions全球制裁实体名单或涉政治、犯罪与经济重点人物、公司](flows/opensanctions_peps.yaml) [测试数据](test_data/opensanctions-entities.ftm.json)
+   - [OpenSanctions全球制裁实体名单或涉政治、犯罪与经济重点人物、公司](flows/opensanctions_peps.yaml) [样例数据](test_data/opensanctions-entities.ftm.json)
    - [联合国教科文组织项目数据](flows/unesco-projects.yaml)
    - [FourSqure全球POI数据](flows/file_parquet.yaml)
    - [新闻文本解析&向量化索引](flows/news_process.yaml)
-   - 文档文件读取 [pdf](flows/file_pdf.yaml) [docx](flows/file_docx.yaml) [eml](flows/file_eml.yaml)
-   - [ReaderAPI](flows/test_readerapi.yaml)
+   - [ReaderAPI](flows/webpage_readerapi.yaml)
    - [大模型处理](flows/llm_simple.yaml)
    - [科情-技术评估预测](flows/technology_score.yaml)
    - more...
+5. 支持常见文档文件/数据文件格式读取
+   - txt
+   - csv
+   - html
+   - [pdf](flows/file_pdf.yaml) 
+   - [docx](flows/file_docx.yaml)(doc, docx)
+   - [eml](flows/file_eml.yaml)
+   - Excel(xls, xlsx)
+   - PPT(ppt, pptx)
+   - PST
+   - OST
+   - OMG
+   - [json](flows/file_json.yaml)(支持json json-line, json-array, json-free多种格式)
+   - [parquet](flows/file_parquet.yaml)
+6. 支持常见数据库读取和写入，覆盖常见OLTP和OLAP场景
+   - MySQL
+   - PostgreSQL
+   - ClickHouse（列存数据库）
+   - MongoDB（文档数据库）
+   - ElasticSearch（全文索引）
+   - Qdrant（向量数据库）
+7. 提供大模型主要处理，支持访问OpenAI兼容接口进行生成、文本向量化
 
 ## New！
 - 2024.12.21
@@ -46,10 +68,9 @@ SmartETL：一个简单实用、灵活可配、开箱即用的Python数据处理
 2. 支持命令行定义流程
 
 ## 核心概念
-- Flow: 处理流程，实现数据载入（或生成）、处理、输出的过程
-- Loader：数据加载节点（对应flume的`source`） 
-- Iterator：数据处理节点，用于表示各种各样的处理逻辑，包括数据输出与写入数据库（对应flume的`sink`）  
-- Matcher：数据匹配节点，是一类特殊的`JsonIterator`，可作为函数调用
+- Flow: 处理流程，实现数据载入（或生成）、处理、输出的过程，通过`yaml`文件定义
+- Provider/Loader：数据加载节点（对应flume的`source`） 
+- Processor/Iterator：数据处理节点，用于表示各种各样的处理逻辑，包括数据输出与写入数据库（对应flume的`sink`）
 - Engine：按照Flow的定义进行执行。简单Engine只支持单线程执行。高级Engine支持并发执行，并发机制通用有多线程、多进程等
 
 ## 快速使用
@@ -64,6 +85,8 @@ SmartETL：一个简单实用、灵活可配、开箱即用的Python数据处理
 ```
 
 3. 流程定义
+
+Tips：可先查看已有流程，看是否有相关任务的，尽量基于已有流程修改。
 
 - 示例1：加载联合国教科文组织的项目清单CSV文件，按受益国家分组，统计项目数量、总预算、总支出 [查看详情](flows/unesco-projects-aggs.yaml) [流程对比](flows/unesco-projects.yaml)
 
@@ -89,10 +112,10 @@ arguments: 1
 loader: WikidataJsonDump(arg1)
 
 nodes:
-  n1: IDNameMap
+  n1: wikidata.IDNameMap
   n2: WriteJson('data/id-name.json')
-  n3: Simplify
-  n4: SimplifyProps
+  n3: wikidata.Simplify
+  n4: wikidata.SimplifyProps
   n5: WriteJson('test_data/p1.json')
   chain1: Chain(n1, n2)
   chain2: Chain(n3, n4, n5)
@@ -116,16 +139,16 @@ nodes:
 
   rm_type: RemoveFields('_type')
 
-  entity: wikidata_graph.Entity
-  filter_item: "Filter(lambda p: p['_type']=='item')"
-  filter_property: "Filter(lambda p: p['_type']=='property')"
+  entity: wikidata.Entity
+  filter_item: matcher.SimpleMatch(_type='item')
+  filter_property: matcher.SimpleMatch(_type='property')
   chain1: Chain(filter_item, rm_type, writer1)
   chain2: Chain(filter_property, rm_type, writer2)
   group1: Fork(chain1, chain2)
 
   property: wikidata_graph.ItemProperty
-  filter_item_property: "Filter(lambda p: p['_type']=='item_property')"
-  filter_property_property: "Filter(lambda p: p['_type']=='property_property')"
+  filter_item_property: matcher.SimpleMatch(_type='item_property')
+  filter_property_property: matcher.SimpleMatch(_type='property_property')
   chain3: Chain(filter_item_property, rm_type, writer3)
   chain4: Chain(filter_property_property, rm_type, writer4)
   group2: Fork(chain3, chain4)
@@ -170,8 +193,6 @@ YAML Flow [Flow 格式说明](docs/yaml-flow.md)
 数据加载器 [Loader 说明文档](docs/loader.md)
 
 处理节点（过滤、转换、输出等） [Iterator 说明文档](docs/iterator.md)
-
-辅助函数 [util 说明文档](docs/util.md)
 
 
 ## 开发者文档 Developer Guide
@@ -262,7 +283,7 @@ Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 
 - 2024.10.27
 1. 修改`main_flow` 支持参数设置，详细查看帮助：`python main_flow.py -h` 支持通过命令行提供loader数据
-2. 增加两个简单的loader组件：`ArrayProvider(arr)`、`TextProvider(txt, sep='\n')` 可参考[简单流程](flows/test_simple.yaml)
+2. 增加两个简单的loader组件：`ArrayProvider(arr)`、`TextProvider(txt, sep='\n')` 可参考[简单流程](flows/use_envs.yaml)
 3. 简化各流程文件的参数设置 方便快速使用
 
 - 2024.10.26
@@ -307,4 +328,4 @@ Flow流程配置设计[可配置流程设计](docs/yaml-flow-design.md)
 - 2024.09.30
 1. 集成Reader API（`wikidata_filter.iterator.web.readerapi` 详见 https://jina.ai/reader/)
 2. 增减文本文件加载器 TxtLoader（详见 `wikidata_filter.loader.file.TxtLoader`）
-3. 新增Reader API的流程 [查看](flows/test_readerapi.yaml) 加载url列表文件 实现网页内容获取
+3. 新增Reader API的流程 [查看](flows/webpage_readerapi.yaml) 加载url列表文件 实现网页内容获取

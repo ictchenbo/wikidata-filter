@@ -9,8 +9,6 @@
 1. 抽象基类 `JsonIterator` 定义了数据处理的接口
 ```python
 class JsonIterator:
-    return_multiple: bool = False
-    
     def on_start(self):
         pass
 
@@ -41,8 +39,8 @@ class JsonIterator:
 3. 过滤 `Filter(matcher)` 参数：过滤函数/Matcher对象 可参考[Matcher](#matcher)
 
 ### Matcher（也是Filter）
-1. 简单JSON匹配 `matcher.SimpleJsonMatcher(**match_rules)`
-2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatcher(pattern)`
+1. 简单JSON匹配 `matcher.SimpleJsonMatch(**match_rules)`
+2. 基于`jsonpath`语法规则的匹配 `matcher.JsonPathMatch(pattern)`
 
 ### 修改转换
 1. 投影操作 `Select(*keys)` 支持嵌套字段 如`user.name`
@@ -114,13 +112,13 @@ class JsonIterator:
 
 
 ### Wikidata知识图谱处理
-模块：`wikidata_filter.iterator.wikidata_graph`
+模块：`wikidata_filter.iterator.wikidata`
 
-1. 生成Item和Property摘要 `wikidata_graph.Entity`
-2. 生成实体Item：`wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='item')`
-3. 生成属性Property：`wikidata_graph.Entity` -> `Filter(lambda p: p['_type']=='property')`
-4. 提取实体属性：`wikidata_graph.ItemProperty` （结果根据`_type`区分为：item_property property_property）
-
+1. 生成Item和Property摘要 `wikidata.Entity`
+2. 生成实体Item：`wikidata.Entity` -> `Filter(lambda p: p['_type']=='item')`
+3. 生成属性Property：`wikidata.Entity` -> `Filter(lambda p: p['_type']=='property')`
+4. 提取实体属性：`wikidata.Property` （结果根据`_type`区分为：item_property property_property）
+5. 生成实体关系：`wikidata.Relation`
 
 ### GDELT数据处理
 模块：`wikidata_filter.iterator.web.gdelt`
@@ -142,11 +140,11 @@ class JsonIterator:
 
 ### 自然语言处理
 模块：`wikidata_filter.iterator.nlp`
-1. 标签分割 `nlp.tags.Splitter(*keys)` 对指定字段进行分割处理，转换为标签数组
+1. 标签分割 `nlp.splitter.TagSplit(*keys)` 对指定字段进行分割处理，转换为标签数组
 2. 文本分段（chunk化） `nlp.splitter.TextSplit(key, target_key, algorithm='simple')` 实现文本chunk化，便于建立向量化索引。
 
 
 ### OpenAPI格式转换
 模块：`wikidata_filter.iterator.web.openapi`
-1. 解析OpenAPI `iterator.web.openapi.FromOpenAPI`
-2. 生成OpenAPI `iterator.web.openapi.ToOpenAPI`
+1. 解析OpenAPI `web.openapi.FromOpenAPI`
+2. 生成OpenAPI `web.openapi.ToOpenAPI`
