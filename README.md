@@ -146,7 +146,7 @@ nodes:
   chain2: Chain(filter_property, rm_type, writer2)
   group1: Fork(chain1, chain2)
 
-  property: wikidata_graph.ItemProperty
+  property: wikidata.Property
   filter_item_property: matcher.SimpleMatch(_type='item_property')
   filter_property_property: matcher.SimpleMatch(_type='property_property')
   chain3: Chain(filter_item_property, rm_type, writer3)
