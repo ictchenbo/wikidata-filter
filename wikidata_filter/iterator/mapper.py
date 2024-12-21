@@ -1,5 +1,6 @@
 from typing import Any
-
+from wikidata_filter.util.mod_util import load_cls
+from wikidata_filter.util.jsons import parse_rules, parse_field
 from wikidata_filter.iterator.base import JsonIterator, DictProcessorBase
 
 
@@ -9,15 +10,25 @@ class Map(JsonIterator):
     - key确定转换的输入：如果提供了key，则针对输入dict的该字段值作为转换输入，否则将整个输入作为转换输入。如果与数据有冲突，则直接返回输入数据。
     - target_key确定转换的输出：如果提供了target_key，且输入为dict，则将转换结果设置为输入data的属性，否则，直接直接返回转换结果。
     """
-    def __init__(self, mapper, *args, key: str = None, target_key: str = None, **kwargs):
+    def __init__(self, mapper, *args, key: str = None, **kwargs):
+        """
+        :param mapper 转换函数（对象）
+        :param key 指定输入数据的字段 如果为None表示整个输入数据
+        :param kwargs 命名参数。注意：如果指定了target_key，则使用它，默认target_key与key相同。target_key指定输出的字段，如果为None直接输出mapper结果；否额设置为target_key字段值
+        """
         super().__init__()
-        self.key = key
         self.mapper = mapper
-        self.target_key = target_key or key
+        self.key = key
+        if 'target_key' in kwargs:
+            self.target_key = kwargs.pop('target_key')
+        else:
+            self.target_key = key
+        # 保存其他位置参数和命名参数
         self.args = args
         self.kwargs = kwargs
 
     def on_data(self, data: Any, *args):
+        # print('on_data', data)
         val = data
         if self.key:
             if isinstance(data, dict):
@@ -29,12 +40,12 @@ class Map(JsonIterator):
             else:
                 print("Warning, data is not dict:", data)
                 return data
-
+        # 直接传递构造器中的其他位置参数和命名参数
         res_val = self.mapper(val, *self.args, **self.kwargs)
 
         if self.target_key:
             if not isinstance(data, dict):
-                print("Warning, data is not dict, cant set property")
+                print("Warning, data is not dict, can't set property")
                 return res_val
 
             data[self.target_key] = res_val
@@ -62,7 +73,7 @@ class MapMulti(DictProcessorBase):
             if key not in self.keys:
                 self.keys[key] = key
 
-    def on_data(self, data: Any, *args):
+    def on_data(self, data: dict, *args):
         for k, v in self.keys.items():
             if k not in data:
                 continue
@@ -72,6 +83,70 @@ class MapMulti(DictProcessorBase):
 
     def __str__(self):
         return f"{self.name}({self.mapper}, **{self.keys})"
+
+
+class MapUtil(Map):
+    """根据指定的对象名加载对象 用于对数据进行转换"""
+    def __init__(self, mod_name: str, *args, **kwargs):
+        """构造器，可接收位置位置参数和命名参数
+        :param mod_name 模块名字，完整名或短名
+        """
+        super().__init__(self, *args, **kwargs)
+        if '.' not in mod_name:
+            mod_name = f'wikidata_filter.util.{mod_name}'
+        self.mod = load_cls(mod_name)[0]
+
+    def __call__(self, val, *args, **kwargs):
+        return self.mod(val, *args, **kwargs)
+
+
+class MapFill(Map):
+    """缓存查找填充，与InjectField效果相同，但仅支持简单字段名"""
+    def __init__(self, cache: dict, target_key: str, source_key: str = None):
+        super().__init__(self, key=source_key or target_key, target_key=target_key)
+        assert cache, "cache should not be empty"
+        assert target_key, "target_key should not be empty"
+        self.cache = cache
+
+    def __call__(self, val, **kwargs):
+        if val in self.cache:
+            return self.cache[val]
+        return val
+
+
+class MapRules(DictProcessorBase):
+    """
+    基于规则的数据转换 规则定义：
+        - "f1:123,f2:@t1,..."
+        - ["f1:123", "f2:@t1", ... ]
+        - {"f1": 123, "f2": "@t1", ... ]
+    其中 "@t1" 表示引用原始数据t1字段 其他情况则为字面值
+    """
+    def __init__(self, rules: list or str):
+        if isinstance(rules, str):
+            self.rule_map = parse_rules(rules.split(","))
+        elif isinstance(rules, list):
+            self.rule_map = parse_rules(rules)
+        elif isinstance(rules, dict):
+            self.rule_map = {}
+            for target, s in rules.items():
+                self.rule_map[target] = parse_field(s)
+
+    def on_data(self, data: dict, *args):
+        ret = {}
+        for t, sFun in self.rule_map.items():
+            res = sFun(data)
+            if res is not None:
+                ret[t] = res
+        return ret
+
+
+class MapKV(DictProcessorBase):
+    """
+    对调字典的字段名和字段值
+    """
+    def on_data(self, data: dict, *args):
+        return {v: k for k, v in data.items()}
 
 
 class Flat(JsonIterator):
@@ -180,31 +255,3 @@ class FlatProperty(Flat):
 
     def __str__(self):
         return f"{self.name}(keys={self.keys}, inherit_props={self.inherit_props})"
-
-
-class MapUtil(Map):
-    """根据指定的对象名加载对象 用于对数据进行转换"""
-    def __init__(self, mod_name: str, *args, **kwargs):
-        super().__init__(self, *args, **kwargs)
-        if '.' not in mod_name:
-            mod_name = f'wikidata_filter.util.{mod_name}'
-        from wikidata_filter.util.mod_util import load_cls
-        self.mod = load_cls(mod_name)[0]
-
-    def __call__(self, val, *args, **kwargs):
-        # print(val)
-        return self.mod(val, *args, **kwargs)
-
-
-class MapFill(Map):
-    """缓存查找填充，与InjectField效果相同，但仅支持简单字段名"""
-    def __init__(self, cache: dict, target_key: str, source_key: str = None):
-        super().__init__(self, key=source_key or target_key, target_key=target_key)
-        assert cache, "cache should not be empty"
-        assert target_key, "target_key should not be empty"
-        self.cache = cache
-
-    def __call__(self, val, **kwargs):
-        if val in self.cache:
-            return self.cache[val]
-        return val

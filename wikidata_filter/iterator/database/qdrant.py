@@ -4,7 +4,12 @@ from wikidata_filter.iterator.aggregation import BufferedWriter
 
 
 class Qdrant(BufferedWriter):
-    def __init__(self, host: str = 'localhost', port: int = 6333, api_key=None, collection: str = "chunks", buffer_size: int = 100, vector_field='vector'):
+    def __init__(self, host: str = 'localhost',
+                 port: int = 6333,
+                 api_key=None,
+                 collection: str = "chunks",
+                 buffer_size: int = 100,
+                 vector_field='vector'):
         super().__init__(buffer_size)
         self.api_base = f'http://{host}:{port}'
         self.api_key = api_key

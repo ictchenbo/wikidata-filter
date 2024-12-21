@@ -7,7 +7,12 @@ class WriteText(BufferedWriter):
     """带缓冲的文本文件写，通常换行分隔。由于文件IO自带缓冲，通常不需要这么做，但可以支持更好的写入性能"""
     writer = None
 
-    def __init__(self, output_file: str, append: bool = False, encoding: str = "utf8", buffer_size: int = 1000, sep: str = '\n', mode=None):
+    def __init__(self, output_file: str,
+                 append: bool = False,
+                 encoding: str = "utf8",
+                 buffer_size: int = 1000,
+                 sep: str = '\n',
+                 mode=None):
         """
         :param output_file 输出文件
         :param append 是否追加模式(a) 默认为否(w)

@@ -1,6 +1,6 @@
 from wikidata_filter.loader.base import DataProvider
 
-from wikidata_filter.util.web_util import get_json
+from wikidata_filter.util.http import json
 
 
 class URLSimple(DataProvider):
@@ -9,7 +9,7 @@ class URLSimple(DataProvider):
         self.url = url
 
     def iter(self):
-        c = get_json(self.url)
+        c = json(self.url)
         yield c
 
     def __str__(self):

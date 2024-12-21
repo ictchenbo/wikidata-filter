@@ -7,7 +7,7 @@ from .aggregation import ReduceBase
 
 class Reduce(ReduceBase):
     """分组规约，根据提供的函数进行数据规约。注意，此类算子在Group(或其子类）处理之后"""
-    def __init__(self, func, source_key='values', target_key=None):
+    def __init__(self, func, source_key: str = 'values', target_key: str = None):
         """
         :param func (rows) -> res 规约函数
         :param source_key 指定输入字段名 默认为values（Group默认的结果数据）
@@ -53,7 +53,7 @@ class Count(Reduce):
 
 class Sum(Reduce):
     """group求和"""
-    def __init__(self, field: str, init=0):
+    def __init__(self, field: str, init: float or int = 0):
         super().__init__(self)
         assert field is not None, "field 不能为空"
         self.field = field

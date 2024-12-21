@@ -11,7 +11,7 @@ class LLM(JsonIterator):
     """
     def __init__(self,
                  api_base: str,
-                 field: str = None,
+                 key: str = None,
                  api_key: str = None,
                  proxy: str = None,
                  ignore_errors: bool = True,
@@ -24,7 +24,7 @@ class LLM(JsonIterator):
                  ):
         """
         :param api_base 服务地址，必须
-        :param field 输入的字段名，如果为None，表示整个输入作为大模型请求参数，否则，提取该字段的值
+        :param key 输入的字段名，如果为None，表示整个输入作为大模型请求参数，否则，提取该字段的值
         :param api_key API的Key
         :param proxy 调用代理，形式：http(s)://username:password@host:port
         :param ignore_errors 是否忽略错误 如果为False且调用发生错误则抛出异常，默认True
@@ -34,7 +34,9 @@ class LLM(JsonIterator):
         :param topk TopK参数
         :param topp TopP参数
         """
-        self.key = field
+        if key is None:
+            print("Warning: key is None, use the whole input as the parameter of LLM api call")
+        self.key = key
         self.api_base = api_base
         self.api_key = api_key
         self.prompt_template = prompt

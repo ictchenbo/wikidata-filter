@@ -6,7 +6,7 @@
 @dependencies pdfminer.six
 """
 from typing import Iterable, Any
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 
 try:
     import pdfminer
@@ -24,10 +24,10 @@ from pdfminer.converter import PDFPageAggregator
 
 class PDF(BinaryFile):
     """基于pdfminer读取pdf文件"""
-    def __init__(self, input_file, max_pages=0, min_length=10, **kwargs):
+    def __init__(self, input_file: str, max_pages: int = 0, min_length: int = 10, **kwargs):
         super().__init__(input_file)
         self.max_pages = max_pages
-        self.min_length = 10
+        self.min_length = min_length
 
     def iter(self) -> Iterable[Any]:
         parser = PDFParser(self.instream)

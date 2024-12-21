@@ -3,7 +3,14 @@ from wikidata_filter.util.database.mysql_ops import MySQLOps
 
 
 class MySQL(BufferedWriter):
-    def __init__(self, host='localhost', port=3306, user="root", password="", database=None, table=None, buffer_size=1000, mode="insert", **kwargs):
+    def __init__(self, host: str = 'localhost',
+                 port: int = 3306,
+                 user="root",
+                 password="",
+                 database=None,
+                 table=None,
+                 buffer_size= 1000,
+                 mode: str = "insert", **kwargs):
         super().__init__(buffer_size=buffer_size)
         self.table = table
         self.mysql_ops = MySQLOps(host=host, port=port, username=user, password=password, database=database)

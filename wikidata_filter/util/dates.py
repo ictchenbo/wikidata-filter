@@ -11,46 +11,45 @@ MONTH_DAYS = [
 YEAR_DAYS = [365, 366]
 
 
-def date(dt: str, fmt='%Y-%m-%d') -> int:
+def date2ts(dt: str, fmt='%Y-%m-%d', millis=False) -> int:
+    """字符串日期转时间戳"""
     time1 = datetime.strptime(dt, fmt)
     time2 = datetime.strptime("1970-01-01 00:00:00", fmt)
 
     diff = time1 - time2
+    if millis:
+        return diff.days * 24 * 3600000 + diff.seconds*1000 + diff.microseconds
     return diff.days * 24 * 3600 + diff.seconds  # 换算成秒数
 
 
-def date_ts(dt: str, fmt='%Y-%m-%d') -> int:
-    time1 = datetime.strptime(dt, fmt)
-    time2 = datetime.strptime("1970-01-01 00:00:00", fmt)
-
-    diff = time1 - time2
-    return diff.days * 24 * 3600000 + diff.seconds*1000 + diff.microseconds
-
-
-def ts2date(ts, fmt='%Y-%m-%d') -> str:
-    return time.strftime(fmt, time.localtime(ts))
-
-
 def ts2datetime(ts, fmt='%Y-%m-%d %H:%M:%S') -> str:
+    """时间戳转字符串日期"""
     if ts is not None:
         return time.strftime(fmt, time.localtime(ts))
     return ""
 
 
-def current() -> int:
+def current_ts(millis=False) -> int:
+    """当前时间时间戳"""
+    if millis:
+        return int(time.time()*1000)
     return int(time.time())
 
 
-def current_ts() -> int:
-    return int(time.time()*1000)
-
-
 def current_date(fmt='%Y-%m-%d') -> str:
-    return ts2date(current(), fmt=fmt)
+    """当前日期字符串"""
+    return ts2datetime(current_ts(), fmt=fmt)
 
 
 def current_time(fmt='%Y-%m-%d %H:%M:%S') -> str:
-    return ts2datetime(current(), fmt=fmt)
+    """当前时间字符串"""
+    return ts2datetime(current_ts(), fmt=fmt)
+
+
+def obj2ts(d: datetime, fmt='%Y-%m-%d %H:%M:%S', millis=False):
+    """日期对象转时间戳"""
+    dt_str = d.strftime(fmt)
+    return date2ts(dt_str, fmt, millis)
 
 
 def is_leap_year(year: int):
@@ -68,15 +67,15 @@ def expand_date_range(dt: str):
     parts = [p for p in parts if p]
     # print(parts)
     if len(parts) == 3:
-        ts = date('-'.join(parts))
+        ts = date2ts('-'.join(parts))
         return ts, ts + ONE_DAY
     if len(parts) == 2:
-        ts = date(f'{parts[0]}-{parts[1]}-01')
+        ts = date2ts(f'{parts[0]}-{parts[1]}-01')
         days = month_days(int(parts[0]), int(parts[1]))
         return ts, ts + ONE_DAY * days
     if len(parts) == 1:
         year = parts[0]
-        ts = date(f'{year}-01-01')
+        ts = date2ts(f'{year}-01-01')
         return ts, ts + ONE_DAY * YEAR_DAYS[is_leap_year(int(year))]
     raise Exception("Invalid date")
 
@@ -89,19 +88,3 @@ def fill_date(dt: str or list):
             return expand_date_range(dt[0])
         else:
             return expand_date_range(dt[0])[0], expand_date_range(dt[1])[1]
-
-
-def datetime_obj2ts(d: datetime, fmt='%Y-%m-%d %H:%M:%S'):
-    dt_str = d.strftime(fmt)
-    return date(dt_str, fmt)
-
-
-def datetime_obj2ts_millis(d: datetime, fmt='%Y-%m-%d %H:%M:%S'):
-    dt_str = d.strftime(fmt)
-    return date_ts(dt_str, fmt)
-
-
-if __name__ == "__main__":
-    # dt = datetime.now(cst_tz)
-    dt = datetime(1960, 1, 1, 0, 0, 0, 0)
-    print(datetime_obj2ts(dt))

@@ -1,6 +1,6 @@
 import json
 
-from wikidata_filter.loader.binary import FileLoader
+from wikidata_filter.loader.file import File
 from wikidata_filter.loader.text import Text
 
 
@@ -40,7 +40,7 @@ def to_dict(elem, target: dict):
             target[etag] = e.text
 
 
-class WikidataXmlIncr(FileLoader):
+class WikidataXmlIncr(File):
     """
     Wikidata增量数据，仅提供XML格式，<page></page>表示一个最近修改的实体，page/revision/text为对应的Json
     """

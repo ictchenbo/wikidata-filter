@@ -3,18 +3,17 @@ from wikidata_filter.loader.base import DataProvider
 
 class Mongo(DataProvider):
     def __init__(self,
-                 host='localhost',
-                 port=27017,
-                 username=None,
-                 password=None,
-                 auth_db='admin',
-                 database='default',
-                 sortby=None,
-                 collection=None,
+                 host: str = 'localhost',
+                 port: int = 27017,
+                 username: str = None,
+                 password: str = None,
+                 auth_db: str = 'admin',
+                 database: str = 'default',
+                 collection: str = None,
+                 sortby: str = None,
                  query: dict = None,
                  skip: int = 0,
-                 limit=None,
-                 **kwargs):
+                 limit=None, **kwargs):
         self.host = host
         self.port = port
         self.url = f'{host}:{port}/{database}/{collection}'

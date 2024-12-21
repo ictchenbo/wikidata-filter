@@ -6,7 +6,7 @@ consts:
     port: 27017
     database: gdelt
 
-loader: database.MongoLoader(**mongo1, collection=arg1)
+loader: database.Mongo(**mongo1, collection=arg1)
 
 nodes:
   print: Print

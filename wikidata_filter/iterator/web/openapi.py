@@ -6,7 +6,8 @@ import os
 import re
 from typing import Any
 
-from wikidata_filter.iterator import Flat, ReduceBase
+from wikidata_filter.iterator import Flat
+from wikidata_filter.iterator.aggs import ReduceBase
 from wikidata_filter.util.dates import current_ts
 
 

@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="SmartETL: a simple but strong ETL framework")
 
     # 添加位置参数
-    parser.add_argument("filename", type=str, default=None, help="yaml流程定义文件路径")
+    parser.add_argument("filename", type=str, default=None, help="yaml流程定义文件，或者流程名字")
 
     # 添加可选参数
     parser.add_argument("-i", "--input", type=str, default=None, help="直接提供流程输入数据")

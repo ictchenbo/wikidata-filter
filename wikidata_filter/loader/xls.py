@@ -10,6 +10,7 @@ except ImportError:
 
 
 class ExcelStream(DataProvider):
+    """Excel流式读取，适合大文件"""
     def __init__(self, input_file: str, sheets: list = None, with_header: bool = True):
         self.input_file = input_file
         self.sheets = sheets

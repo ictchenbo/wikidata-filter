@@ -1,6 +1,6 @@
 import os
 from typing import Iterable, Any
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 
 
 try:
@@ -12,7 +12,7 @@ except:
 
 class PPTX(BinaryFile):
     """基于python-pptx读取pptx文件"""
-    def __init__(self, input_file, max_pages=0, **kwargs):
+    def __init__(self, input_file: str, max_pages: int = 0, **kwargs):
         super().__init__(input_file, auto_open=False, **kwargs)
         self.max_pages = max_pages
 

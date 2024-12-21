@@ -5,10 +5,10 @@ arguments: 1
 loader: WikidataJsonDump(arg1)
 
 nodes:
-  n1: IDNameMap
+  n1: wikidata.IDNameMap
   n2: WriteJson('test_data/id-name.json')
-  n3: Simplify
-  n4: SimplifyProps
+  n3: wikidata.Simplify
+  n4: wikidata.SimplifyProps
   n5: WriteJson('test_data/p1.json')
   chain1: Chain(n1, n2)
   chain2: Chain(n3, n4, n5)

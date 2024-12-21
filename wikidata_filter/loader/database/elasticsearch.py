@@ -6,7 +6,13 @@ class ES(DataProvider):
     """
     读取ES指定索引全部数据，支持提供查询条件
     """
-    def __init__(self, host="localhost", port=9200, user=None, password=None, index=None, query: dict=None, batch_size=1000, **kwargs):
+    def __init__(self, host: str = "localhost",
+                 port: int = 9200,
+                 user: str = None,
+                 password: str = None,
+                 index: str = None,
+                 query: dict = None,
+                 batch_size: int = 1000, **kwargs):
         self.url = f"http://{host}:{port}"
         self.cache = []
         self.batch_size = batch_size

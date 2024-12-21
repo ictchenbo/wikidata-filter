@@ -10,7 +10,7 @@ consts:
     port: 27017
     database: gdelt
 
-loader: database.CKLoader(**click1, table='domain_bnn')
+loader: database.CK(**click1, table='domain_bnn')
 
 nodes:
   print: Print

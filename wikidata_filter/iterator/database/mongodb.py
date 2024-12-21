@@ -3,7 +3,15 @@ from wikidata_filter.iterator.aggregation import BufferedWriter
 
 
 class MongoWriter(BufferedWriter):
-    def __init__(self, host='localhost', port=27017, username=None, password=None, auth_db='admin', database='default', collection=None, buffer_size: int = 1000, mode="upsert", **kwargs):
+    def __init__(self, host='localhost',
+                 port=27017,
+                 username=None,
+                 password=None,
+                 auth_db='admin',
+                 database='default',
+                 collection=None,
+                 buffer_size: int = 1000,
+                 mode: str = "upsert", **kwargs):
         super().__init__(buffer_size)
         self.host = host
         self.port = port

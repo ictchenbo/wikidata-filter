@@ -4,7 +4,13 @@ from wikidata_filter.loader.base import DataProvider
 class RDBBase(DataProvider):
     conn = None
 
-    def __init__(self, database='default', table=None, select="*", where=None, limit=None, batch_size=1000, paging=True, **kwargs):
+    def __init__(self, database: str = 'default',
+                 table: str = None,
+                 select: str = "*",
+                 where: str = None,
+                 limit: str = None,
+                 batch_size: int = 1000,
+                 paging: bool = True, **kwargs):
         self.database = database
         self.table = table
         self.select = select

@@ -1,6 +1,6 @@
 import re
 
-from wikidata_filter.util.file_loader import open_file
+from wikidata_filter.util.files import open_file
 from wikidata_filter.iterator import JsonIterator
 
 

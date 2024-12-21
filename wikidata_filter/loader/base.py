@@ -23,7 +23,7 @@ class DataProvider:
         return f'{self.name}'
 
 
-class ArrayProvider(DataProvider):
+class Array(DataProvider):
     """基于数组提供数据"""
     def __init__(self, data: list):
         self.data = data
@@ -33,7 +33,7 @@ class ArrayProvider(DataProvider):
             yield item
 
 
-class TextProvider(DataProvider):
+class String(DataProvider):
     """基于文本提供数据 按照指定分隔符进行分割"""
     def __init__(self, text: str, sep: str = '\n'):
         self.data = text
@@ -82,7 +82,7 @@ class TimedLoader(DataProvider):
         return f"TimedPull[{self.that.name}, interval={self.interval}]"
 
 
-class FuncCallProvider(DataProvider):
+class Function(DataProvider):
     """函数调用包装器 提供调用函数的结果"""
     def __init__(self, function, *args, **kwargs):
         self.function = function

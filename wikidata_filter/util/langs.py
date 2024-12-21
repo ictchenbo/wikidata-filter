@@ -10,5 +10,5 @@ zh_escape = {
 }
 
 
-def zh_simple(s):
+def zh_simple(s: str):
     return ''.join([zh_escape[c] if c in zh_escape else zhconv.convert(c, 'zh-hans') for c in s])

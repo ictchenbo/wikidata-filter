@@ -8,6 +8,10 @@ except ImportError:
 
 
 class PG(RDBBase):
-    def __init__(self, host='localhost', port=9000, user="default", password="", database='default', **kwargs):
+    def __init__(self, host: str = 'localhost',
+                 port: int = 9000,
+                 user: str = "default",
+                 password: str = "",
+                 database: str = 'default', **kwargs):
         super().__init__(database=database, **kwargs)
         self.conn = psycopg2.connect(host=host, port=port, user=user, password=password, database=database)

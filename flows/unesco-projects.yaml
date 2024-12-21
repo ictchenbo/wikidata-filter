@@ -16,22 +16,27 @@ consts:
 loader: CSV('test_data/unesco-projects-20241113.csv')
 
 nodes:
+  print: Print
+  counter1: Count(label='project')
+  counter2: Count(label='country/district stat')
+  take: TakeN(1)
+
   as_int: "=lambda s: None if s=='-' else int(s.replace(',', ''))"
   as_count: "=lambda v: len(v)"
   as_sum: "=lambda v: sum([p.get('budget') or 0 for p in v])"
   as_sum2: "=lambda v: sum([p.get('cumulative_cost') or 0 for p in v])"
   rename1: RenameFields(**rename)
-  map1: Map(as_int, key='budget')
-  map2: Map(as_int, key='cumulative_cost')
-  print: Print
+  map1_1: Map(as_int, key='budget')
+  map1_2: Map(as_int, key='cumulative_cost')
+  map1: MapMulti(as_int, 'budget', 'cumulative_cost')
   writer1: WriteJson('test_data/unesco-projects.json')
-  counter1: Count(label='project')
   group: Group(by='beneficiary_country', emit_fast=False)
   count: Map(as_count, key='values', target_key='num_of_projects')
   total_budget: Map(as_sum, key='values', target_key='total_budget')
   total_cost: Map(as_sum2, key='values', target_key='total_cost')
   rm: RemoveFields('values')
   writer: WriteJson('test_data/unesco-projects-stat.json')
-  counter2: Count(label='country/district stat')
 
-processor: Chain(rename1, map1, map2,writer1, counter1, group, count, total_budget, total_cost, rm, writer, counter2)
+
+#processor: Chain(take, rename1, map1_1, map1_2, print)
+processor: Chain(rename1, map1, writer1, counter1, group, count, total_budget, total_cost, rm, writer, counter2)

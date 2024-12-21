@@ -6,7 +6,7 @@
 import re
 from typing import Iterable, Any
 
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 
 # try:
 #     import chardet
@@ -35,7 +35,7 @@ class HTML(BinaryFile):
             soup = BeautifulSoup(text, 'html.parser')
 
             title = soup.title.string
-            content = soup.body.get_text()
+            content = soup.body.text()
             if title:
                 search_index = re.search(title, content).span()
                 if search_index:

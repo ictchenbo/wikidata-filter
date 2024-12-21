@@ -3,29 +3,27 @@ description: 输入wikidata dump文件（gz/json）过滤出 组织机构、国�
 arguments: 1
 consts:
   country_types:
-    P31:
-      - Q6256
-      - Q7275
+    - Q6256
+    - Q7275
   weapon_types:
-    P31:
-      - Q18643213
-      - Q728
-      - Q7978115
-      - Q2031121
-      - Q17205
-      - Q1186981
-      - Q216916
+    - Q18643213
+    - Q728
+    - Q7978115
+    - Q2031121
+    - Q17205
+    - Q1186981
+    - Q216916
 loader: WikidataJsonDump(arg1)
 
 nodes:
-  types: util.SetFromCSV('config/org_type.txt')
-  matcher: matcher.WikidataMatcher(P31=types)
-  country_matcher: matcher.WikidataMatcher(country_types)
-  weapon_matcher: matcher.WikidataMatcher(weapon_types)
+  types: util.sets.from_csv('config/org_type.txt')
+  org_matcher: matcher.WikidataMatch(P31=types)
+  country_matcher: matcher.WikidataMatch(P31=country_types)
+  weapon_matcher: matcher.WikidataMatch(P31=weapon_types)
   writer1: WriteJson('test_data/p2_org.json')
   writer2: WriteJson('test_data/p2_country.json')
   writer3: WriteJson('test_data/p2_weapon.json')
-  chain1: Chain(matcher, writer1)
+  chain1: Chain(org_matcher, writer1)
   chain2: Chain(country_matcher, writer2)
   chain3: Chain(weapon_matcher, writer3)
 

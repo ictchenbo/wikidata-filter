@@ -49,3 +49,31 @@ def fill(target: dict, path: list or str, value):
             target = target[part] = {}
         target = target[part]
     target[path[-1]] = value
+
+
+def get_field_value(field):
+    def get_value(row):
+        return row.get(field)
+
+    return get_value
+
+
+def parse_field(field):
+    if isinstance(field, str) and field.startswith('@'):
+        return get_field_value(field[1:])
+    return lambda _: field
+
+
+def parse_rules(rules):
+    rule_map = {}
+    for rule in rules:
+        target = rule
+        source = None
+        if ":" in rule:
+            pos = rule.find(":")
+            target = rule[:pos]
+            source = rule[pos + 1]
+        source = source or ("@" + target)
+        rule_map[target] = parse_field(source)
+
+    return rule_map

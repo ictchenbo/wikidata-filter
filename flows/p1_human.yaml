@@ -3,16 +3,15 @@ description: 输入wikidata dump文件（gz/json）过滤出人物（Q5）条目
 arguments: 1
 
 consts:
-  types:
-    P31:
-      - Q5
+  human_types:
+    - Q5
 
 loader: WikidataJsonDump(arg1)
 
 nodes:
-  n1: IDNameMap
+  n1: wikidata.IDNameMap
   n2: WriteJson('test_data/id-name.json')
-  matcher: matcher.WikidataMatcherV1(types)
+  matcher: matcher.WikidataMatch(P31=human_types)
   writer: WriteJson('test_data/p2_human.json')
   chain1: Chain(n1, n2)
   chain2: Chain(matcher, writer)

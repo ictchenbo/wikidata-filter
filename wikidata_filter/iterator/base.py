@@ -43,7 +43,8 @@ class JsonIterator:
         if data is not None:
             if isinstance(data, Message):
                 if data.msg_type == 'end':
-                    print(f'{self.name} end')
+                    # print(f'{self.name} end')
+                    pass
                 else:
                     self.on_data(data.data)
             else:
@@ -83,11 +84,11 @@ class Multiple(JsonIterator):
     """多个节点组合"""
     nodes: List[JsonIterator] = []
 
-    def __init__(self, *args):
+    def __init__(self, *nodes):
         """
-        :param *args 处理算子
+        :param *nodes 处理算子
         """
-        self.nodes.extend(args)
+        self.nodes.extend(nodes)
 
     def add(self, iterator: JsonIterator):
         """添加节点"""
@@ -111,11 +112,11 @@ class Fork(Multiple):
     """
     分叉节点（并行逻辑），各处理节点独立运行。Fork节点本身不产生输出。
     """
-    def __init__(self, *args):
+    def __init__(self, *nodes):
         """
         :param *args 处理算子
         """
-        super().__init__(*args)
+        super().__init__(*nodes)
 
     def __process__(self, data: Any, *args):
         for it in self.nodes:
@@ -126,8 +127,8 @@ class Chain(Multiple):
     """
     链式组合节点（串行逻辑），前一个的输出作为后一个的输入。
     """
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self, *nodes):
+        super().__init__(*nodes)
 
     def walk(self, data: Any, break_when_empty: bool = True, end_msg: bool = False):
         queue = [data]
@@ -193,3 +194,14 @@ class Repeat(JsonIterator):
 
     def __str__(self):
         return f'{self.name}[num_of_repeats={self.num_of_repeats}]'
+
+
+class Function(JsonIterator):
+    """函数调用处理 输出调用函数的结果"""
+    def __init__(self, function, *args, **kwargs):
+        self.function = function
+        self.args = args
+        self.kwargs = kwargs
+
+    def on_data(self, data, *args):
+        return self.function(data, *args)

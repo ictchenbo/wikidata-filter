@@ -10,7 +10,7 @@ consts:
     host: <host2>
     tcp_port: 9000
 
-loader: database.CKLoader(**click1, table=arg1)
+loader: database.CK(**click1, table=arg1)
 
 nodes:
   print: Print

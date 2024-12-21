@@ -6,7 +6,7 @@ import copy
 import numpy as np
 from math import *
 
-from wikidata_filter.landinn.util import get_conn
+from landinn.util import get_conn
 
 
 class HotDegreeComputingEngine:
@@ -304,20 +304,20 @@ def hot_degree(list_tech_id, years_span=10):
     return list_dict_tech_id_to_hot_degree, list_time_slot
 
 
-def calc(rows: list, target_key: str, *args, **kwargs):
-    tech_ids = [row['golaxy_vocab_id'] for row in rows]
+def calc(rows: list, *, id_key: str = 'golaxy_vocab_id', result_key: str = 'hot_degree', **kwargs):
+    tech_ids = [row[id_key] for row in rows]
     res, years = hot_degree(tech_ids)
     paper, patent, news, project = res[0], res[1], res[2], res[3]
     ret = []
     for row in rows:
-        tech_id = row['golaxy_vocab_id']
+        tech_id = row[id_key]
         new_row = dict(row)
         for year, s1, s2, s3, s4 in zip(years, paper[tech_id], patent[tech_id], news[tech_id], project[tech_id]):
             new_row['year'] = year
-            new_row[f'{target_key}_paper'] = s1
-            new_row[f'{target_key}_patent'] = s2
-            new_row[f'{target_key}_news'] = s3
-            new_row[f'{target_key}_project'] = s4
+            new_row[f'{result_key}_paper'] = s1
+            new_row[f'{result_key}_patent'] = s2
+            new_row[f'{result_key}_news'] = s3
+            new_row[f'{result_key}_project'] = s4
 
             ret.append(new_row)
     return ret

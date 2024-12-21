@@ -2,12 +2,12 @@ import os
 import subprocess
 
 from typing import Iterable, Any
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 
 
 class PST(BinaryFile):
     """使用readpst将PST文件解压到临时文件夹 返回每封邮件"""
-    def __init__(self, input_file, tmp_dir: str = None, **kwargs):
+    def __init__(self, input_file: str, tmp_dir: str = None, **kwargs):
         super().__init__(input_file, auto_open=False)
         self.tmp_dir = tmp_dir or '.tmp'
         if not os.path.exists(tmp_dir):
@@ -29,7 +29,7 @@ class PST(BinaryFile):
 
 class OST(BinaryFile):
     """使用readpst将OST文件解压到临时文件夹 返回每封邮件"""
-    def __init__(self, input_file, tmp_dir: str = None, **kwargs):
+    def __init__(self, input_file: str, tmp_dir: str = None, **kwargs):
         super().__init__(input_file, auto_open=False)
         self.tmp_dir = tmp_dir or '.tmp'
         if not os.path.exists(tmp_dir):

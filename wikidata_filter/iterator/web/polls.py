@@ -1,3 +1,7 @@
+"""
+针对经济学人民调数据转换为GoIN的调查数据结构
+数据来源：https://cdn.economistdatateam.com/2024-us-tracker/harris/data/polls/polltracker-polls.csv
+"""
 import re
 from wikidata_filter.iterator.base import JsonIterator
 

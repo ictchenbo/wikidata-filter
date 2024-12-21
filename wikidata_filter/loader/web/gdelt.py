@@ -4,7 +4,7 @@ import os
 import json
 
 from wikidata_filter.loader.base import DataProvider
-from wikidata_filter.util.web_util import get_text
+from wikidata_filter.util.http import text
 
 
 base_url = 'http://data.gdeltproject.org/gdeltv2'
@@ -14,7 +14,7 @@ ZONE_DIFF = 8
 
 
 def get_page_parse(url):
-    content = get_text(url)
+    content = text(url)
     if content:
         for row in content.split('\n'):
             parts = row.split()
@@ -52,6 +52,7 @@ class GdeltLatest(DataProvider):
 
 
 class GdeltTaskEmit(DataProvider):
+    """每隔15分钟左右获取最新的GDELT事件列表，输出每一个事件"""
     ts_file = ".ts"
 
     def __init__(self, *dates):

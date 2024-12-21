@@ -4,8 +4,8 @@ from zipfile import ZipFile
 
 from wikidata_filter.base import relative_path
 from wikidata_filter.iterator.base import JsonIterator
-from wikidata_filter.util.web_util import get_file
-from wikidata_filter.util.file_loader import get_lines
+from wikidata_filter.util.http import content as get_content
+from wikidata_filter.util.files import get_lines
 
 config_base = "config/gdelt"
 
@@ -20,7 +20,7 @@ def write_file(url: str, content, save_path: str):
 
 def parse_csv(url: str, save_path: str = None):
     if url.startswith("http://") or url.startswith("https://"):
-        content = get_file(url)
+        content = get_content(url)
         if len(content) < 100:
             return
         if save_path:

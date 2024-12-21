@@ -6,7 +6,7 @@ import traceback
 import uuid
 
 from typing import Iterable, Any
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 from wikidata_filter.util.html import text_from_html
 
 import email
@@ -218,7 +218,7 @@ def __parse_header__(path):
 
 class EML(BinaryFile):
     """解析EML格式邮件 产生邮件正文"""
-    def __init__(self, input_file, tmp_dir: str = None, save_attachment=True, **kwargs):
+    def __init__(self, input_file: str, tmp_dir: str = None, save_attachment: bool = True, **kwargs):
         super().__init__(input_file, auto_open=False)
         self.tmp_dir = tmp_dir or '.tmp'
         self.save_attachment = save_attachment

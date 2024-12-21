@@ -10,7 +10,7 @@ from statsmodels.tsa.stattools import adfuller as ADF
 # from statsmodels.graphics.tsaplots import plot_acf, plot_pacf #ACF与PACF
 from statsmodels.tsa.arima.model import ARIMA #ARIMA模型
 
-from wikidata_filter.landinn.util import get_conn
+from landinn.util import get_conn
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -254,11 +254,13 @@ def technology_prediction(list_tech_id: list, years_span=10):
     return history_values, dict_tech_id_to_technology_prediction
 
 
-def calc(row: dict, *args, **kwargs):
-    tech_id = row['golaxy_vocab_id']
+def calc(row: dict, *, id_key: str = 'golaxy_vocab_id', result_key: str = 'predict', **kwargs):
+    tech_id = row[id_key]
     history_values, res = technology_prediction([tech_id])
     history_values = history_values[tech_id]
     year, predicted_value, current_trends, predicted_trends, flag = res[tech_id]
 
-    return dict(year=year, historical_value=history_values, predicted_value=predicted_value,
+    row[result_key] = dict(year=year, historical_value=history_values, predicted_value=predicted_value,
                 current_trends=current_trends, predicted_trends=predicted_trends, flag=flag)
+
+    return row

@@ -8,7 +8,6 @@ from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, wait
 
 from wikidata_filter.util.ds_util import *
-from wikidata_filter.util.log_util import log
 
 
 corenlu_task_map = {
@@ -207,7 +206,7 @@ def load(all_docs: list, parse_config):
         res = requests.post(url=choose_service(), json=params, timeout=timeout)
         if res.status_code == 200:
             result = res.json()['result']
-            log().info(result)
+            print(result)
             field_target = f"_corenlu_{field}"
             # 原始结果附加到 _corenlu_content 字段上
             for task, task_results in result.items():

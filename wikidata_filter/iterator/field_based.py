@@ -1,6 +1,5 @@
 import json
 from wikidata_filter.iterator.base import JsonIterator, DictProcessorBase
-from wikidata_filter.iterator.edit import Map
 from wikidata_filter.util.jsons import extract, fill
 
 
@@ -56,13 +55,13 @@ class RemoveFields(DictProcessorBase):
     """
     移除部分字段
     """
-    def __init__(self, *keys):
+    def __init__(self, key: str or list or tuple, *keys):
         super().__init__()
-        if keys:
-            if isinstance(keys[0], list) or isinstance(keys[0], tuple):
-                self.keys = keys[0]
-            else:
-                self.keys = keys
+        if isinstance(key, list) or isinstance(key, tuple):
+            self.keys = list(key)
+        else:
+            self.keys = [key]
+        self.keys.extend(keys)
 
     def on_data(self, data: dict, *args):
         return {k: v for k, v in data.items() if k not in self.keys}
@@ -92,8 +91,9 @@ class RemoveEmptyOrNullFields(JsonIterator):
 class DictEditBase(DictProcessorBase):
     templates: dict = {}
 
-    def __init__(self, tmp: dict):
-        self.templates = tmp
+    def __init__(self, tmp: dict = None, **kwargs):
+        self.templates = tmp or {}
+        self.templates.update(kwargs)
 
     def __str__(self):
         return f"{self.name}(**{self.templates})"
@@ -101,8 +101,8 @@ class DictEditBase(DictProcessorBase):
 
 class AddFields(DictEditBase):
     """添加字段 如果不存在"""
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
+    def __init__(self, tmp: dict = None, **kwargs):
+        super().__init__(tmp=tmp, **kwargs)
 
     def on_data(self, data: dict, *args):
         for k, v in self.templates.items():
@@ -113,8 +113,8 @@ class AddFields(DictEditBase):
 
 class RenameFields(DictEditBase):
     """对字段重命名"""
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
+    def __init__(self, tmp: dict = None, **kwargs):
+        super().__init__(tmp=tmp, **kwargs)
 
     def on_data(self, data: dict, *args):
         for s, t in self.templates.items():
@@ -125,8 +125,8 @@ class RenameFields(DictEditBase):
 
 class UpdateFields(DictEditBase):
     """更新字段，Upsert模式"""
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
+    def __init__(self, tmp: dict = None, **kwargs):
+        super().__init__(tmp=tmp, **kwargs)
 
     def on_data(self, data: dict, *args):
         for s, t in self.templates.items():
@@ -136,8 +136,8 @@ class UpdateFields(DictEditBase):
 
 class CopyFields(DictEditBase):
     """复制已有的字段 如果目标字段名存在 则覆盖"""
-    def __init__(self, **kwargs):
-        super().__init__(kwargs)
+    def __init__(self, tmp: dict = None, **kwargs):
+        super().__init__(tmp=tmp, **kwargs)
 
     def on_data(self, data: dict, *args):
         for s, t in self.templates.items():
@@ -178,32 +178,51 @@ class ConcatFields(DictProcessorBase):
         return data
 
 
-class FieldJson(Map):
+class FromJson(DictProcessorBase):
     """对指定的字符串类型字段转换为json"""
-    def __init__(self, key: str):
-        super().__init__(self, key)
+
+    default_args = {}
+
+    def __init__(self, key: str, **kwargs):
         assert key is not None, "key should be None"
+        self.key = key
+        self.default_args.update(kwargs)
 
-    def __call__(self, val):
-        if isinstance(val, str):
-            val = val.replace("'", '"')
-            print(val)
-            return json.loads(val)
-        return val
+    def on_data(self, data: dict, *args):
+        if self.key in data and isinstance(data[self.key], str):
+            data[self.key] = json.loads(data[self.key], **self.default_args)
+        return data
 
 
-class FormatFields(Map):
+class ToJson(DictProcessorBase):
+    """对指定的任意类型字段转换为json"""
+
+    def __init__(self, key: str, ensure_ascii: bool = False, **kwargs):
+        assert key is not None, "key should be None"
+        self.key = key
+        self.default_args = {
+            "ensure_ascii": ensure_ascii
+        }
+        self.default_args.update(kwargs)
+
+    def on_data(self, data: dict, *args):
+        if self.key in data:
+            data[self.key] = json.dumps(data[self.key], **self.default_args)
+        return data
+
+
+class Format(DictProcessorBase):
     """对指定字段（为模板字符串）使用指定的值进行填充"""
     def __init__(self, key: str, **kwargs):
-        super().__init__(self, key)
         assert key is not None, "key should be None"
         assert len(kwargs) > 0, "**kwargs should not be empty"
+        self.key = key
         self.values = kwargs
 
-    def __call__(self, val):
-        if isinstance(val, str):
-            return val.format(**self.values)
-        return val
+    def on_data(self, data: dict, *args):
+        if self.key in data and isinstance(data[self.key], str):
+            data[self.key] = data[self.key].format(**self.values)
+        return data
 
     def __str__(self):
         return f"{self.name}({self.key}, **{self.values})"

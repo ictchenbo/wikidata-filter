@@ -2,13 +2,13 @@ name: p2_org
 description: 输入wikidata简化后JSON数据(如`p1_idname_simple.yaml`的输出) 过滤出组织机构相关实体 并筛选出主要属性
 arguments: 0
 
-loader: JsonLine("test_data/p1.json")
+loader: JsonLine("data/wikidata/p1.1K.json")
 
 nodes:
-  types: util.SetFromCSV('config/org_type.txt')
-  props: util.SetFromCSV('config/props_org.txt')
-  filter: matcher.WikidataMatcherV2(P31=types})
-  prop_filter: PropsFilter(props_set=props)
+  types: util.sets.from_csv('config/org_type.txt')
+  props: util.sets.from_csv('config/props_org.txt')
+  filter: matcher.WikidataMatchNew(P31=types)
+  prop_filter: wikidata.PropsFilter(props_set=props)
 #  count: Count(ticks=5)
   writer: Print
 #  writer: WriteJson(arg2)

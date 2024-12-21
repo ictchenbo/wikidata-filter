@@ -9,7 +9,12 @@ class ESWriter(BufferedWriter):
     """
     数据写入ES索引中
     """
-    def __init__(self, host="localhost", port=9200, username=None, password=None, index=None, buffer_size=1000, **kwargs):
+    def __init__(self, host="localhost",
+                 port=9200,
+                 username=None,
+                 password=None,
+                 index=None,
+                 buffer_size=1000, **kwargs):
         super().__init__(buffer_size=buffer_size)
         self.url = f"http://{host}:{port}"
         if password:

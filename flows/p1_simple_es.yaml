@@ -8,8 +8,8 @@ consts:
     index: wikidata
 
 nodes:
-  n1: Simplify
-  n2: SimplifyProps
+  n1: wikidata.Simplify
+  n2: wikidata.SimplifyProps
   rm: RemoveFields('claims')
   n3: database.ESWriter(**es)
   n4: Count

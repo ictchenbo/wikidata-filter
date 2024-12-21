@@ -5,8 +5,8 @@ arguments: 0
 loader: JsonLine('test_data/p1.json')
 
 nodes:
-  types: util.SetFromCSV('config/event_type.txt')
-  matcher: matcher.WikidataMatcher(P31=types)
+  types: util.sets.from_csv('config/event_type.txt')
+  matcher: matcher.WikidataMatchNew(P31=types)
 #  filter: Filter(matcher)
 #  count: Count(ticks=5)
   writer: Print

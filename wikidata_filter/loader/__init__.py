@@ -1,2 +1,2 @@
-from .base import DataProvider, Random, ArrayProvider, TextProvider, TimedLoader, FuncCallProvider
+from .base import DataProvider, Random, Array, String, TimedLoader, Function
 from .text import Text, CSV, JsonLine, Json, JsonArray, JsonFree

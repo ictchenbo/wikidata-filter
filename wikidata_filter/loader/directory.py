@@ -6,7 +6,7 @@ from .text import Text, CSV, Json, JsonLine, JsonArray, JsonFree
 from .xls import ExcelStream
 from .parquet import Parquet
 from .docx import Doc, Docx
-from .ppt import PPT, PPTX
+from .pptx import PPT, PPTX
 from .pdf import PDF
 from .html import HTML
 

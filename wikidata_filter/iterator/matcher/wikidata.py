@@ -15,19 +15,21 @@
 6. 将满足条件的行输出到指定文件中
 """
 
-from wikidata_filter.iterator.matcher.base import JsonMatcher
+from wikidata_filter.iterator.matcher.base import MatchBase
 from wikidata_filter.util.jsons import extract
 
 
-class WikidataMatcher(JsonMatcher):
+class WikidataMatch(MatchBase):
     """
     基于属性的匹配，配置示例：
         {"P31": ["Q5", "Qxx"]}   ->  具有P31属性 且值在给定范围内
         {"P580": True}    ->  具有P580属性 不限定值
         {"P39": False}    ->  要求不具有P39属性
+    基于原始wikidata结构的匹配 采用.claims[Pxx].mainsnak
     """
-    def __init__(self, config: dict = None, **match_relations):
-        val = config or {}
+    def __init__(self, reference: dict = None, **match_relations):
+        super().__init__()
+        val = reference or {}
         val.update(match_relations)
         self.match_relations = val
 
@@ -60,15 +62,6 @@ class WikidataMatcher(JsonMatcher):
         return False
 
     def extract_objects(self, claims: list[dict]) -> set:
-        pass
-
-
-class WikidataMatcherV1(WikidataMatcher):
-    """基于原始wikidata结构的匹配 采用.claims[Pxx].mainsnak"""
-    def __init__(self, config: dict = None, **match_relations):
-        super().__init__(config=config, **match_relations)
-
-    def extract_objects(self, claims: list[dict]) -> set:
         object_set = set()
         for claim in claims:
             mainsnak = claim.get('mainsnak')
@@ -79,10 +72,10 @@ class WikidataMatcherV1(WikidataMatcher):
         return object_set
 
 
-class WikidataMatcherV2(WikidataMatcher):
+class WikidataMatchNew(WikidataMatch):
     """基于处理后的wikidata结构的匹配 采用datavalue集合"""
-    def __init__(self, config: dict = None, **match_relations):
-        super().__init__(config=config, **match_relations)
+    def __init__(self, reference: dict = None, **match_relations):
+        super().__init__(reference, **match_relations)
 
     def extract_objects(self, claims: list[dict]) -> set:
         return {val.get('datavalue') for val in claims if 'datavalue' in val and val.get('datatype') == 'wikibase-entityid'}

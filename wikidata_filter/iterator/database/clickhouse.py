@@ -6,7 +6,14 @@ class CKWriter(BufferedWriter):
     """
     数据写入CK中
     """
-    def __init__(self, host='localhost', tcp_port=9000, username="default", password="", database='default', table=None, cluster=None, buffer_size=1000, **kwargs):
+    def __init__(self, host='localhost',
+                 tcp_port=9000,
+                 username="default",
+                 password="",
+                 database='default',
+                 table=None,
+                 cluster=None,
+                 buffer_size=1000, **kwargs):
         super().__init__(buffer_size=buffer_size)
         try:
             from clickhouse_driver import Client

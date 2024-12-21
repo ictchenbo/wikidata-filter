@@ -1,4 +1,6 @@
-from wikidata_filter.iterator.base import JsonIterator
+from wikidata_filter.iterator.base import JsonIterator, DictProcessorBase
+from wikidata_filter.util.dates import current_ts
+import uuid
 
 
 class Prompt(JsonIterator):
@@ -18,27 +20,6 @@ class Print(JsonIterator):
     def on_data(self, data, *args):
         print(data)
         return data
-
-
-class Filter(JsonIterator):
-    """
-    过滤节点（1->?)
-    根据提供的匹配函数判断是否继续往后面传递数据
-    """
-    def __init__(self, matcher, key: str = None):
-        super().__init__()
-        assert matcher is not None, "matcher should not be None"
-        self.matcher = matcher
-        self.key = key
-
-    def on_data(self, data, *args):
-        if self.key and self.key not in data:
-            print(f"Warning: `{self.key}` not exists")
-        val = data
-        if self.key:
-            val = data[self.key]
-        if self.matcher(val):
-            return data
 
 
 class Count(JsonIterator):
@@ -64,21 +45,35 @@ class Count(JsonIterator):
         return f"{self.name}(ticks={self.ticks},label='{self.label}')"
 
 
-class BlackList(Filter):
-    """黑名单过滤 匹配黑名单的被过滤掉"""
-    def __init__(self, cache: dict or set, key: str):
-        super().__init__(self, key)
-        self.cache = cache
+class AddTS(DictProcessorBase):
+    """添加时间戳"""
+    def __init__(self, key: str, millis: bool = True):
+        self.key = key
+        self.millis = millis
 
-    def __call__(self, val, *args, **kwargs):
-        return val not in self.cache
+    def on_data(self, data: dict, *args):
+        data[self.key] = current_ts(self.millis)
+        return data
 
 
-class WhiteList(Filter):
-    """白名单过滤 匹配白名单的才保留"""
-    def __init__(self, cache: dict or set, key: str):
-        super().__init__(self, key)
-        self.cache = cache
+class PrefixID(DictProcessorBase):
+    """基于已有字段生成带前缀的ID"""
+    def __init__(self, prefix: str, *keys, key: str = '_id'):
+        self.key = key
+        self.prefix = prefix
+        self.keys = keys
 
-    def __call__(self, val, *args, **kwargs):
-        return val in self.cache
+    def on_data(self, data: dict, *args):
+        parts = [str(data.get(key)) for key in self.keys]
+        data[self.key] = self.prefix + '_'.join(parts)
+        return data
+
+
+class UUID(DictProcessorBase):
+    """"基于UUID生成ID"""
+    def __init__(self, key: str = '_id'):
+        self.key = key
+
+    def on_data(self, data: dict, *args):
+        data[self.key] = str(uuid.uuid4())
+        return data

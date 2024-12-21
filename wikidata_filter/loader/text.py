@@ -1,5 +1,5 @@
 import json
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 
 
 class Text(BinaryFile):

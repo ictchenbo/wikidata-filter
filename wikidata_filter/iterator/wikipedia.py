@@ -1,41 +1,45 @@
-import os
+from wikidata_filter.iterator.base import DictProcessorBase
 
-from wikidata_filter.iterator.base import JsonIterator
+try:
+    from wikimarkup.parser import Parser
+except:
+    print("wikimarkup is not installed!")
+    raise "wikimarkup is not installed!"
 
-from wikimarkup.parser import Parser
+
+parser = Parser()
 
 
-class ToHTML(JsonIterator):
+class ToHTML(DictProcessorBase):
     """
-    输入wikipedia 生成对应的HTML文件
+    基于wikipedia对象的WikiMarkup格式内容生成对应的HTML
     """
-    parser = Parser()
-
-    def __init__(self, output_dir: str, title_key='title', content_key='content'):
+    def __init__(self, target_key: str = "html", source_key: str = 'content'):
         super().__init__()
-        self.output_dir = output_dir
-        self.title_key = title_key
-        self.content_key = content_key
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+        self.target_key = target_key
+        self.source_key = source_key
 
     def on_data(self, item: dict, *args):
-        content = item.get(self.content_key)
-        filename = item.get(self.title_key)
-        if filename and content:
-            with open(os.path.join(self.output_dir, f'{filename}.html'), 'w', encoding='utf8') as fout:
-                fout.write(self.parser.parse(content))
+        if self.source_key in item and isinstance(item[self.source_key], str):
+            content = item.get(self.source_key)
+            item[self.target_key] = parser.parse(content)
         return item
 
 
-class PageAbstract(JsonIterator):
+class Abstract(DictProcessorBase):
     """
     基于wikipedia文本，提取第一段作为摘要
     """
+    def __init__(self, target_key: str = "abstract", source_key: str = 'text'):
+        super().__init__()
+        self.target_key = target_key
+        self.source_key = source_key
+
     def on_data(self, item: dict, *args):
-        text = item.get('text')
-        if text:
-            pos = text.find('\n\n')
-            if pos > 0:
-                item['abstract'] = text[0:pos]
+        if self.source_key in item and isinstance(item[self.source_key], str):
+            text = item[self.source_key]
+            if text:
+                pos = text.find('\n\n')
+                if pos > 0:
+                    item[self.target_key] = text[0:pos]
         return item

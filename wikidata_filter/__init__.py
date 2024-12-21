@@ -3,7 +3,7 @@ import signal
 from typing import Any
 from types import GeneratorType
 from wikidata_filter.loader import DataProvider
-from wikidata_filter.loader.base import ArrayProvider, TextProvider
+from wikidata_filter.loader.base import Array, String
 from wikidata_filter.iterator.base import Message, JsonIterator
 from wikidata_filter.flow_engine import ProcessFlow
 
@@ -55,11 +55,11 @@ def run_flow(flow: ProcessFlow, finish_signal: bool = False, input_data=None):
     # 根据命令行参数构造loader
     if input_data:
         if isinstance(input_data, str):
-            _loader = TextProvider(input_data)
+            _loader = String(input_data)
         elif isinstance(input_data, list):
-            _loader = ArrayProvider(input_data)
+            _loader = Array(input_data)
         else:
-            _loader = ArrayProvider([input_data])
+            _loader = Array([input_data])
         flow.loader = _loader
     assert flow.loader is not None, "loader为空！可通过yaml文件或命令行参数进行配置"
     run(flow.loader, flow.processor, finish_signal=finish_signal or flow.end_signal)

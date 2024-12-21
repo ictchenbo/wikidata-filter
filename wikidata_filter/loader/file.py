@@ -1,9 +1,9 @@
 import os
 from wikidata_filter.loader.base import DataProvider
-from wikidata_filter.util.file_loader import open_file
+from wikidata_filter.util.files import open_file
 
 
-class FileLoader(DataProvider):
+class File(DataProvider):
     """
     文件加载器
     """
@@ -19,8 +19,8 @@ class FileLoader(DataProvider):
         return f"{self.name}('{self.filename}')"
 
 
-class BinaryFile(FileLoader):
-    def __init__(self, input_file: str, auto_open=True, **kwargs):
+class BinaryFile(File):
+    def __init__(self, input_file: str, auto_open: bool = True, **kwargs):
         assert os.path.exists(input_file) and os.path.isfile(input_file), f"文件不存在或不是文件: {input_file}"
         if auto_open:
             self.instream = open_file(input_file, "rb")

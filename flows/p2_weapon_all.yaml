@@ -2,30 +2,29 @@ name: p2_weapon_all
 description: 输入wikidata简化后JSON数据(如`p1_idname_simple.yaml`的输出) 过滤出武器装备实体并填充实体摘要、属性名称、繁简体转换
 arguments: 0
 consts:
-  types:
-    P31:
-      - Q18643213
-      - Q728
-      - Q7978115
-      - Q2031121
-      - Q17205
-      - Q1186981
-      - Q216916
+  weapon_types:
+    - Q18643213
+    - Q728
+    - Q7978115
+    - Q2031121
+    - Q17205
+    - Q1186981
+    - Q216916
   wiki_base: "data/"
 
 loader: JsonLine('test_data/p1.json')
 
 nodes:
-  props: util.SetFromCSV('config/props_weapon.txt')
-  id_name: util.KVFromJSON('data/id-name.json', key_key='id', val_key='name')
-  zhwiki_abstract: util.KVFromJSON(wiki_base + 'zhwiki-page.json', key_key='title', val_key='abstract')
-  enwiki_abstract: util.KVFromJSON((wiki_base + 'enwiki-page.json', key_key='title', val_key='abstract')
+  props: util.sets.from_csv('config/props_weapon.txt')
+  id_name: util.dicts.from_json('data/id-name.json', key_key='id', val_key='name')
+  zhwiki_abstract: util.dicts.from_json(wiki_base + 'zhwiki-page.json', key_key='title', val_key='abstract')
+  enwiki_abstract: util.dicts.from_json(wiki_base + 'enwiki-page.json', key_key='title', val_key='abstract')
   kv: =dict(zhwiki=zhwiki_abstract, enwiki=enwiki_abstract)
-  n1: matcher.WikidataMatcher(types)
-  n2: PropsFilter(props_set=props)
-  n3: ObjectNameInject(id_name)
-  n4: ItemAbstractInject(kv)
-  n5: ChineseSimple()
+  n1: matcher.WikidataMatchNew(P31=weapon_types)
+  n2: wikidata.PropsFilter(props_set=props)
+  n3: wikidata.ObjectNameInject(id_name)
+  n4: wikidata.ItemAbstractInject(kv)
+  n5: wikidata.ChineseSimple()
   writer: WriteJson('test_data/p3_weapon.json')
 
-processor: Chain(loader, n1, n2, n3, n4, n5, writer)
+processor: Chain(n1, n2, n3, n4, n5, writer)

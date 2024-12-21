@@ -8,7 +8,12 @@ except ImportError:
 
 
 class MySQL(RDBBase):
-    def __init__(self, host='localhost', port=3306, user="root", password="", database=None, paging=False, **kwargs):
+    def __init__(self, host: str = 'localhost',
+                 port: int = 3306,
+                 user: str = "root",
+                 password: str = None,
+                 database: str = None,
+                 paging: bool = False, **kwargs):
         super().__init__(database=database, paging=paging, **kwargs)
 
         self.conn = pymysql.connect(

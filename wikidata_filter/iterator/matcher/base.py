@@ -1,8 +1,8 @@
-from wikidata_filter.iterator.common import Filter
+from wikidata_filter.iterator.filter import Filter
 from wikidata_filter.util.jsons import extract
 
 
-class JsonMatcher(Filter):
+class MatchBase(Filter):
     """
     基于JSON数据的规则匹配
     """
@@ -16,10 +16,12 @@ class JsonMatcher(Filter):
         return self.match(args[0])
 
 
-class SimpleJsonMatcher(JsonMatcher):
-    def __init__(self, match_rules: dict = None, **kwargs):
+class SimpleMatch(MatchBase):
+    """基于给定的字典参数进行逐字段匹配"""
+    def __init__(self, reference: dict = None, **kwargs):
         super().__init__()
-        self.match_rules = match_rules or kwargs
+        self.match_rules = reference or {}
+        self.match_rules.update(kwargs)
 
     def match(self, row: dict) -> bool:
         for key, value in self.match_rules.items():
@@ -28,11 +30,11 @@ class SimpleJsonMatcher(JsonMatcher):
         return True
 
 
-class JsonPathMatcher(JsonMatcher):
+class JsonPathMatch(MatchBase):
     """
     基于jsonpath的匹配器
     """
-    def __init__(self, pattern):
+    def __init__(self, pattern: str):
         super().__init__()
         self.pattern = pattern
         from jsonpath2.path import Path

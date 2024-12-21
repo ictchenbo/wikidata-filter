@@ -12,7 +12,7 @@ consts:
     password: *********
     database: <db2>
 
-loader: database.MongoLoader(**mongo1, collection=arg1)
+loader: database.Mongo(**mongo1, collection=arg1)
 
 nodes:
   print: Print

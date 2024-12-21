@@ -6,7 +6,7 @@ loader: JsonLine('test_data/p2_human.json')
 
 nodes:
   country_list: =arg1.split(',')
-  matcher: matcher.WikidataMatcherV2(P27=country_list)
-  writer: WriteJson('test_data/p2_human_'+arg2+'.json')
+  matcher: matcher.WikidataMatchNew(P27=country_list)
+  writer: WriteJson('test_data/p3_human_'+arg2+'.json')
 
 processor: Chain(matcher, writer)

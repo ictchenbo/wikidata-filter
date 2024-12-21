@@ -5,7 +5,7 @@ import datetime
 from math import *
 import numpy as np
 
-from wikidata_filter.landinn.util import get_conn
+from landinn.util import get_conn
 
 
 def linear_normalization(dict_tech_id_to_emerging_degree):
@@ -165,12 +165,12 @@ def emerging_degree(list_tech_id, years_span=10):
     return dict_tech_id_to_emerging_degree, list_time_slot
 
 
-def calc(rows: list, target_key: str, *args, **kwargs):
-    tech_ids = [row['golaxy_vocab_id'] for row in rows]
+def calc(rows: list, *, id_key: str = 'golaxy_vocab_id', result_key: str = 'emerging_degree', **kwargs):
+    tech_ids = [row[id_key] for row in rows]
     res, years = emerging_degree(tech_ids)
     for row in rows:
-        tech_id = row['golaxy_vocab_id']
+        tech_id = row[id_key]
         row['year'] = years[-1]
-        row[target_key] = res[tech_id]
+        row[result_key] = res[tech_id]
 
     return rows

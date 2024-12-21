@@ -1,6 +1,6 @@
 import json
 import math
-from wikidata_filter.landinn.util import get_conn
+from landinn.util import get_conn
 
 
 CH1 = 'arxiv'
@@ -235,6 +235,7 @@ def cal_score1(word_zh, word_en):
     return _out
 
 
-def calc(row: dict, *args, **kwargs):
+def calc(row: dict, *, result_key: str = 'node_score', **kwargs):
     name_zh, name_en = row['name_zh'], row['name_en']
-    return cal_score1(name_zh, name_en)
+    row[result_key] = cal_score1(name_zh, name_en)
+    return row

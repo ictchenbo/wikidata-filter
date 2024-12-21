@@ -2,8 +2,12 @@ from wikidata_filter.loader.database.rdb_base import RDBBase
 
 
 class CK(RDBBase):
-    def __init__(self, host='localhost', tcp_port=9000, username="default", password="", database='default', table=None, select="*", where=None, limit=None, **kwargs):
-        super().__init__(database=database, table=table, select=select, where=where, limit=limit)
+    def __init__(self, host: str = 'localhost',
+                 tcp_port: int = 9000,
+                 username: str = "default",
+                 password: str = "",
+                 database: str = 'default', **kwargs):
+        super().__init__(database=database, **kwargs)
         try:
             from clickhouse_driver import Client
         except:

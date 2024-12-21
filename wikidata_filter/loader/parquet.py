@@ -5,7 +5,7 @@
 """
 from typing import Iterable, Any
 
-from wikidata_filter.loader.binary import BinaryFile
+from wikidata_filter.loader.file import BinaryFile
 
 try:
     import pyarrow.parquet as pq
@@ -16,7 +16,7 @@ except:
 
 class Parquet(BinaryFile):
     """基于pyarrow读取parquet文件"""
-    def __init__(self, input_file, **kwargs):
+    def __init__(self, input_file: str, **kwargs):
         super().__init__(input_file, auto_open=False)
 
     def iter(self) -> Iterable[Any]:
